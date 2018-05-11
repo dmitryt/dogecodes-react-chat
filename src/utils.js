@@ -1,0 +1,6 @@
+export function titleInitials(title) {
+  if (typeof title !== 'string') {
+    return '';
+  }
+  return title.split(' ').map(w => w[0].toUpperCase()).join('');
+}

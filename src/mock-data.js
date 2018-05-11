@@ -1,18 +1,35 @@
-export const chatsData = [
-  { id: 1, abbr: 'T', title: 'test2', time: '10 hours ago', color: 'orange' },
-  { id: 2, abbr: 'TD', title: 'test3', time: '2 hours ago', color: 'purple' },
-  { id: 3, abbr: 'SW', title: 'test4', time: '1 hours ago', color: 'green' },
-  { id: 4, abbr: 'GH', title: 'test5', time: '7 hours ago', color: 'blue' },
-  { id: 5, abbr: 'T', title: 'test2', time: '10 hours ago', color: 'orange' },
-  { id: 6, abbr: 'TD', title: 'test3', time: '2 hours ago', color: 'purple' },
-  { id: 7, abbr: 'SW', title: 'test4', time: '1 hours ago', color: 'green' },
-  { id: 8, abbr: 'GH', title: 'test5', time: '7 hours ago', color: 'blue' },
-  { id: 9, abbr: 'TD', title: 'test3', time: '2 hours ago', color: 'purple' },
-  { id: 10, abbr: 'SW', title: 'test4', time: '1 hours ago', color: 'green' },
-  { id: 11, abbr: 'GH', title: 'test5', time: '7 hours ago', color: 'blue' },
-];
+import faker from 'faker';
 
-export const messagesData = [
-  { id: 1, user: 'Dmitriy', color: 'green', message: '1234', time: '10 hours ago', type: 'message' },
-  { id: 2, user: 'ljklksjdf', color: 'orange', action: 'joined', time: '10 hours ago', type: 'info' },
-];
+const shuffle = arr => arr.sort(() => Math.random() - 0.5);
+
+const COUNT_OF_CHATS = 20;
+
+export const chatsData = Array.from({ length: COUNT_OF_CHATS }).map((_, i) => ({
+  id: faker.random.uuid(),
+  title: faker.lorem.words(3),
+  color: faker.internet.color(120, 120, 120),
+  time: `${faker.random.number(10)} ${faker.random.arrayElement(['minutes', 'hours', 'seconds'])} ago`,
+  username: `${faker.name.firstName()} ${faker.name.lastName()}`,
+}));
+
+const COUNT_OF_MESSAGES = 20;
+
+const userMessages = Array.from({ length: COUNT_OF_MESSAGES }).map((_, i) => ({
+  id: faker.random.uuid(),
+  color: faker.internet.color(120, 120, 120),
+  time: `${faker.random.number(10)} ${faker.random.arrayElement(['minutes', 'hours', 'seconds'])} ago`,
+  username: `${faker.name.firstName()} ${faker.name.lastName()}`,
+  message: faker.lorem.sentence(),
+  type: 'message'
+}));
+
+const userStatuses = Array.from({ length: COUNT_OF_MESSAGES }).map((_, i) => ({
+  id: faker.random.uuid(),
+  color: faker.internet.color(120, 120, 120),
+  time: `${faker.random.number(10)} ${faker.random.arrayElement(['minutes', 'hours', 'seconds'])} ago`,
+  username: `${faker.name.firstName()} ${faker.name.lastName()}`,
+  action: faker.random.arrayElement(['joined', 'left']),
+  type: 'info'
+}));
+
+export const messagesData = shuffle(userMessages.concat(userStatuses));
