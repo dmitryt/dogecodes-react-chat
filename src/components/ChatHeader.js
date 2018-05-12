@@ -15,14 +15,14 @@ const styles = theme => ({
   },
 });
 
-const AppBar = ({ classes, width }) => <MUIAppBar
+const ChatHeader = ({ classes, width, selectedChat }) => <MUIAppBar
   position="absolute"
   style={{ width }}
 >
   <Toolbar>
     <Typography variant="title" color="inherit" className={classes.flex}>
-      DogeCodes Chat
-  </Typography>
+    {selectedChat.title}
+    </Typography>
     <div>
       <IconButton
         aria-owns="menu-appbar"
@@ -35,12 +35,13 @@ const AppBar = ({ classes, width }) => <MUIAppBar
   </Toolbar>
 </MUIAppBar>
 
-AppBar.propTypes = {
+ChatHeader.propTypes = {
   classes: PropTypes.object.isRequired,
+  selectedChat: PropTypes.object.isRequired,
   width: PropTypes.string,
 };
 
-AppBar.defaultProps = {
+ChatHeader.defaultProps = {
   width: '300px',
 };
-export default withStyles(styles)(AppBar);
+export default withStyles(styles)(ChatHeader);
