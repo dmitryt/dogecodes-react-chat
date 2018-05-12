@@ -2,9 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 
-import List from 'material-ui/List';
-
-
 import UserMessage from './components/UserMessage';
 import UserAction from './components/UserAction';
 import MessageInput from './components/MessageInput';
