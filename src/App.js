@@ -1,43 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import 'typeface-roboto';
+import React from 'react'
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 
-import { chatsData, messagesData, selectedChat } from './mock-data';
-
-import { withStyles } from 'material-ui/styles';
-
-import SideBar from './components/SideBar';
-import ChatContent from './components/ChatContent';
-import ChatHeader from './components/ChatHeader';
-
-const sidebarWidth = 320;
-
-const styles = theme => ({
-  root: {
-    height: '100%',
-    zIndex: 1,
-    overflow: 'hidden',
-    position: 'relative',
-    display: 'flex',
-    width: '100%',
-  },
-});
+import WelcomePage from './pages/WelcomePage';
+import ChatPage from './pages/ChatPage';
 
 class App extends React.Component {
   render() {
-    const { classes } = this.props;
     return (
-      <div className={classes.root}>
-        <ChatHeader width={`calc(100% - ${sidebarWidth}px)`} selectedChat={selectedChat} />
-        <SideBar width={sidebarWidth} chats={chatsData} />
-        <ChatContent messages={messagesData} />
-      </div>
+      <Router>
+        <Switch>
+          <Route exact path="/(welcome)?" component={WelcomePage} />
+          <Route path="/chat" component={ChatPage} />
+          <Redirect to="/" />
+        </Switch>
+      </Router>
     );
   }
 }
 
-App.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(App);
+export default App;
