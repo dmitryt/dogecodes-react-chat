@@ -9,6 +9,7 @@ import Tabs, { Tab } from 'material-ui/Tabs';
 import Typography from 'material-ui/Typography';
 
 import LoginForm from '../components/LoginForm';
+import SignupForm from '../components/SignupForm';
 
 function TabContainer(props) {
   return (
@@ -67,7 +68,7 @@ class WelcomePage extends React.Component {
             </Tabs>
           </AppBar>
           {value === 0 && <TabContainer><LoginForm /></TabContainer>}
-          {value === 1 && <TabContainer>Sign Up</TabContainer>}
+          {value === 1 && <TabContainer><SignupForm /></TabContainer>}
         </Paper>
       </React.Fragment>
     );

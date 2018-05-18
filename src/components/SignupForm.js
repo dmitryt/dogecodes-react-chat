@@ -11,7 +11,7 @@ const styles = theme => ({
   },
 });
 
-const LoginForm = ({ classes, width, selectedChat }) => (
+const SignupForm = ({ classes, width, selectedChat }) => (
   <form className={classes.container} noValidate autoComplete="off">
     <TextField
       label="Username"
@@ -30,14 +30,23 @@ const LoginForm = ({ classes, width, selectedChat }) => (
       fullWidth
       required
     />
+    <TextField
+      label="Password Confirmation"
+      placeholder="Repeat your password"
+      className={classes.textField}
+      margin="normal"
+      type="password"
+      fullWidth
+      required
+    />
     <Button variant="raised" color="primary" fullWidth className={classes.button}>
-      Login
+      Sign Up
     </Button>
   </form>
 );
 
-LoginForm.propTypes = {
+SignupForm.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(LoginForm);
+export default withStyles(styles)(SignupForm);
