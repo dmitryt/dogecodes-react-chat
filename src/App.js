@@ -1,21 +1,43 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import PropTypes from 'prop-types';
+import 'typeface-roboto';
 
-class App extends Component {
+import { chatsData, messagesData, selectedChat } from './mock-data';
+
+import { withStyles } from 'material-ui/styles';
+
+import SideBar from './components/SideBar';
+import ChatContent from './components/ChatContent';
+import ChatHeader from './components/ChatHeader';
+
+const sidebarWidth = 320;
+
+const styles = theme => ({
+  root: {
+    height: '100%',
+    zIndex: 1,
+    overflow: 'hidden',
+    position: 'relative',
+    display: 'flex',
+    width: '100%',
+  },
+});
+
+class App extends React.Component {
   render() {
+    const { classes } = this.props;
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div className={classes.root}>
+        <ChatHeader width={`calc(100% - ${sidebarWidth}px)`} selectedChat={selectedChat} />
+        <SideBar width={sidebarWidth} chats={chatsData} />
+        <ChatContent messages={messagesData} />
       </div>
     );
   }
 }
 
-export default App;
+App.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(App);
