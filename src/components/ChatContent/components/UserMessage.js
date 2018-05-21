@@ -6,7 +6,7 @@ import Avatar from 'material-ui/Avatar';
 import { ListItem, ListItemText } from 'material-ui/List';
 import Paper from 'material-ui/Paper';
 
-import { titleInitials } from '../../../utils';
+import { helpers } from '../../../utils';
 
 const styles = theme => ({
   listItemText: {
@@ -39,7 +39,7 @@ const styles = theme => ({
 });
 
 const UserMessage = ({ classes, color, username, isOwn, time, message }) => <ListItem className={classNames({ [classes.isOwnItem]: isOwn })}>
-  <Avatar style={{ backgroundColor: color }}>{titleInitials(username)}</Avatar>
+  <Avatar style={{ backgroundColor: color }}>{helpers.titleInitials(username)}</Avatar>
   <ListItemText className={classes.listItemText}>
     <Paper elevation={4} className={classNames(classes.content, { [classes.isOwnContent]: isOwn })}>
       <ListItemText classes={{ primary: classes.primary, secondary: classes.secondary }} secondary={time}>

@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import { Form, Field } from 'react-final-form'
+import { Form, Field } from 'react-final-form';
 
-import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
+
+import TextField from './TextField';
 
 const styles = theme => ({
   button: {
@@ -13,16 +14,13 @@ const styles = theme => ({
 });
 
 class LoginForm extends React.Component {
-  onSubmit = values => {
-    console.log(JSON.stringify(values, 0, 2));
-  }
   render() {
-    const { classes } = this.props;
+    const { classes, onSubmit } = this.props;
     return (
       <Form
-        onSubmit={this.onSubmit}
+        onSubmit={onSubmit}
         render={({ handleSubmit, reset, submitting, pristine, values }) => (
-          <form className={classes.container} noValidate autoComplete="off">
+          <form className={classes.container} onSubmit={handleSubmit} noValidate autoComplete="off">
             <Field
               label="Username"
               placeholder="Type your username"
@@ -32,7 +30,6 @@ class LoginForm extends React.Component {
               margin="normal"
               component={TextField}
               fullWidth
-              required
             />
             <Field
               label="Password"
@@ -43,13 +40,13 @@ class LoginForm extends React.Component {
               margin="normal"
               component={TextField}
               fullWidth
-              required
             />
             <Button
               className={classes.button}
               variant="raised"
               color="primary"
               type="submit"
+              disabled={submitting}
               fullWidth
             >
               Login

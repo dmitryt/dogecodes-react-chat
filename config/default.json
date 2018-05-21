@@ -1,3 +1,4 @@
 {
-  "API_ENDPOINT": "http://localhost:8001"
+  "API_HOST": "http://localhost:8001",
+  "STORAGE_KEY": "DOGE_CHAT_USER"
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import NotificationSystem from 'react-notification-system';
 import { withStyles } from 'material-ui/styles';
 
 import AppBar from 'material-ui/AppBar';
@@ -37,14 +38,22 @@ class WelcomePage extends React.Component {
     value: 0,
   };
 
+  constructor(props) {
+    super(props);
+    this._notificationSystem = React.createRef();
+  }
+
+  componentDidUpdate(prevProps) {
+    debugger;
+  }
+
   handleChange = (event, value) => {
     this.setState({ value });
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, login, signup } = this.props;
     const { value } = this.state;
-
     return (
       <React.Fragment>
         <AppBar position="sticky">
@@ -67,9 +76,10 @@ class WelcomePage extends React.Component {
               <Tab label="Sign Up" />
             </Tabs>
           </AppBar>
-          {value === 0 && <TabContainer><LoginForm /></TabContainer>}
-          {value === 1 && <TabContainer><SignupForm /></TabContainer>}
+          {value === 0 && <TabContainer><LoginForm onSubmit={login} /></TabContainer>}
+          {value === 1 && <TabContainer><SignupForm onSubmit={signup} /></TabContainer>}
         </Paper>
+        <NotificationSystem ref={this._notificationSystem} />
       </React.Fragment>
     );
   }

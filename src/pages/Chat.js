@@ -28,7 +28,8 @@ const ChatPage = ({ classes }) => (
     <SideBar width={sidebarWidth} chats={chatsData} />
     <ChatContent messages={messagesData} />
   </div>
-)
+);
+
 
 ChatPage.propTypes = {
   classes: PropTypes.object.isRequired,
