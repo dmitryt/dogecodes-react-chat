@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
+import NotificationSystem from 'react-notification-system';
 
 import { chatsData, messagesData, selectedChat } from '../mock-data';
 
@@ -24,6 +25,18 @@ const styles = theme => ({
 });
 
 class ChatPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this._notificationSystem = React.createRef();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.notification !== this.props.notification) {
+      const { level, message } = this.props.notification || {};
+      this._notificationSystem.current.addNotification({ message, level });
+    }
+  }
+
   render() {
     const { classes, logout, isAuthenticated } = this.props;
     if (!isAuthenticated) {
@@ -36,6 +49,7 @@ class ChatPage extends React.Component {
         <ChatHeader width={`calc(100% - ${sidebarWidth}px)`} selectedChat={selectedChat} logout={logout} />
         <SideBar width={sidebarWidth} chats={chatsData} />
         <ChatContent messages={messagesData} />
+        <NotificationSystem ref={this._notificationSystem} />
       </div>
     );
   }
@@ -45,6 +59,11 @@ ChatPage.propTypes = {
   classes: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
+  notification: PropTypes.object,
+};
+
+ChatPage.defaultProps = {
+  notification: {},
 };
 
 export default withStyles(styles)(ChatPage);

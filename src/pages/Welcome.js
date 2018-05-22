@@ -97,6 +97,12 @@ class WelcomePage extends React.Component {
 WelcomePage.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
+  notification: PropTypes.object,
+};
+
+WelcomePage.defaultProps = {
+  notification: {},
 };
 
 export default withStyles(styles, { withTheme: true })(WelcomePage);
