@@ -1,21 +1,18 @@
 import { combineReducers } from 'redux';
 
 import auth, { types as authTypes, actions as authActions } from './auth';
-
-export const commonTypes = {
-  FETCH_FAILURE: Symbol('FETCH_FAILURE'),
-};
-
+import notification, { types as notificationTypes } from './notification';
 
 export const types = {
   ...authTypes,
-  ...commonTypes,
+  ...notificationTypes,
 };
 
 export const actions = {
-  ...authActions
+  ...authActions,
 };
 
 export default combineReducers({
   auth,
+  notification,
 });

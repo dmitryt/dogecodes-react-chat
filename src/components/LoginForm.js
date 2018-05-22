@@ -13,50 +13,61 @@ const styles = theme => ({
   },
 });
 
-class LoginForm extends React.Component {
-  render() {
-    const { classes, onSubmit } = this.props;
-    return (
-      <Form
-        onSubmit={onSubmit}
-        render={({ handleSubmit, reset, submitting, pristine, values }) => (
-          <form className={classes.container} onSubmit={handleSubmit} noValidate autoComplete="off">
-            <Field
-              label="Username"
-              placeholder="Type your username"
-              name="username"
-              type="text"
-              className={classes.textField}
-              margin="normal"
-              component={TextField}
-              fullWidth
-            />
-            <Field
-              label="Password"
-              placeholder="Type your password"
-              name="password"
-              type="password"
-              className={classes.textField}
-              margin="normal"
-              component={TextField}
-              fullWidth
-            />
-            <Button
-              className={classes.button}
-              variant="raised"
-              color="primary"
-              type="submit"
-              disabled={submitting}
-              fullWidth
-            >
-              Login
-            </Button>
-          </form>
-        )}>
-      </Form>
-    );
+const validate = ({username, password, passwordConfirmation}) => {
+  const errors = {};
+  if (!username) {
+    errors.username = 'Required';
   }
-}
+  if (!password) {
+    errors.password = 'Required';
+  }
+  return errors;
+};
+
+const LoginForm = ({ classes, onSubmit }) => {
+  return (
+    <Form
+      onSubmit={onSubmit}
+      validate={validate}
+      render={({ handleSubmit, reset, submitting, pristine, values }) => (
+        <form className={classes.container} onSubmit={handleSubmit} noValidate autoComplete="off">
+          <Field
+            label="Username"
+            placeholder="Type your username"
+            name="username"
+            type="text"
+            className={classes.textField}
+            margin="normal"
+            component={TextField}
+            autoComplete="username"
+            fullWidth
+          />
+          <Field
+            label="Password"
+            placeholder="Type your password"
+            name="password"
+            type="password"
+            className={classes.textField}
+            margin="normal"
+            component={TextField}
+            autoComplete="password"
+            fullWidth
+          />
+          <Button
+            className={classes.button}
+            variant="raised"
+            color="primary"
+            type="submit"
+            disabled={submitting}
+            fullWidth
+          >
+            Login
+            </Button>
+        </form>
+      )}>
+    </Form>
+  );
+};
 
 LoginForm.propTypes = {
   classes: PropTypes.object.isRequired,

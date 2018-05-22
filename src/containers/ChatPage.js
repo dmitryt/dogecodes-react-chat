@@ -4,11 +4,13 @@ import { connect } from 'react-redux';
 import { actions } from '../reducers';
 import ChatPage from '../pages/Chat';
 
-const { login, signup } = actions;
-const mapStateToProps = state => ({});
+const { logout } = actions;
+const mapStateToProps = state => ({
+  notification: state.notification,
+  isAuthenticated: state.auth.isAuthenticated,
+});
 const mapDispatchToProps = dispatch => bindActionCreators({
-  login,
-  signup,
+  logout,
 }, dispatch);
 
 export default connect(

@@ -5,7 +5,6 @@
   "dependencies": {
     "@material-ui/icons": "^1.0.0-beta.43",
     "classnames": "^2.2.5",
-    "config": "^1.30.0",
     "final-form": "^4.6.1",
     "isomorphic-fetch": "^2.2.1",
     "material-ui": "^1.0.0-beta.45",

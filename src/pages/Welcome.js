@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import NotificationSystem from 'react-notification-system';
 import { withStyles } from 'material-ui/styles';
@@ -44,7 +45,10 @@ class WelcomePage extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    debugger;
+    if (prevProps.notification !== this.props.notification) {
+      const { level, message } = this.props.notification || {};
+      this._notificationSystem.current.addNotification({ message, level });
+    }
   }
 
   handleChange = (event, value) => {
@@ -52,8 +56,13 @@ class WelcomePage extends React.Component {
   };
 
   render() {
-    const { classes, login, signup } = this.props;
+    const { classes, login, signup, isAuthenticated } = this.props;
     const { value } = this.state;
+    if (isAuthenticated) {
+      return (
+        <Redirect to="/chat" />
+      );
+    }
     return (
       <React.Fragment>
         <AppBar position="sticky">

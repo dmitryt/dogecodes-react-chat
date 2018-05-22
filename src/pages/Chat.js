@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 
 import { chatsData, messagesData, selectedChat } from '../mock-data';
 
@@ -22,17 +23,28 @@ const styles = theme => ({
   },
 });
 
-const ChatPage = ({ classes }) => (
-  <div className={classes.root}>
-    <ChatHeader width={`calc(100% - ${sidebarWidth}px)`} selectedChat={selectedChat} />
-    <SideBar width={sidebarWidth} chats={chatsData} />
-    <ChatContent messages={messagesData} />
-  </div>
-);
-
+class ChatPage extends React.Component {
+  render() {
+    const { classes, logout, isAuthenticated } = this.props;
+    if (!isAuthenticated) {
+      return (
+        <Redirect to="/" />
+      );
+    }
+    return (
+      <div className={classes.root}>
+        <ChatHeader width={`calc(100% - ${sidebarWidth}px)`} selectedChat={selectedChat} logout={logout} />
+        <SideBar width={sidebarWidth} chats={chatsData} />
+        <ChatContent messages={messagesData} />
+      </div>
+    );
+  }
+}
 
 ChatPage.propTypes = {
   classes: PropTypes.object.isRequired,
+  logout: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
 };
 
 export default withStyles(styles)(ChatPage);
