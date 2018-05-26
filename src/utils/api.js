@@ -1,16 +1,20 @@
 import ifetch from 'isomorphic-fetch';
 import { API_HOST } from '../config';
 
+const defaultHeaders = {
+  'Content-Type': 'application/json'
+};
+
 const defaultOptions = {
   method: 'GET',
-  headers: {
-    'Content-Type': 'application/json',
-  },
 };
 
 function fetch(url, params = {}) {
   const fullURL = `${API_HOST}${url}`;
-  const options = { ...defaultOptions };
+  const options = {
+    ...defaultOptions,
+    headers: { ...defaultHeaders, ...(params.headers || {}) },
+  };
   if (params.data !== undefined) {
     options.body = JSON.stringify(params.data);
   }
@@ -32,8 +36,16 @@ function logout(data) {
   return fetch('/logout');
 }
 
+function receiveAuth(token) {
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+  return fetch('/users/me', { headers });
+}
+
 export default {
   signup,
   login,
   logout,
+  receiveAuth,
 };

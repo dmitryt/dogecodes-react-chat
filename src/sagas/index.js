@@ -1,6 +1,6 @@
 import { all, takeEvery } from 'redux-saga/effects';
 
-import { types } from '../reducers';
+import types from '../types';
 import authSaga from './auth';
 
 export default function* rootSaga() {
@@ -8,5 +8,6 @@ export default function* rootSaga() {
     takeEvery(types.LOGIN_REQUEST, authSaga.login),
     takeEvery(types.SIGNUP_REQUEST, authSaga.signup),
     takeEvery(types.LOGOUT_REQUEST, authSaga.logout),
+    takeEvery(types.RECEIVE_AUTH_REQUEST, authSaga.receiveAuth),
   ]);
 }

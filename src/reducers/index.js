@@ -1,12 +1,7 @@
 import { combineReducers } from 'redux';
 
-import auth, { types as authTypes, actions as authActions } from './auth';
-import notification, { types as notificationTypes } from './notification';
-
-export const types = {
-  ...authTypes,
-  ...notificationTypes,
-};
+import auth, { actions as authActions } from './auth';
+import notification from './notification';
 
 export const actions = {
   ...authActions,

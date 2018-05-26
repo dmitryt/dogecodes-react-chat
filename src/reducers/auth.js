@@ -1,23 +1,11 @@
 import { STORAGE_KEY_TOKEN } from '../config';
-
-export const types = {
-  SIGNUP_REQUEST: Symbol('SIGNUP_REQUEST'),
-  SIGNUP_SUCCESS: Symbol('SIGNUP_SUCCESS'),
-  SIGNUP_FAILURE: Symbol('SIGNUP_FAILURE'),
-
-  LOGIN_REQUEST: Symbol('LOGIN_REQUEST'),
-  LOGIN_SUCCESS: Symbol('LOGIN_SUCCESS'),
-  LOGIN_FAILURE: Symbol('LOGIN_FAILURE'),
-
-  LOGOUT_REQUEST: Symbol('LOGOUT_REQUEST'),
-  LOGOUT_SUCCESS: Symbol('LOGOUT_SUCCESS'),
-  LOGOUT_FAILURE: Symbol('LOGOUT_FAILURE'),
-};
+import types from '../types/auth';
 
 export const actions = {
   signup: data => ({ type: types.SIGNUP_REQUEST, data }),
   login: data => ({ type: types.LOGIN_REQUEST, data }),
   logout: data => ({ type: types.LOGOUT_REQUEST }),
+  receiveAuth: data => ({ type: types.RECEIVE_AUTH_REQUEST, data }),
 };
 
 const token = localStorage.getItem(STORAGE_KEY_TOKEN) || '';
@@ -39,8 +27,15 @@ export default function authReducer(state = initialState, action) {
         user: payload.user,
         token: payload.token,
       };
+    case types.RECEIVE_AUTH_SUCCESS:
+      return {
+        ...state,
+        isAuthenticated: true,
+        user: payload.user,
+      };
     case types.SIGNUP_FAILURE:
     case types.LOGIN_FAILURE:
+    case types.RECEIVE_AUTH_FAILURE:
     case types.LOGOUT_SUCCESS:
       return {
         ...state,

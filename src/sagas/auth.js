@@ -1,6 +1,6 @@
-import { put, call } from 'redux-saga/effects';
+import { put, call, select } from 'redux-saga/effects';
 
-import { types } from '../reducers';
+import types from '../types/auth';
 import { api } from '../utils';
 import { STORAGE_KEY_TOKEN } from '../config';
 
@@ -56,8 +56,22 @@ export function* logout() {
   }
 }
 
+export function* receiveAuth() {
+  try {
+    const { auth } = yield select();
+    if (!auth.token) {
+      return yield put({ type: types.RECEIVE_AUTH_FAILURE });
+    }
+    const payload = yield call(api.receiveAuth, [auth.token]);
+    yield put({ type: types.RECEIVE_AUTH_SUCCESS, payload });
+  } catch (error) {
+    yield put({ type: types.RECEIVE_AUTH_FAILURE });
+  }
+}
+
 export default {
   login,
   signup,
   logout,
+  receiveAuth,
 };
