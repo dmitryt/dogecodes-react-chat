@@ -1,46 +1,57 @@
 import ifetch from 'isomorphic-fetch';
 import { API_HOST } from '../config';
 
-const defaultHeaders = {
-  'Content-Type': 'application/json'
+const getHeaders = token => {
+  const authHeaders = token ? { Authorization: `Bearer ${token}` } : {};
+  return {
+    'Content-Type': 'application/json',
+    ...authHeaders,
+  };
 };
 
-const defaultOptions = {
-  method: 'GET',
-};
-
-function fetch(url, params = {}) {
+function fetch({ url, token, body, params = {} }) {
   const fullURL = `${API_HOST}${url}`;
   const options = {
-    ...defaultOptions,
-    headers: { ...defaultHeaders, ...(params.headers || {}) },
+    method: 'GET',
+    headers: getHeaders(token),
+    ...params,
   };
-  if (params.data !== undefined) {
-    options.body = JSON.stringify(params.data);
-  }
-  if (params.method) {
-    options.method = params.method;
+  if (body !== undefined) {
+    options.body = JSON.stringify(body);
   }
   return ifetch(fullURL, options).then(r => r.json());
 }
 
-function signup(data) {
-  return fetch('/signup', { method: 'POST', data });
+function signup(body) {
+  return fetch({ url: '/signup', body, params: { method: 'POST' } });
 }
 
-function login(data) {
-  return fetch('/login', { method: 'POST', data });
+function login(body) {
+  return fetch({ url: '/login', body, params: { method: 'POST' } });
 }
 
-function logout(data) {
-  return fetch('/logout');
+function logout() {
+  return fetch({ url: '/logout' });
 }
 
 function receiveAuth(token) {
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-  return fetch('/users/me', { headers });
+  return fetch({ url: '/users/me', token });
+}
+
+function fetchMyChats(token) {
+  return fetch({ url: '/chats/my', token });
+}
+
+function fetchAllChats(token) {
+  return fetch({ url: '/chats', token });
+}
+
+function fetchChat({ token, chatId }) {
+  return fetch({ url: `/chats/${chatId}`, token });
+}
+
+function createChat({ token, data }) {
+  return fetch({ url: `/chats`, token, body: { data }, params: { method: 'POST' } });
 }
 
 export default {
@@ -48,4 +59,8 @@ export default {
   login,
   logout,
   receiveAuth,
+  fetchMyChats,
+  fetchAllChats,
+  fetchChat,
+  createChat,
 };

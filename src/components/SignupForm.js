@@ -88,6 +88,7 @@ const SignupForm = ({ classes, onSubmit }) => {
 
 SignupForm.propTypes = {
   classes: PropTypes.object.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(SignupForm);

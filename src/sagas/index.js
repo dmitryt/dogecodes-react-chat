@@ -1,13 +1,11 @@
-import { all, takeEvery } from 'redux-saga/effects';
+import { all } from 'redux-saga/effects';
 
-import types from '../types';
-import authSaga from './auth';
+import authSagas from './auth';
+import chatSagas from './chats';
 
 export default function* rootSaga() {
   yield all([
-    takeEvery(types.LOGIN_REQUEST, authSaga.login),
-    takeEvery(types.SIGNUP_REQUEST, authSaga.signup),
-    takeEvery(types.LOGOUT_REQUEST, authSaga.logout),
-    takeEvery(types.RECEIVE_AUTH_REQUEST, authSaga.receiveAuth),
-  ]);
+    ...authSagas,
+    ...chatSagas,
+  ])
 }

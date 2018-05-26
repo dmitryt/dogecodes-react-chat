@@ -71,6 +71,7 @@ const LoginForm = ({ classes, onSubmit }) => {
 
 LoginForm.propTypes = {
   classes: PropTypes.object.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(LoginForm);

@@ -10,6 +10,8 @@ import { withStyles } from 'material-ui/styles';
 import SideBar from '../components/SideBar';
 import ChatContent from '../components/ChatContent';
 import ChatHeader from '../components/ChatHeader';
+import CreateChatForm from '../components/CreateChatForm';
+import AddChatBtn from '../components/AddChatBtn';
 
 const sidebarWidth = 320;
 
@@ -25,9 +27,34 @@ const styles = theme => ({
 });
 
 class ChatPage extends React.Component {
+  state = {
+    open: false,
+  };
+
+  onCreateChat = data => {
+    this.closeChatDialog();
+    this.props.createChat(data);
+  }
+
+  openChatDialog = () => {
+    this.setState({ open: true });
+  };
+
+  closeChatDialog = () => {
+    this.setState({ open: false });
+  };
+
   constructor(props) {
     super(props);
     this._notificationSystem = React.createRef();
+  }
+
+  componentDidMount() {
+    const { fetchAllChats, fetchMyChats } = this.props;
+    Promise.all([
+      fetchAllChats(),
+      fetchMyChats(),
+    ]);
   }
 
   componentDidUpdate(prevProps) {
@@ -39,6 +66,7 @@ class ChatPage extends React.Component {
 
   render() {
     const { classes, logout, isAuthenticated } = this.props;
+    const { open } = this.state;
     if (!isAuthenticated) {
       return (
         <Redirect to="/" />
@@ -47,9 +75,12 @@ class ChatPage extends React.Component {
     return (
       <div className={classes.root}>
         <ChatHeader width={`calc(100% - ${sidebarWidth}px)`} selectedChat={selectedChat} logout={logout} />
-        <SideBar width={sidebarWidth} chats={chatsData} />
+        <SideBar width={sidebarWidth} chats={chatsData}>
+          <AddChatBtn onClick={this.openChatDialog} />
+        </SideBar>
         <ChatContent messages={messagesData} />
         <NotificationSystem ref={this._notificationSystem} />
+        <CreateChatForm onSubmit={this.onCreateChat} open={open} onClose={this.closeChatDialog} />
       </div>
     );
   }
@@ -58,6 +89,9 @@ class ChatPage extends React.Component {
 ChatPage.propTypes = {
   classes: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
+  fetchAllChats: PropTypes.func.isRequired,
+  fetchMyChats: PropTypes.func.isRequired,
+  createChat: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
   notification: PropTypes.object,
 };

@@ -1,4 +1,4 @@
-import { put, call, select } from 'redux-saga/effects';
+import { put, call, select, takeEvery } from 'redux-saga/effects';
 
 import types from '../types/auth';
 import { api } from '../utils';
@@ -69,9 +69,11 @@ export function* receiveAuth() {
   }
 }
 
-export default {
-  login,
-  signup,
-  logout,
-  receiveAuth,
-};
+const authSagas = [
+  takeEvery(types.LOGIN_REQUEST, login),
+  takeEvery(types.SIGNUP_REQUEST, signup),
+  takeEvery(types.LOGOUT_REQUEST, logout),
+  takeEvery(types.RECEIVE_AUTH_REQUEST, receiveAuth),
+];
+
+export default authSagas;

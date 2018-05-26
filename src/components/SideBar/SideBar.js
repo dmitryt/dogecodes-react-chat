@@ -8,7 +8,8 @@ import Divider from 'material-ui/Divider';
 import NavBar from './components/NavBar';
 import SearchInput from './components/SearchInput';
 import ChatsList from './components/ChatsList';
-import AddChatBtn from './components/AddChatBtn';
+// import CreateChatForm from './components/CreateChatForm';
+// import AddChatBtn from './components/AddChatBtn';
 
 const styles = theme => ({
   root: {
@@ -16,13 +17,15 @@ const styles = theme => ({
   },
 });
 
-const SideBar = ({ classes, chats, width }) => <Drawer variant="permanent" style={{ width }} classes={{ paper: classes.root }}>
-  <SearchInput />
-  <Divider />
-  <ChatsList chats={chats} />
-  <AddChatBtn />
-  <NavBar />
-</Drawer>
+const SideBar = ({ classes, chats, width, children }) => (
+  <Drawer variant="permanent" style={{ width }} classes={{ paper: classes.root }}>
+    <SearchInput />
+    <Divider />
+    <ChatsList chats={chats} />
+    {children}
+    <NavBar />
+  </Drawer>
+);
 
 SideBar.propTypes = {
   chats: PropTypes.array.isRequired,
