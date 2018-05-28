@@ -33,9 +33,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   receiveAuth,
 }, dispatch);
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(PrivateRoute)
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PrivateRoute);

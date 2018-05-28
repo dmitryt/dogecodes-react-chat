@@ -51,7 +51,27 @@ function fetchChat({ token, chatId }) {
 }
 
 function createChat({ token, data }) {
-  return fetch({ url: `/chats`, token, body: { data }, params: { method: 'POST' } });
+  const body = { data };
+  const params = { method: 'POST' };
+  return fetch({ url: `/chats`, token, body, params });
+}
+
+function deleteChat({ token, chatId }) {
+  return fetch({ url: `/chats/${chatId}`, token, params: { method: 'DELETE' } });
+}
+
+function sendMessage({ token, data, chatId }) {
+  const body = { data };
+  const params = { method: 'POST' };
+  return fetch({ url: `/chats/${chatId}`, token, body, params });
+}
+
+function joinChat({ token, chatId }) {
+  return fetch({ url: `/chats/${chatId}/join`, token });
+}
+
+function leaveChat({ token, chatId }) {
+  return fetch({ url: `/chats/${chatId}/leave`, token });
 }
 
 export default {
@@ -63,4 +83,8 @@ export default {
   fetchAllChats,
   fetchChat,
   createChat,
+  deleteChat,
+  joinChat,
+  leaveChat,
+  sendMessage,
 };

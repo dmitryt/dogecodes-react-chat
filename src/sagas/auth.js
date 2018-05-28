@@ -1,6 +1,6 @@
 import { put, call, select, takeEvery } from 'redux-saga/effects';
 
-import types from '../types/auth';
+import types from '../types';
 import { api } from '../utils';
 import { STORAGE_KEY_TOKEN } from '../config';
 

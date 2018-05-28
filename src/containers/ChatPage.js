@@ -9,9 +9,12 @@ const {
   fetchAllChats,
   fetchMyChats,
   createChat,
+  deleteChat,
+  setActiveChat,
 } = actions;
 const mapStateToProps = state => ({
   notification: state.notification,
+  chats: state.chats,
   isAuthenticated: state.auth.isAuthenticated,
 });
 const mapDispatchToProps = dispatch => bindActionCreators({
@@ -19,6 +22,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   fetchAllChats,
   fetchMyChats,
   createChat,
+  deleteChat,
+  setActiveChat,
 }, dispatch);
 
 export default connect(

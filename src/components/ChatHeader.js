@@ -34,12 +34,17 @@ class ChatHeader extends React.Component {
     this.setState({ [key]: currentTarget });
   };
 
-  onLogout = event => {
+  onLogout = () => {
     this.props.logout();
     this.handleMenuClose();
   };
 
-  onDeleteChat = event => {
+  onEditProfile = () => {
+    this.props.logout();
+    this.handleMenuClose();
+  }
+
+  onDeleteChat = () => {
     this.props.deleteChat();
     this.handleMenuClose();
   };
@@ -95,6 +100,7 @@ class ChatHeader extends React.Component {
               open={Boolean(anchorElUser)}
               onClose={this.handleMenuClose}
             >
+              <MenuItem onClick={this.onEditProfile}>Edit Profile</MenuItem>
               <MenuItem onClick={this.onLogout}>Logout</MenuItem>
             </Menu>
           </div>

@@ -13,14 +13,25 @@ const styles = theme => ({
   },
 });
 
-const ChatsList = ({ classes, chats }) =>
-  <List className={classes.root}>
-    {chats.map(d =>
-      <ListItem key={d.id} button>
-        <Avatar style={{ backgroundColor: d.color }}>{helpers.titleInitials(d.title)}</Avatar>
-        <ListItemText primary={d.title} secondary={d.time} />
-      </ListItem>
-    )}
-  </List>
+class ChatsList extends React.Component {
+  onClick = e => {
+    const chatId = e.currentTarget.getAttribute('data-id');
+    this.props.onSelect({ chatId });
+  }
+
+  render() {
+    const { classes, chats } = this.props;
+    return (
+      <List className={classes.root}>
+        {chats.map(d =>
+          <ListItem key={d._id} data-id={d._id} button onClick={this.onClick}>
+            <Avatar style={{ backgroundColor: d.color }}>{helpers.titleInitials(d.title)}</Avatar>
+            <ListItemText primary={d.title} secondary={d.createdAt} />
+          </ListItem>
+        )}
+      </List>
+    );
+  }
+}
 
 export default withStyles(styles)(ChatsList);

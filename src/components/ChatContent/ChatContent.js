@@ -1,13 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
+import Paper from 'material-ui/Paper';
 
 import UserMessage from './components/UserMessage';
 import UserAction from './components/UserAction';
-import MessageInput from './components/MessageInput';
 
 const styles = theme => ({
   toolbar: theme.mixins.toolbar,
+  bottomBox: {
+    padding: theme.spacing.unit * 2,
+    margin: theme.spacing.unit * 2,
+    position: 'absolute',
+    width: `calc(100% - ${theme.spacing.unit * 4}px)`,
+    bottom: 0,
+    boxSizing: 'border-box',
+  },
   content: {
     position: 'relative',
     width: '100%',
@@ -32,6 +40,9 @@ function prepareChatMessages(data) {
 }
 
 class ChatContent extends React.Component {
+  state = {
+    isChatMember: false,
+  };
   constructor(props) {
     super(props);
     this.messagesWrapperRef = React.createRef();
@@ -51,13 +62,15 @@ class ChatContent extends React.Component {
     }
   }
   render() {
-    const { classes, messages } = this.props;
+    const { classes, messages, children } = this.props;
     return <main className={classes.content}>
       <div className={classes.toolbar} />
       <div className={classes.messagesList} ref={this.messagesWrapperRef}>
         {prepareChatMessages(messages)}
       </div>
-      <MessageInput />
+      <Paper elevation={4} className={classes.bottomBox}>
+        {children}
+      </Paper>
     </main>
   }
 }

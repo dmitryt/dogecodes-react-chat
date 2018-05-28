@@ -2,15 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import NotificationSystem from 'react-notification-system';
+import Button from 'material-ui/Button';
 
-import { chatsData, messagesData, selectedChat } from '../mock-data';
+import { messagesData, selectedChat } from '../mock-data';
 
 import { withStyles } from 'material-ui/styles';
 
 import SideBar from '../components/SideBar';
 import ChatContent from '../components/ChatContent';
 import ChatHeader from '../components/ChatHeader';
-import CreateChatForm from '../components/CreateChatForm';
+import CreateChatForm from '../forms/CreateChatForm';
+import MessageInput from '../components/MessageInput';
 import AddChatBtn from '../components/AddChatBtn';
 
 const sidebarWidth = 320;
@@ -29,6 +31,7 @@ const styles = theme => ({
 class ChatPage extends React.Component {
   state = {
     open: false,
+    isChatMember: true,
   };
 
   onCreateChat = data => {
@@ -51,10 +54,8 @@ class ChatPage extends React.Component {
 
   componentDidMount() {
     const { fetchAllChats, fetchMyChats } = this.props;
-    Promise.all([
-      fetchAllChats(),
-      fetchMyChats(),
-    ]);
+    fetchAllChats();
+    fetchMyChats();
   }
 
   componentDidUpdate(prevProps) {
@@ -65,8 +66,17 @@ class ChatPage extends React.Component {
   }
 
   render() {
-    const { classes, logout, isAuthenticated } = this.props;
-    const { open } = this.state;
+    const {
+      classes,
+      logout,
+      chats,
+      deleteChat,
+      isAuthenticated,
+      joinChat,
+      sendMessage,
+      setActiveChat,
+    } = this.props;
+    const { open, isChatMember } = this.state;
     if (!isAuthenticated) {
       return (
         <Redirect to="/" />
@@ -74,11 +84,31 @@ class ChatPage extends React.Component {
     }
     return (
       <div className={classes.root}>
-        <ChatHeader width={`calc(100% - ${sidebarWidth}px)`} selectedChat={selectedChat} logout={logout} />
-        <SideBar width={sidebarWidth} chats={chatsData}>
+        <ChatHeader
+          width={`calc(100% - ${sidebarWidth}px)`}
+          selectedChat={selectedChat}
+          logout={logout}
+          deleteChat={deleteChat}
+        />
+        <SideBar width={sidebarWidth} setActiveChat={setActiveChat} chats={chats}>
           <AddChatBtn onClick={this.openChatDialog} />
         </SideBar>
-        <ChatContent messages={messagesData} />
+        <ChatContent messages={messagesData}>
+        {
+          isChatMember ? (
+            <MessageInput onSubmit={sendMessage} />
+          ) : (
+            <Button
+              variant="raised"
+              color="primary"
+              onClick={joinChat}
+              fullWidth
+            >
+              Join Chat
+            </Button>
+          )
+        }
+        </ChatContent>
         <NotificationSystem ref={this._notificationSystem} />
         <CreateChatForm onSubmit={this.onCreateChat} open={open} onClose={this.closeChatDialog} />
       </div>
@@ -93,6 +123,7 @@ ChatPage.propTypes = {
   fetchMyChats: PropTypes.func.isRequired,
   createChat: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
+  chats: PropTypes.object.isRequired,
   notification: PropTypes.object,
 };
 

@@ -16,14 +16,14 @@ class NavBar extends React.Component {
   };
 
   render() {
-    const { value } = this.state;
+    const { chatsType, onChange } = this.props;
     return <Typography component="div">
       <BottomNavigation
-        value={value}
-        onChange={this.handleChange}
+        value={chatsType}
+        onChange={onChange}
         showLabels>
-        <BottomNavigationAction label="My Chats" icon={<RestoreIcon />} />
-        <BottomNavigationAction label="Explore" icon={<ExporeIcon />} />
+        <BottomNavigationAction label="My Chats" value="my" icon={<RestoreIcon />} />
+        <BottomNavigationAction label="Explore" value="all" icon={<ExporeIcon />} />
       </BottomNavigation>
     </Typography>
   }

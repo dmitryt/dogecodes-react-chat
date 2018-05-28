@@ -1,12 +1,11 @@
 import React from 'react'
-import { Router, Route, Switch, Redirect } from 'react-router-dom'
+import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import createBrowserHistory from 'history/createBrowserHistory';
+// import { ConnectedRouter } from 'react-router-redux';
 
-import configureStore from '../store';
+import configureStore, { history } from '../store';
 import { WelcomePage, ChatPage, PrivateRoute } from '../containers';
 
-const history = createBrowserHistory();
 const store = configureStore();
 
 class App extends React.Component {

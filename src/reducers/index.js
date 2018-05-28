@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { routerReducer } from 'react-router-redux';
 
 import auth, { actions as authActions } from './auth';
 import chats, { actions as chatsActions } from './chats';
@@ -13,4 +14,5 @@ export default combineReducers({
   auth,
   chats,
   notification,
+  routing: routerReducer,
 });
