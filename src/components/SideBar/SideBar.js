@@ -25,14 +25,21 @@ class SideBar extends React.Component {
   }
 
   render() {
-    const { classes, chats, width, setActiveChat, children } = this.props;
+    const {
+      classes,
+      chats,
+      width,
+      setActiveChat,
+      activeChat,
+      children,
+    } = this.props;
     const { chatsType } = this.state;
     const chatsData = chatsType === 'my' ? chats.myIds : chats.allIds;
     return (
       <Drawer variant="permanent" style={{ width }} classes={{ paper: classes.root }}>
         <SearchInput />
         <Divider />
-        <ChatsList chats={chatsData} onSelect={setActiveChat} />
+        <ChatsList chats={chatsData} onSelect={setActiveChat} activeChat={activeChat} />
         {children}
         <NavBar chatsType={chatsType} onChange={this.onTypeChange} />
       </Drawer>

@@ -1,3 +1,5 @@
+const getType = key => Symbol(`${key}`);
+
 export default {
-  REDIRECT: Symbol('REDIRECT'),
+  REDIRECT: getType('REDIRECT'),
 };

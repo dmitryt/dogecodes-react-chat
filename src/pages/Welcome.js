@@ -60,7 +60,7 @@ class WelcomePage extends React.Component {
     const { value } = this.state;
     if (isAuthenticated) {
       return (
-        <Redirect to="/chat" />
+        <Redirect to="/chats" />
       );
     }
     return (

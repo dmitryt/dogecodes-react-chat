@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom';
 import NotificationSystem from 'react-notification-system';
 import Button from 'material-ui/Button';
 
-import { messagesData, selectedChat } from '../mock-data';
+import { messagesData } from '../mock-data';
 
 import { withStyles } from 'material-ui/styles';
 
@@ -53,7 +53,11 @@ class ChatPage extends React.Component {
   }
 
   componentDidMount() {
-    const { fetchAllChats, fetchMyChats } = this.props;
+    const { fetchAllChats, fetchMyChats, match, setActiveChat } = this.props;
+    const { chatId } = match.params;
+    if (chatId) {
+      setActiveChat({ chatId });
+    }
     fetchAllChats();
     fetchMyChats();
   }
@@ -73,8 +77,9 @@ class ChatPage extends React.Component {
       deleteChat,
       isAuthenticated,
       joinChat,
-      sendMessage,
       setActiveChat,
+      activeChat,
+      sendMessage,
     } = this.props;
     const { open, isChatMember } = this.state;
     if (!isAuthenticated) {
@@ -86,28 +91,33 @@ class ChatPage extends React.Component {
       <div className={classes.root}>
         <ChatHeader
           width={`calc(100% - ${sidebarWidth}px)`}
-          selectedChat={selectedChat}
+          activeChat={activeChat}
           logout={logout}
           deleteChat={deleteChat}
         />
-        <SideBar width={sidebarWidth} setActiveChat={setActiveChat} chats={chats}>
+        <SideBar
+          width={sidebarWidth}
+          setActiveChat={setActiveChat}
+          chats={chats}
+          activeChat={activeChat}
+        >
           <AddChatBtn onClick={this.openChatDialog} />
         </SideBar>
         <ChatContent messages={messagesData}>
-        {
-          isChatMember ? (
-            <MessageInput onSubmit={sendMessage} />
-          ) : (
-            <Button
-              variant="raised"
-              color="primary"
-              onClick={joinChat}
-              fullWidth
-            >
-              Join Chat
+          {
+            isChatMember ? (
+              <MessageInput onSubmit={sendMessage} />
+            ) : (
+                <Button
+                  variant="raised"
+                  color="primary"
+                  onClick={joinChat}
+                  fullWidth
+                >
+                  Join Chat
             </Button>
-          )
-        }
+              )
+          }
         </ChatContent>
         <NotificationSystem ref={this._notificationSystem} />
         <CreateChatForm onSubmit={this.onCreateChat} open={open} onClose={this.closeChatDialog} />
@@ -125,10 +135,12 @@ ChatPage.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   chats: PropTypes.object.isRequired,
   notification: PropTypes.object,
+  activeChat: PropTypes.object,
 };
 
 ChatPage.defaultProps = {
   notification: {},
+  activeChat: null,
 };
 
 export default withStyles(styles)(ChatPage);

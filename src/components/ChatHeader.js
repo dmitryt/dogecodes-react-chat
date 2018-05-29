@@ -55,7 +55,7 @@ class ChatHeader extends React.Component {
   };
 
   render() {
-    const { classes, width, selectedChat } = this.props;
+    const { classes, width, activeChat } = this.props;
     const { anchorElUser, anchorElChat } = this.state;
     return (
       <MUIAppBar
@@ -64,17 +64,21 @@ class ChatHeader extends React.Component {
       >
         <Toolbar>
           <Typography variant="title" color="inherit" className={classes.flex}>
-            {selectedChat.title}
-            <IconButton
-              className={classes.menuIcon}
-              data-id="anchorElChat"
-              aria-label="More"
-              aria-owns={anchorElChat ? 'chat-menu' : null}
-              aria-haspopup="true"
-              onClick={this.handleMenuOpen}
-            >
-              <MoreVertIcon />
-            </IconButton>
+            {activeChat ? (
+              <React.Fragment>
+                {activeChat.title}
+                <IconButton
+                  className={classes.menuIcon}
+                  data-id="anchorElChat"
+                  aria-label="More"
+                  aria-owns={anchorElChat ? 'chat-menu' : null}
+                  aria-haspopup="true"
+                  onClick={this.handleMenuOpen}
+                >
+                  <MoreVertIcon />
+                </IconButton>
+              </React.Fragment>
+            ) : null}
             <Menu
               id="chat-menu"
               anchorEl={anchorElChat}
@@ -113,13 +117,14 @@ class ChatHeader extends React.Component {
 
 ChatHeader.propTypes = {
   classes: PropTypes.object.isRequired,
-  selectedChat: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
   deleteChat: PropTypes.func.isRequired,
+  activeChat: PropTypes.object,
   width: PropTypes.string,
 };
 
 ChatHeader.defaultProps = {
   width: '300px',
+  activeChat: null,
 };
 export default withStyles(styles)(ChatHeader);

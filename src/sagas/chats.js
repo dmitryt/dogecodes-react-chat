@@ -1,8 +1,8 @@
 import { put, call, takeEvery, select } from 'redux-saga/effects';
-import { push } from 'react-router-redux';
 
 import types from '../types';
 import { api } from '../utils';
+import { redirectTo } from './services';
 
 export function* fetchMyChats({ data }) {
   try {
@@ -113,26 +113,24 @@ export function* setActiveChat(data) {
     if (!json.success) {
       throw new Error(json.message);
     }
-    yield push(`/chats/${json.chat._id}`);
+    yield redirectTo({ to: `/chats/${json.chat._id}` });
   } catch (e) {
     yield unsetActiveChat();
   }
 }
 
 export function* unsetActiveChat() {
-  yield push('/chats');
+  yield redirectTo({ to: `/chats` });
 }
 
 export function* sendMessage({ data }) {
   try {
-    const { auth } = yield select();
-    const json = yield call(api.sendMessage, { data, token: auth.token });
+    const { auth, chats } = yield select();
+    const json = yield call(api.sendMessage, { data, chatId: chats.activeId, token: auth.token });
     if (!json.success) {
       throw new Error(json.message);
     }
     yield put({ type: types.SEND_MESSAGE_SUCCESS, payload: json });
-    const notificationData = { level: 'success', message: 'You have left the chat successfully' };
-    yield put({ type: types.NOTIFICATION, data: notificationData });
   } catch (error) {
     yield put({ type: types.SEND_MESSAGE_FAILURE, error });
 

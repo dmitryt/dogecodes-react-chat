@@ -5,6 +5,7 @@ import Paper from 'material-ui/Paper';
 
 import UserMessage from './components/UserMessage';
 import UserAction from './components/UserAction';
+import InviteLabel from './components/InviteLabel';
 
 const styles = theme => ({
   toolbar: theme.mixins.toolbar,
@@ -29,8 +30,11 @@ const styles = theme => ({
   },
 });
 
-function prepareChatMessages(data) {
-  return data.map(item => {
+function prepareChatMessages(activeChat) {
+  if (!activeChat) {
+    return <InviteLabel />
+  }
+  return activeChat.messages.map(item => {
     const Component = {
       message: UserMessage,
       info: UserAction,
@@ -62,19 +66,20 @@ class ChatContent extends React.Component {
     }
   }
   render() {
-    const { classes, messages, children } = this.props;
+    const { classes, activeChat, children } = this.props;
     return <main className={classes.content}>
       <div className={classes.toolbar} />
       <div className={classes.messagesList} ref={this.messagesWrapperRef}>
-        {prepareChatMessages(messages)}
+        {prepareChatMessages(activeChat)}
       </div>
-      <Paper elevation={4} className={classes.bottomBox}>
-        {children}
-      </Paper>
+      {activeChat && (
+        <Paper elevation={4} className={classes.bottomBox}>
+          {children}
+        </Paper>
+      )}
     </main>
   }
 }
-
 
 ChatContent.propTypes = {
   messages: PropTypes.array.isRequired,

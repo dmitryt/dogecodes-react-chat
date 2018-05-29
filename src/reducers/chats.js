@@ -14,12 +14,22 @@ export const actions = {
 };
 
 const initialState = {
+  activeId: null,
   allIds: [],
   myIds: [],
 };
 
-export function chatsReducer(state = initialState, action) {
-
+function activeId(state = initialState.activeId, action) {
+  switch (action.type) {
+    case types.SET_ACTIVE_CHAT:
+      return action.data.chatId;
+    case types.LEAVE_CHAT_SUCCESS:
+    case types.DELETE_CHAT_SUCCESS:
+    case types.UNSET_ACTIVE_CHAT:
+      return null;
+    default:
+      return state;
+  }
 }
 
 function allIds(state = initialState.allIds, action) {
@@ -51,6 +61,7 @@ function myIds(state = initialState.myIds, action) {
 }
 
 export default combineReducers({
+  activeId,
   allIds,
   myIds,
 });

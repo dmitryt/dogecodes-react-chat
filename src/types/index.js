@@ -1,11 +1,11 @@
 import authTypes from './auth';
 import notificationTypes from './notification';
-import servicesTypes from './services';
 import chatsTypes from './chats';
+import servicesTypes from './services';
 
 export default {
   ...authTypes,
   ...notificationTypes,
-  ...servicesTypes,
   ...chatsTypes,
+  ...servicesTypes,
 };

@@ -2,6 +2,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { actions } from '../reducers';
+import { getActiveChat } from '../selectors/chatsSelectors';
 import ChatPage from '../pages/Chat';
 
 const {
@@ -11,11 +12,13 @@ const {
   createChat,
   deleteChat,
   setActiveChat,
+  sendMessage,
 } = actions;
 const mapStateToProps = state => ({
   notification: state.notification,
   chats: state.chats,
   isAuthenticated: state.auth.isAuthenticated,
+  activeChat: getActiveChat(state),
 });
 const mapDispatchToProps = dispatch => bindActionCreators({
   logout,
@@ -24,6 +27,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   createChat,
   deleteChat,
   setActiveChat,
+  sendMessage,
 }, dispatch);
 
 export default connect(
