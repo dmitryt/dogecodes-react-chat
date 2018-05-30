@@ -40,7 +40,7 @@ class ChatHeader extends React.Component {
   };
 
   onEditProfile = () => {
-    this.props.logout();
+    this.props.openProfileDialog();
     this.handleMenuClose();
   }
 
@@ -119,6 +119,7 @@ ChatHeader.propTypes = {
   classes: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
   deleteChat: PropTypes.func.isRequired,
+  openProfileDialog: PropTypes.func.isRequired,
   activeChat: PropTypes.object,
   width: PropTypes.string,
 };

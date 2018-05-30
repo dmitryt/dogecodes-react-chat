@@ -6,7 +6,7 @@ import Avatar from 'material-ui/Avatar';
 import { ListItem, ListItemText } from 'material-ui/List';
 import Paper from 'material-ui/Paper';
 
-import { helpers } from '../../../utils';
+import { helpers } from '../utils';
 
 const styles = theme => ({
   listItemText: {

@@ -6,6 +6,7 @@ export const actions = {
   login: data => ({ type: types.LOGIN_REQUEST, data }),
   logout: data => ({ type: types.LOGOUT_REQUEST }),
   receiveAuth: data => ({ type: types.RECEIVE_AUTH_REQUEST, data }),
+  updateUser: data => ({ type: types.UPDATE_USER_REQUEST, data }),
 };
 
 const token = localStorage.getItem(STORAGE_KEY_TOKEN) || '';

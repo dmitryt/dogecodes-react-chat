@@ -10,8 +10,8 @@ import Paper from 'material-ui/Paper';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import Typography from 'material-ui/Typography';
 
-import LoginForm from '../forms/LoginForm';
-import SignupForm from '../forms/SignupForm';
+import LoginForm from './forms/LoginForm';
+import SignupForm from './forms/SignupForm';
 
 function TabContainer(props) {
   return (

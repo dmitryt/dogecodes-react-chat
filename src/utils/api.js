@@ -30,6 +30,12 @@ function login(body) {
   return fetch({ url: '/login', body, params: { method: 'POST' } });
 }
 
+function updateUser({ token, data }) {
+  const body = { data };
+  const params = { method: 'POST' };
+  return fetch({ url: `/users/me`, token, body, params });
+}
+
 function logout() {
   return fetch({ url: '/logout' });
 }
@@ -87,4 +93,5 @@ export default {
   joinChat,
   leaveChat,
   sendMessage,
+  updateUser,
 };

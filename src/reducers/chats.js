@@ -13,15 +13,19 @@ export const actions = {
   setActiveChat: data => ({ type: types.SET_ACTIVE_CHAT, data }),
 };
 
+const getChatId = chat => chat._id;
+
 const initialState = {
   activeId: null,
   allIds: [],
   myIds: [],
+  messages: [],
+  _store: {},
 };
 
 function activeId(state = initialState.activeId, action) {
   switch (action.type) {
-    case types.SET_ACTIVE_CHAT:
+    case types.SET_ACTIVE_CHAT_SUCCESS:
       return action.data.chatId;
     case types.LEAVE_CHAT_SUCCESS:
     case types.DELETE_CHAT_SUCCESS:
@@ -37,10 +41,10 @@ function allIds(state = initialState.allIds, action) {
     case types.FETCH_ALL_CHATS_SUCCESS:
       return [
         ...state,
-        ...action.payload
+        ...action.payload.map(getChatId)
       ];
-    case types.FETCH_ALL_CHATS_FAILURE:
-      return [];
+    case types.DELETE_CHAT_SUCCESS:
+      return state.filter(id => id !== action.data.chatId);
     default:
       return state;
   }
@@ -51,9 +55,45 @@ function myIds(state = initialState.myIds, action) {
     case types.FETCH_MY_CHATS_SUCCESS:
       return [
         ...state,
-        ...action.payload
+        ...action.payload.map(getChatId)
       ];
-    case types.FETCH_MY_CHATS_FAILURE:
+    case types.DELETE_CHAT_SUCCESS:
+      return state.filter(id => id !== action.data.chatId);
+    default:
+      return state;
+  }
+}
+
+function _store(state = initialState._store, action) {
+  switch (action.type) {
+    case types.FETCH_ALL_CHATS_SUCCESS:
+    case types.FETCH_MY_CHATS_SUCCESS:
+      return {
+        ...state,
+        ...action.payload.reduce((acc, chat) => ({
+          ...acc,
+          [getChatId(chat)]: chat,
+        }), {})
+      };
+    case types.FETCH_CHAT_SUCCESS:
+      return {
+        ...state,
+        [getChatId(action.payload.chat)]: action.payload.chat,
+      };
+    case types.DELETE_CHAT_SUCCESS:
+      return Object.keys(state).reduce((acc, id) => {
+        return id === action.data.chatId ? acc : { ...acc, [id]: state[id] };
+      }, {});
+    default:
+      return state;
+  }
+}
+
+function messages(state = initialState.messages, action) {
+  switch (action.type) {
+    case types.FETCH_MESSAGES_SUCCESS:
+      return action.payload;
+    case types.FETCH_MESSAGES_FAILURE:
       return [];
     default:
       return state;
@@ -64,4 +104,6 @@ export default combineReducers({
   activeId,
   allIds,
   myIds,
+  messages,
+  _store,
 });

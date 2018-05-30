@@ -4,14 +4,13 @@ import { Redirect } from 'react-router-dom';
 import NotificationSystem from 'react-notification-system';
 import Button from 'material-ui/Button';
 
-import { messagesData } from '../mock-data';
-
 import { withStyles } from 'material-ui/styles';
 
 import SideBar from '../components/SideBar';
 import ChatContent from '../components/ChatContent';
 import ChatHeader from '../components/ChatHeader';
-import CreateChatForm from '../forms/CreateChatForm';
+import CreateChatForm from './forms/CreateChatForm';
+import EditProfileForm from './forms/EditProfileForm';
 import MessageInput from '../components/MessageInput';
 import AddChatBtn from '../components/AddChatBtn';
 
@@ -30,7 +29,8 @@ const styles = theme => ({
 
 class ChatPage extends React.Component {
   state = {
-    open: false,
+    isChatDialogOpened: false,
+    isProfileDialogOpened: false,
     isChatMember: true,
   };
 
@@ -39,12 +39,25 @@ class ChatPage extends React.Component {
     this.props.createChat(data);
   }
 
+  onEditProfile = data => {
+    this.closeProfileDialog();
+    this.props.updateUser(data);
+  }
+
   openChatDialog = () => {
-    this.setState({ open: true });
+    this.setState({ isChatDialogOpened: true });
   };
 
   closeChatDialog = () => {
-    this.setState({ open: false });
+    this.setState({ isChatDialogOpened: false });
+  };
+
+  openProfileDialog = () => {
+    this.setState({ isProfileDialogOpened: true });
+  };
+
+  closeProfileDialog = () => {
+    this.setState({ isProfileDialogOpened: false });
   };
 
   constructor(props) {
@@ -73,7 +86,10 @@ class ChatPage extends React.Component {
     const {
       classes,
       logout,
-      chats,
+      user,
+      allChats,
+      myChats,
+      messages,
       deleteChat,
       isAuthenticated,
       joinChat,
@@ -81,7 +97,7 @@ class ChatPage extends React.Component {
       activeChat,
       sendMessage,
     } = this.props;
-    const { open, isChatMember } = this.state;
+    const { isChatDialogOpened, isProfileDialogOpened, isChatMember } = this.state;
     if (!isAuthenticated) {
       return (
         <Redirect to="/" />
@@ -94,16 +110,18 @@ class ChatPage extends React.Component {
           activeChat={activeChat}
           logout={logout}
           deleteChat={deleteChat}
+          openProfileDialog={this.openProfileDialog}
         />
         <SideBar
           width={sidebarWidth}
           setActiveChat={setActiveChat}
-          chats={chats}
+          allChats={allChats}
+          myChats={myChats}
           activeChat={activeChat}
         >
           <AddChatBtn onClick={this.openChatDialog} />
         </SideBar>
-        <ChatContent messages={messagesData}>
+        <ChatContent messages={messages} activeChat={activeChat}>
           {
             isChatMember ? (
               <MessageInput onSubmit={sendMessage} />
@@ -120,7 +138,17 @@ class ChatPage extends React.Component {
           }
         </ChatContent>
         <NotificationSystem ref={this._notificationSystem} />
-        <CreateChatForm onSubmit={this.onCreateChat} open={open} onClose={this.closeChatDialog} />
+        <CreateChatForm
+          onSubmit={this.onCreateChat}
+          open={isChatDialogOpened}
+          onClose={this.closeChatDialog}
+        />
+        <EditProfileForm
+          user={user}
+          onSubmit={this.onEditProfile}
+          open={isProfileDialogOpened}
+          onClose={this.closeProfileDialog}
+        />
       </div>
     );
   }
@@ -133,7 +161,9 @@ ChatPage.propTypes = {
   fetchMyChats: PropTypes.func.isRequired,
   createChat: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
-  chats: PropTypes.object.isRequired,
+  allChats: PropTypes.array.isRequired,
+  myChats: PropTypes.array.isRequired,
+  messages: PropTypes.array.isRequired,
   notification: PropTypes.object,
   activeChat: PropTypes.object,
 };

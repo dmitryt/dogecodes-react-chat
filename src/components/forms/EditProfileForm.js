@@ -14,8 +14,7 @@ const styles = theme => ({
   },
   container: {
     padding: theme.spacing.unit * 3,
-    width: '30%',
-    minWidth: '300px',
+    minWidth: '200px',
   },
   content: {
     padding: 0,
@@ -29,20 +28,8 @@ const styles = theme => ({
 });
 
 class EditProfileForm extends React.Component {
-  state = {
-    open: false,
-  };
-
-  handleClickOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-
   render() {
-    const { classes, onSubmit, open, onClose } = this.props;
+    const { classes, onSubmit, user, open, onClose } = this.props;
     return (
       <div>
         <Dialog
@@ -51,10 +38,11 @@ class EditProfileForm extends React.Component {
           aria-labelledby="form-dialog-title"
         >
           <Form
+            initialValues={user}
             onSubmit={onSubmit}
             render={({ handleSubmit, reset, submitting, pristine, values }) => (
               <form className={classes.container} onSubmit={handleSubmit} noValidate autoComplete="off">
-                <DialogTitle className={classes.title}>Create new chat</DialogTitle>
+                <DialogTitle className={classes.title}>Edit Profile</DialogTitle>
                 <DialogContent className={classes.content}>
                   <Field
                     label="Username"
@@ -84,17 +72,11 @@ class EditProfileForm extends React.Component {
                     component={TextField}
                     fullWidth
                   />
-                  <Field
-                    label="City"
-                    placeholder="Enter City"
-                    name="city"
-                    type="text"
-                    margin="normal"
-                    component={TextField}
-                    fullWidth
-                  />
                   <Button color="primary" type="submit" disabled={submitting}>
-                    Create
+                    Save
+                  </Button>
+                  <Button color="secondary" onClick={onClose}>
+                    Close
                   </Button>
                 </DialogContent>
               </form>

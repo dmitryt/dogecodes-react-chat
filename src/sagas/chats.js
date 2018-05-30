@@ -36,23 +36,6 @@ export function* fetchAllChats({ data }) {
   }
 }
 
-export function* fetchChat({ data }) {
-  try {
-    const { auth } = yield select();
-    const json = yield call(api.fetchChat, { chatId: data.chatId, token: auth.token });
-    if (!json.success) {
-      throw new Error(json.message);
-    }
-    yield put({ type: types.FETCH_CHAT_SUCCESS, payload: json });
-    return json;
-  } catch (error) {
-    yield put({ type: types.FETCH_CHAT_FAILURE, error });
-
-    const data = { level: 'error', message: error.message };
-    yield put({ type: types.NOTIFICATION, data });
-  }
-}
-
 export function* createChat({ data }) {
   try {
     const { auth } = yield select();
@@ -109,11 +92,7 @@ export function* leaveChat({ data }) {
 
 export function* setActiveChat(data) {
   try {
-    const json = yield fetchChat(data);
-    if (!json.success) {
-      throw new Error(json.message);
-    }
-    yield redirectTo({ to: `/chats/${json.chat._id}` });
+    yield redirectTo({ to: `/chats/${data.chatId}` });
   } catch (e) {
     yield unsetActiveChat();
   }
@@ -139,15 +118,32 @@ export function* sendMessage({ data }) {
   }
 }
 
+export function* fetchMessages({ data }) {
+  try {
+    const { auth } = yield select();
+    const json = yield call(api.fetchChat, { chatId: data.chatId, token: auth.token });
+    if (!json.success) {
+      throw new Error(json.message);
+    }
+    yield put({ type: types.FETCH_MESSAGES_SUCCESS, payload: json.messages });
+    return json;
+  } catch (error) {
+    yield put({ type: types.FETCH_MESSAGES_FAILURE, error });
+
+    const data = { level: 'error', message: error.message };
+    yield put({ type: types.NOTIFICATION, data });
+  }
+}
+
 const chatSagas = [
   takeEvery(types.FETCH_MY_CHATS_REQUEST, fetchMyChats),
   takeEvery(types.FETCH_ALL_CHATS_REQUEST, fetchAllChats),
-  takeEvery(types.FETCH_CHAT_REQUEST, fetchChat),
   takeEvery(types.CREATE_CHAT_REQUEST, createChat),
   takeEvery(types.JOIN_CHAT_REQUEST, joinChat),
   takeEvery(types.LEAVE_CHAT_REQUEST, leaveChat),
   takeEvery(types.SEND_MESSAGE_REQUEST, sendMessage),
-  takeEvery(types.SET_ACTIVE_CHAT, setActiveChat),
+  // takeEvery(types.SET_ACTIVE_CHAT_REQUEST, setActiveChat),
+  takeEvery(types.FETCH_MESSAGES_REQUEST, fetchMessages),
 ];
 
 export default chatSagas;

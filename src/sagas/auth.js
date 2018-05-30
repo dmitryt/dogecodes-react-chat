@@ -69,11 +69,30 @@ export function* receiveAuth() {
   }
 }
 
+export function* updateUser({ data }) {
+  try {
+    const { auth } = yield select();
+    if (!auth.token) {
+      return yield put({ type: types.UPDATE_USER_FAILURE });
+    }
+    const payload = yield call(api.updateUser, { data, token: auth.token });
+    yield put({ type: types.UPDATE_USER_SUCCESS, payload });
+    const notificationData = { level: 'success', message: 'User has been updated successfully' };
+    yield put({ type: types.NOTIFICATION, data: notificationData });
+  } catch (error) {
+    yield put({ type: types.UPDATE_USER_FAILURE });
+
+    const data = { level: 'error', message: error.message };
+    yield put({ type: types.NOTIFICATION, data });
+  }
+}
+
 const authSagas = [
   takeEvery(types.LOGIN_REQUEST, login),
   takeEvery(types.SIGNUP_REQUEST, signup),
   takeEvery(types.LOGOUT_REQUEST, logout),
   takeEvery(types.RECEIVE_AUTH_REQUEST, receiveAuth),
+  takeEvery(types.UPDATE_USER_REQUEST, updateUser),
 ];
 
 export default authSagas;

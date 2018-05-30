@@ -5,9 +5,9 @@ import { withStyles } from 'material-ui/styles';
 
 import Divider from 'material-ui/Divider';
 
-import NavBar from './components/NavBar';
-import SearchInput from './components/SearchInput';
-import ChatsList from './components/ChatsList';
+import NavBar from './NavBar';
+import SearchInput from './SearchInput';
+import ChatsList from './ChatsList';
 
 const styles = theme => ({
   root: {
@@ -18,26 +18,44 @@ const styles = theme => ({
 class SideBar extends React.Component {
   state = {
     chatsType: 'all',
+    filter: '',
   };
+
+  getChats() {
+    const { myChats, allChats } = this.props;
+    const { chatsType, filter } = this.state;
+    const sortFn = (a, b) => a.title.toLowerCase() <= b.title.toLowerCase() ? -1 : 1;
+    const chats = (chatsType === 'my' ? myChats : allChats).sort(sortFn);
+    if (!filter) {
+      return chats;
+    }
+    return chats
+      .filter(({ title }) => title.toLowerCase()
+        .includes(filter.toLowerCase())
+      )
+  }
 
   onTypeChange = (e, chatsType) => {
     this.setState({ chatsType });
   }
 
+  onFilterChange = filter => {
+    this.setState({ filter });
+  }
+
   render() {
     const {
       classes,
-      chats,
       width,
       setActiveChat,
       activeChat,
       children,
     } = this.props;
     const { chatsType } = this.state;
-    const chatsData = chatsType === 'my' ? chats.myIds : chats.allIds;
+    const chatsData = this.getChats();
     return (
       <Drawer variant="permanent" style={{ width }} classes={{ paper: classes.root }}>
-        <SearchInput />
+        <SearchInput onChange={this.onFilterChange} />
         <Divider />
         <ChatsList chats={chatsData} onSelect={setActiveChat} activeChat={activeChat} />
         {children}
@@ -48,7 +66,8 @@ class SideBar extends React.Component {
 }
 
 SideBar.propTypes = {
-  chats: PropTypes.object.isRequired,
+  allChats: PropTypes.array.isRequired,
+  myChats: PropTypes.array.isRequired,
   classes: PropTypes.object.isRequired,
   width: PropTypes.number,
 };

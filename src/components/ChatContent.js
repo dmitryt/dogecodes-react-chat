@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 
-import UserMessage from './components/UserMessage';
-import UserAction from './components/UserAction';
-import InviteLabel from './components/InviteLabel';
+import UserMessage from './UserMessage';
+import UserAction from './UserAction';
+import InviteLabel from './InviteLabel';
 
 const styles = theme => ({
   toolbar: theme.mixins.toolbar,
@@ -72,11 +72,11 @@ class ChatContent extends React.Component {
       <div className={classes.messagesList} ref={this.messagesWrapperRef}>
         {prepareChatMessages(activeChat)}
       </div>
-      {activeChat && (
+      {activeChat ? (
         <Paper elevation={4} className={classes.bottomBox}>
           {children}
         </Paper>
-      )}
+      ) : null}
     </main>
   }
 }

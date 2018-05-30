@@ -5,7 +5,7 @@ import { withStyles } from 'material-ui/styles';
 import List, { ListItem, ListItemText } from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 
-import { helpers, date } from '../../../utils';
+import { helpers, date } from '../utils';
 
 const styles = theme => ({
   root: {
