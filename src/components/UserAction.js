@@ -3,6 +3,8 @@ import { withStyles } from 'material-ui/styles';
 
 import { ListItem, ListItemText } from 'material-ui/List';
 
+import { date } from '../utils';
+
 const styles = {
   username: {
     fontSize: 12,
@@ -18,9 +20,9 @@ const styles = {
   },
 };
 
-const UserAction = ({ classes, color, username, time, action }) => <ListItem>
-  <ListItemText classes={{ primary: classes.primary, secondary: classes.secondary, root: classes.root }} secondary={time}>
-    <span style={{ color }} className={classes.username}>{username}</span> {action}
+const UserAction = ({ classes, color, user, createdAt, content }) => <ListItem>
+  <ListItemText classes={{ primary: classes.primary, secondary: classes.secondary, root: classes.root }} secondary={date.distanceInWords(createdAt)}>
+    <span style={{ color }} className={classes.username}>{user.username}</span> {content}
   </ListItemText>
 </ListItem>
 

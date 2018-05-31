@@ -66,8 +66,8 @@ function deleteChat({ token, chatId }) {
   return fetch({ url: `/chats/${chatId}`, token, params: { method: 'DELETE' } });
 }
 
-function sendMessage({ token, data, chatId }) {
-  const body = { data };
+function sendMessage({ token, data: content, chatId }) {
+  const body = { data: { content } };
   const params = { method: 'POST' };
   return fetch({ url: `/chats/${chatId}`, token, body, params });
 }

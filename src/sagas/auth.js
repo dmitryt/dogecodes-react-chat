@@ -77,7 +77,7 @@ export function* updateUser({ data }) {
     }
     const payload = yield call(api.updateUser, { data, token: auth.token });
     yield put({ type: types.UPDATE_USER_SUCCESS, payload });
-    const notificationData = { level: 'success', message: 'User has been updated successfully' };
+    const notificationData = { level: 'success', message: 'Profile has been updated successfully' };
     yield put({ type: types.NOTIFICATION, data: notificationData });
   } catch (error) {
     yield put({ type: types.UPDATE_USER_FAILURE });

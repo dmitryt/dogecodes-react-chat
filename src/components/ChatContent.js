@@ -35,17 +35,20 @@ function prepareChatMessages(activeChat) {
     return <InviteLabel />
   }
   return activeChat.messages.map(item => {
-    const Component = {
-      message: UserMessage,
-      info: UserAction,
-    }[item.type] || null;
-    return <Component key={item.id} {...item} />;
+    const Component = item.statusMessage ? UserAction : UserMessage;
+    return (
+      <Component
+        key={item._id}
+        color="grey"
+        user={item.sender}
+        {...item}
+      />
+    );
   });
 }
 
 class ChatContent extends React.Component {
   state = {
-    isChatMember: false,
   };
   constructor(props) {
     super(props);
@@ -82,7 +85,6 @@ class ChatContent extends React.Component {
 }
 
 ChatContent.propTypes = {
-  messages: PropTypes.array.isRequired,
   classes: PropTypes.object.isRequired,
 };
 

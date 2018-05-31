@@ -47,7 +47,7 @@ class SideBar extends React.Component {
     const {
       classes,
       width,
-      setActiveChat,
+      onChatSelect,
       activeChat,
       children,
     } = this.props;
@@ -57,7 +57,7 @@ class SideBar extends React.Component {
       <Drawer variant="permanent" style={{ width }} classes={{ paper: classes.root }}>
         <SearchInput onChange={this.onFilterChange} />
         <Divider />
-        <ChatsList chats={chatsData} onSelect={setActiveChat} activeChat={activeChat} />
+        <ChatsList chats={chatsData} onSelect={onChatSelect} activeChat={activeChat} />
         {children}
         <NavBar chatsType={chatsType} onChange={this.onTypeChange} />
       </Drawer>

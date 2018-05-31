@@ -31,7 +31,6 @@ class ChatPage extends React.Component {
   state = {
     isChatDialogOpened: false,
     isProfileDialogOpened: false,
-    isChatMember: true,
   };
 
   onCreateChat = data => {
@@ -60,14 +59,31 @@ class ChatPage extends React.Component {
     this.setState({ isProfileDialogOpened: false });
   };
 
+  onChatSelect = chatId => {
+    this.props.redirectToChat({ chatId });
+    this.props.setActiveChat({ chatId });
+  };
+
   constructor(props) {
     super(props);
     this._notificationSystem = React.createRef();
   }
 
   componentDidMount() {
-    const { fetchAllChats, fetchMyChats, match, setActiveChat } = this.props;
+    const {
+      fetchAllChats,
+      fetchMyChats,
+      match,
+      setActiveChat,
+      isAuthenticated,
+    } = this.props;
     const { chatId } = match.params;
+    console.log('sdfsdfsdfsdf', isAuthenticated);
+    if (!isAuthenticated) {
+      return (
+        <Redirect to="/" />
+      );
+    }
     if (chatId) {
       setActiveChat({ chatId });
     }
@@ -89,39 +105,39 @@ class ChatPage extends React.Component {
       user,
       allChats,
       myChats,
-      messages,
       deleteChat,
-      isAuthenticated,
       joinChat,
-      setActiveChat,
+      leaveChat,
       activeChat,
       sendMessage,
+      isChatMember,
+      isCreator,
+      redirectToChatsList,
     } = this.props;
-    const { isChatDialogOpened, isProfileDialogOpened, isChatMember } = this.state;
-    if (!isAuthenticated) {
-      return (
-        <Redirect to="/" />
-      );
-    }
+    const { isChatDialogOpened, isProfileDialogOpened } = this.state;
     return (
       <div className={classes.root}>
         <ChatHeader
           width={`calc(100% - ${sidebarWidth}px)`}
           activeChat={activeChat}
           logout={logout}
+          isCreator={isCreator}
+          isChatMember={isChatMember}
           deleteChat={deleteChat}
+          leaveChat={leaveChat}
+          redirectToChatsList={redirectToChatsList}
           openProfileDialog={this.openProfileDialog}
         />
         <SideBar
           width={sidebarWidth}
-          setActiveChat={setActiveChat}
+          onChatSelect={this.onChatSelect}
           allChats={allChats}
           myChats={myChats}
           activeChat={activeChat}
         >
           <AddChatBtn onClick={this.openChatDialog} />
         </SideBar>
-        <ChatContent messages={messages} activeChat={activeChat}>
+        <ChatContent activeChat={activeChat}>
           {
             isChatMember ? (
               <MessageInput onSubmit={sendMessage} />
@@ -163,7 +179,6 @@ ChatPage.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   allChats: PropTypes.array.isRequired,
   myChats: PropTypes.array.isRequired,
-  messages: PropTypes.array.isRequired,
   notification: PropTypes.object,
   activeChat: PropTypes.object,
 };

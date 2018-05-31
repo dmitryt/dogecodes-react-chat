@@ -20,7 +20,7 @@ const styles = theme => ({
 class ChatsList extends React.Component {
   onClick = e => {
     const chatId = e.currentTarget.getAttribute('data-id');
-    this.props.onSelect({ chatId });
+    this.props.onSelect(chatId);
   }
 
   render() {

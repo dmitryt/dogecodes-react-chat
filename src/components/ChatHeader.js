@@ -46,6 +46,12 @@ class ChatHeader extends React.Component {
 
   onDeleteChat = () => {
     this.props.deleteChat();
+    this.props.redirectToChatsList();
+    this.handleMenuClose();
+  };
+
+  onLeaveChat = () => {
+    this.props.leaveChat();
     this.handleMenuClose();
   };
 
@@ -55,7 +61,7 @@ class ChatHeader extends React.Component {
   };
 
   render() {
-    const { classes, width, activeChat } = this.props;
+    const { classes, width, activeChat, isCreator, isChatMember } = this.props;
     const { anchorElUser, anchorElChat } = this.state;
     return (
       <MUIAppBar
@@ -67,16 +73,19 @@ class ChatHeader extends React.Component {
             {activeChat ? (
               <React.Fragment>
                 {activeChat.title}
-                <IconButton
-                  className={classes.menuIcon}
-                  data-id="anchorElChat"
-                  aria-label="More"
-                  aria-owns={anchorElChat ? 'chat-menu' : null}
-                  aria-haspopup="true"
-                  onClick={this.handleMenuOpen}
-                >
-                  <MoreVertIcon />
-                </IconButton>
+                {isChatMember ? (
+                  <IconButton
+                    className={classes.menuIcon}
+                    data-id="anchorElChat"
+                    aria-label="More"
+                    aria-owns={anchorElChat ? 'chat-menu' : null}
+                    aria-haspopup="true"
+                    onClick={this.handleMenuOpen}
+                  >
+                    <MoreVertIcon />
+                  </IconButton>
+                ) : null
+                }
               </React.Fragment>
             ) : null}
             <Menu
@@ -84,8 +93,11 @@ class ChatHeader extends React.Component {
               anchorEl={anchorElChat}
               open={Boolean(anchorElChat)}
               onClose={this.handleMenuClose}
-            >
+            > {isCreator ? (
               <MenuItem onClick={this.onDeleteChat}>Delete</MenuItem>
+            ) : (
+                <MenuItem onClick={this.onLeaveChat}>Leave</MenuItem>
+              )}
             </Menu>
           </Typography>
           <div>

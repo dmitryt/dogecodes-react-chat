@@ -1,7 +1,6 @@
 import React from 'react'
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { Provider } from 'react-redux';
-// import { ConnectedRouter } from 'react-router-redux';
 
 import { store, history } from '../store';
 
@@ -14,7 +13,7 @@ class App extends React.Component {
         <Router history={history}>
           <Switch>
             <Route exact path="/(welcome)?" component={WelcomePage} />
-            <PrivateRoute exact path="/chats(/:chatId)?" component={ChatPage} />
+            <PrivateRoute path="/chats/:chatId?" component={ChatPage} />
             <Redirect to="/" />
           </Switch>
         </Router>
