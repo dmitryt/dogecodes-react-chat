@@ -12,7 +12,7 @@ export const actions = {
   sendMessage: data => ({ type: types.SEND_MESSAGE_REQUEST, data }),
   setActiveChat: data => ({ type: types.FETCH_ACTIVE_CHAT_REQUEST, data }),
   redirectToChat: ({ chatId }) => ({ type: types.REDIRECT, data: { to: `/chats/${chatId}` } }),
-  redirectToChatsList: dta => ({ type: types.REDIRECT, data: { to: `/chats` } }),
+  redirectToChatsList: () => ({ type: types.REDIRECT, data: { to: `/chats` } }),
 };
 
 const getChatId = chat => chat._id;

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
 import NotificationSystem from 'react-notification-system';
 import Button from 'material-ui/Button';
 
@@ -75,15 +74,8 @@ class ChatPage extends React.Component {
       fetchMyChats,
       match,
       setActiveChat,
-      isAuthenticated,
     } = this.props;
     const { chatId } = match.params;
-    console.log('sdfsdfsdfsdf', isAuthenticated);
-    if (!isAuthenticated) {
-      return (
-        <Redirect to="/" />
-      );
-    }
     if (chatId) {
       setActiveChat({ chatId });
     }
