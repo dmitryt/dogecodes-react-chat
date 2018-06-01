@@ -29,6 +29,7 @@ function activeChat(state = initialState.activeChat, action) {
     case types.FETCH_ACTIVE_CHAT_SUCCESS:
       return action.payload;
     case types.DELETE_CHAT_SUCCESS:
+    case types.LOGOUT_SUCCESS:
       return null;
     default:
       return state;
@@ -49,6 +50,8 @@ function allIds(state = initialState.allIds, action) {
       ];
     case types.DELETE_CHAT_SUCCESS:
       return state.filter(id => id !== action.data.chatId);
+    case types.LOGOUT_SUCCESS:
+      return initialState.allIds;
     default:
       return state;
   }
@@ -68,6 +71,8 @@ function myIds(state = initialState.myIds, action) {
       ];
     case types.DELETE_CHAT_SUCCESS:
       return state.filter(id => id !== action.data.chatId);
+    case types.LOGOUT_SUCCESS:
+      return initialState.myIds;
     default:
       return state;
   }
@@ -98,6 +103,8 @@ function _store(state = initialState._store, action) {
       return Object.keys(state).reduce((acc, id) => {
         return id === action.data.chatId ? acc : { ...acc, [id]: state[id] };
       }, {});
+    case types.LOGOUT_SUCCESS:
+      return initialState._store;
     default:
       return state;
   }
