@@ -43,7 +43,7 @@ const UserMessage = ({ classes, color, user, isOwn, createdAt, content }) => <Li
   <ListItemText className={classes.listItemText}>
     <Paper elevation={4} className={classNames(classes.content, { [classes.isOwnContent]: isOwn })}>
       <ListItemText classes={{ primary: classes.primary, secondary: classes.secondary }} secondary={date.distanceInWords(createdAt)}>
-        <span className={classes.username} style={{ color }}>{user.username}</span>
+        <span className={classes.username} style={{ color }}>{helpers.getDisplayedName(user)}</span>
         <p className={classes.message}>{content}</p>
       </ListItemText>
     </Paper>
