@@ -1,5 +1,6 @@
 import React from 'react'
-import { Router, Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import { ConnectedRouter } from 'react-router-redux';
 import { Provider } from 'react-redux';
 
 import { store, history } from '../store';
@@ -10,13 +11,13 @@ class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <Router history={history}>
+        <ConnectedRouter history={history}>
           <Switch>
             <Route exact path="/(welcome)?" component={WelcomePage} />
             <PrivateRoute path="/chats/:chatId?" component={ChatPage} />
             <Redirect to="/" />
           </Switch>
-        </Router>
+        </ConnectedRouter>
       </Provider>
     );
   }
