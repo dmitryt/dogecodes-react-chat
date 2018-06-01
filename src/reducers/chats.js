@@ -65,11 +65,13 @@ function myIds(state = initialState.myIds, action) {
         ...action.payload.map(getChatId)
       ];
     case types.CREATE_CHAT_SUCCESS:
+    case types.JOIN_CHAT_SUCCESS:
       return [
         ...state,
         getChatId(action.payload)
       ];
     case types.DELETE_CHAT_SUCCESS:
+    case types.LEAVE_CHAT_SUCCESS:
       return state.filter(id => id !== action.data.chatId);
     case types.LOGOUT_SUCCESS:
       return initialState.myIds;

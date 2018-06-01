@@ -96,7 +96,7 @@ export function* joinChat() {
     if (!json.success) {
       throw new Error(json.message);
     }
-    yield put({ type: types.JOIN_CHAT_SUCCESS });
+    yield put({ type: types.JOIN_CHAT_SUCCESS, payload: json.chat });
     yield fetchChat({ data: { chatId } });
     const notificationData = { level: 'success', message: 'You have joined the chat successfully' };
     yield put({ type: types.NOTIFICATION, data: notificationData });
@@ -116,7 +116,7 @@ export function* leaveChat() {
     if (!json.success) {
       throw new Error(json.message);
     }
-    yield put({ type: types.LEAVE_CHAT_SUCCESS });
+    yield put({ type: types.LEAVE_CHAT_SUCCESS, data: { chatId } });
     yield fetchChat({ data: { chatId } });
     const notificationData = { level: 'success', message: 'You have left the chat successfully' };
     yield put({ type: types.NOTIFICATION, data: notificationData });
