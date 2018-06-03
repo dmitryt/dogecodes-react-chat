@@ -146,7 +146,7 @@ export function* sendMessage({ data }) {
   }
 }
 
-const chatSagas = [
+export default [
   takeEvery(types.FETCH_MY_CHATS_REQUEST, fetchMyChats),
   takeEvery(types.FETCH_ALL_CHATS_REQUEST, fetchAllChats),
   takeEvery(types.CREATE_CHAT_REQUEST, createChat),
@@ -156,5 +156,3 @@ const chatSagas = [
   takeEvery(types.SEND_MESSAGE_REQUEST, sendMessage),
   takeEvery(types.FETCH_ACTIVE_CHAT_REQUEST, fetchChat),
 ];
-
-export default chatSagas;

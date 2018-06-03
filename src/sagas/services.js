@@ -7,8 +7,6 @@ export function* redirectTo({ data }) {
   yield put(push(data.to));
 }
 
-const servicesSagas = [
+export default [
   takeEvery(types.REDIRECT, redirectTo),
 ];
-
-export default servicesSagas;

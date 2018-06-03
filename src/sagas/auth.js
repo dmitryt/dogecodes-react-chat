@@ -87,12 +87,10 @@ export function* updateUser({ data }) {
   }
 }
 
-const authSagas = [
+export default [
   takeEvery(types.LOGIN_REQUEST, login),
   takeEvery(types.SIGNUP_REQUEST, signup),
   takeEvery(types.LOGOUT_REQUEST, logout),
   takeEvery(types.RECEIVE_AUTH_REQUEST, receiveAuth),
   takeEvery(types.UPDATE_USER_REQUEST, updateUser),
 ];
-
-export default authSagas;

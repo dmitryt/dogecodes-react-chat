@@ -24,6 +24,7 @@ const {
   updateUser,
   redirectToChat,
   redirectToChatsList,
+  initWsConnection,
 } = actions;
 const mapStateToProps = state => ({
   notification: state.notification,
@@ -49,6 +50,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   updateUser,
   redirectToChat,
   redirectToChatsList,
+  initWsConnection,
 }, dispatch);
 
 export default connect(

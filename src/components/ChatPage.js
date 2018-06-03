@@ -74,6 +74,7 @@ class ChatPage extends React.Component {
       fetchMyChats,
       match,
       setActiveChat,
+      initWsConnection,
     } = this.props;
     const { chatId } = match.params;
     if (chatId) {
@@ -81,6 +82,7 @@ class ChatPage extends React.Component {
     }
     fetchAllChats();
     fetchMyChats();
+    initWsConnection();
   }
 
   componentDidUpdate(prevProps) {
