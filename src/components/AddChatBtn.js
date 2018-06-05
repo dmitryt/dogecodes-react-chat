@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 
 import Button from 'material-ui/Button';
@@ -13,9 +14,14 @@ const styles = theme => ({
   },
 });
 
-const AddChatBtn = ({ classes }) =>
-  <Button variant="fab" color="primary" aria-label="add" className={classes.root}>
+const AddChatBtn = ({ classes, onClick }) =>
+  <Button variant="fab" color="primary" aria-label="add" className={classes.root} onClick={onClick}>
     <AddIcon />
   </Button>
+
+AddChatBtn.propTypes = {
+  classes: PropTypes.object.isRequired,
+  onClick: PropTypes.func.isRequired,
+};
 
 export default withStyles(styles)(AddChatBtn);

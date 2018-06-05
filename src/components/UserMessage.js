@@ -6,7 +6,7 @@ import Avatar from 'material-ui/Avatar';
 import { ListItem, ListItemText } from 'material-ui/List';
 import Paper from 'material-ui/Paper';
 
-import { helpers } from '../../../utils';
+import { helpers, date } from '../utils';
 
 const styles = theme => ({
   listItemText: {
@@ -38,13 +38,13 @@ const styles = theme => ({
   },
 });
 
-const UserMessage = ({ classes, color, username, isOwn, time, message }) => <ListItem className={classNames({ [classes.isOwnItem]: isOwn })}>
-  <Avatar style={{ backgroundColor: color }}>{helpers.titleInitials(username)}</Avatar>
+const UserMessage = ({ classes, color, user, isOwn, createdAt, content }) => <ListItem className={classNames({ [classes.isOwnItem]: isOwn })}>
+  <Avatar style={{ backgroundColor: color }}>{helpers.titleInitials(user.username)}</Avatar>
   <ListItemText className={classes.listItemText}>
     <Paper elevation={4} className={classNames(classes.content, { [classes.isOwnContent]: isOwn })}>
-      <ListItemText classes={{ primary: classes.primary, secondary: classes.secondary }} secondary={time}>
-        <span className={classes.username} style={{ color }}>{username}</span>
-        <p className={classes.message}>{message}</p>
+      <ListItemText classes={{ primary: classes.primary, secondary: classes.secondary }} secondary={date.distanceInWords(createdAt)}>
+        <span className={classes.username} style={{ color }}>{helpers.getDisplayedName(user)}</span>
+        <p className={classes.message}>{content}</p>
       </ListItemText>
     </Paper>
   </ListItemText>

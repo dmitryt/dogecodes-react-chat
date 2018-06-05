@@ -2,7 +2,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { actions } from '../reducers';
-import WelcomePage from '../pages/Welcome';
+import WelcomePage from '../components/WelcomePage';
 
 const { login, signup } = actions;
 const mapStateToProps = state => ({

@@ -9,33 +9,60 @@ import IconButton from 'material-ui/IconButton';
 import Menu, { MenuItem } from 'material-ui/Menu';
 
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const styles = theme => ({
   flex: {
     flex: 1,
   },
+  menuIcon: {
+    color: 'white',
+    '&:hover': {
+      backgroundColor: 'inherit',
+    }
+  }
 });
 
 class ChatHeader extends React.Component {
   state = {
-    anchorEl: null,
+    anchorElUser: null,
+    anchorElChat: null,
   };
 
-  handleMenuOpen = event => {
-    this.setState({ anchorEl: event.currentTarget });
+  handleMenuOpen = ({ currentTarget }) => {
+    const key = currentTarget.getAttribute('data-id');
+    this.setState({ [key]: currentTarget });
   };
 
-  handleMenuClick = event => {
+  onLogout = () => {
     this.props.logout();
     this.handleMenuClose();
   };
 
-  handleMenuClose = () => {
-    this.setState({ anchorEl: null });
+  onEditProfile = () => {
+    this.props.openProfileDialog();
+    this.handleMenuClose();
+  }
+
+  onDeleteChat = () => {
+    this.props.deleteChat();
+    this.props.redirectToChatsList();
+    this.handleMenuClose();
   };
+
+  onLeaveChat = () => {
+    this.props.leaveChat();
+    this.handleMenuClose();
+  };
+
+  handleMenuClose = () => {
+    this.setState({ anchorElUser: null });
+    this.setState({ anchorElChat: null });
+  };
+
   render() {
-    const { classes, width, selectedChat } = this.props;
-    const { anchorEl } = this.state;
+    const { classes, width, activeChat, isCreator, isChatMember } = this.props;
+    const { anchorElUser, anchorElChat } = this.state;
     return (
       <MUIAppBar
         position="absolute"
@@ -43,11 +70,40 @@ class ChatHeader extends React.Component {
       >
         <Toolbar>
           <Typography variant="title" color="inherit" className={classes.flex}>
-            {selectedChat.title}
+            {activeChat ? (
+              <React.Fragment>
+                {activeChat.title}
+                {isChatMember ? (
+                  <IconButton
+                    className={classes.menuIcon}
+                    data-id="anchorElChat"
+                    aria-label="More"
+                    aria-owns={anchorElChat ? 'chat-menu' : null}
+                    aria-haspopup="true"
+                    onClick={this.handleMenuOpen}
+                  >
+                    <MoreVertIcon />
+                  </IconButton>
+                ) : null
+                }
+              </React.Fragment>
+            ) : null}
+            <Menu
+              id="chat-menu"
+              anchorEl={anchorElChat}
+              open={Boolean(anchorElChat)}
+              onClose={this.handleMenuClose}
+            > {isCreator ? (
+              <MenuItem onClick={this.onDeleteChat}>Delete</MenuItem>
+            ) : (
+                <MenuItem onClick={this.onLeaveChat}>Leave</MenuItem>
+              )}
+            </Menu>
           </Typography>
           <div>
             <IconButton
-              aria-owns={anchorEl ? 'simple-menu' : null}
+              data-id="anchorElUser"
+              aria-owns={anchorElUser ? 'user-menu' : null}
               aria-haspopup="true"
               color="inherit"
               onClick={this.handleMenuOpen}
@@ -55,12 +111,13 @@ class ChatHeader extends React.Component {
               <AccountCircle />
             </IconButton>
             <Menu
-              id="simple-menu"
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
+              id="user-menu"
+              anchorEl={anchorElUser}
+              open={Boolean(anchorElUser)}
               onClose={this.handleMenuClose}
             >
-              <MenuItem onClick={this.handleMenuClick}>Logout</MenuItem>
+              <MenuItem onClick={this.onEditProfile}>Edit Profile</MenuItem>
+              <MenuItem onClick={this.onLogout}>Logout</MenuItem>
             </Menu>
           </div>
         </Toolbar>
@@ -72,12 +129,15 @@ class ChatHeader extends React.Component {
 
 ChatHeader.propTypes = {
   classes: PropTypes.object.isRequired,
-  selectedChat: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
+  deleteChat: PropTypes.func.isRequired,
+  openProfileDialog: PropTypes.func.isRequired,
+  activeChat: PropTypes.object,
   width: PropTypes.string,
 };
 
 ChatHeader.defaultProps = {
   width: '300px',
+  activeChat: null,
 };
 export default withStyles(styles)(ChatHeader);

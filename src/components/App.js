@@ -1,23 +1,23 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom';
+import { ConnectedRouter } from 'react-router-redux';
 import { Provider } from 'react-redux';
 
-import configureStore from '../store';
-import { WelcomePage, ChatPage } from '../containers';
+import { store, history } from '../store';
 
-const store = configureStore();
+import { WelcomePage, ChatPage, PrivateRoute } from '../containers';
 
 class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <Router>
+        <ConnectedRouter history={history}>
           <Switch>
             <Route exact path="/(welcome)?" component={WelcomePage} />
-            <Route path="/chat" component={ChatPage} />
+            <PrivateRoute path="/chats/:chatId?" component={ChatPage} />
             <Redirect to="/" />
           </Switch>
-        </Router>
+        </ConnectedRouter>
       </Provider>
     );
   }

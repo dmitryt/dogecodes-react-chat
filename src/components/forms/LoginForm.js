@@ -13,7 +13,7 @@ const styles = theme => ({
   },
 });
 
-const validate = ({ username, password, passwordConfirmation }) => {
+const validate = ({username, password, passwordConfirmation}) => {
   const errors = {};
   if (!username) {
     errors.username = 'Required';
@@ -21,19 +21,13 @@ const validate = ({ username, password, passwordConfirmation }) => {
   if (!password) {
     errors.password = 'Required';
   }
-  if (password !== passwordConfirmation) {
-    errors.passwordConfirmation = 'Passwords don\'t match';
-  }
   return errors;
 };
 
-const submitHandler = onSubmit => ({ username, password }) =>
-  onSubmit({ username, password })
-
-const SignupForm = ({ classes, onSubmit }) => {
+const LoginForm = ({ classes, onSubmit }) => {
   return (
     <Form
-      onSubmit={submitHandler(onSubmit)}
+      onSubmit={onSubmit}
       validate={validate}
       render={({ handleSubmit, reset, submitting, pristine, values }) => (
         <form className={classes.container} onSubmit={handleSubmit} noValidate autoComplete="off">
@@ -45,7 +39,7 @@ const SignupForm = ({ classes, onSubmit }) => {
             className={classes.textField}
             margin="normal"
             component={TextField}
-            autoComplete="new-username"
+            autoComplete="username"
             fullWidth
           />
           <Field
@@ -56,18 +50,7 @@ const SignupForm = ({ classes, onSubmit }) => {
             className={classes.textField}
             margin="normal"
             component={TextField}
-            autoComplete="new-password"
-            fullWidth
-          />
-          <Field
-            label="Password Confirmation"
-            placeholder="Repeat your password"
-            name="passwordConfirmation"
-            type="password"
-            className={classes.textField}
-            margin="normal"
-            component={TextField}
-            autoComplete="new-password-confirm"
+            autoComplete="password"
             fullWidth
           />
           <Button
@@ -78,7 +61,7 @@ const SignupForm = ({ classes, onSubmit }) => {
             disabled={submitting}
             fullWidth
           >
-            Sign Up
+            Login
             </Button>
         </form>
       )}>
@@ -86,8 +69,9 @@ const SignupForm = ({ classes, onSubmit }) => {
   );
 };
 
-SignupForm.propTypes = {
+LoginForm.propTypes = {
   classes: PropTypes.object.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(SignupForm);
+export default withStyles(styles)(LoginForm);

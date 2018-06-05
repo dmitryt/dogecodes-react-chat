@@ -1,6 +1,4 @@
-export const types = {
-  NOTIFICATION: Symbol('NOTIFICATION'),
-};
+import types from '../types';
 
 export default function notificationReducer(state = {}, action) {
   switch (action.type) {
