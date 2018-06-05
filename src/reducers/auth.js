@@ -2,11 +2,11 @@ import { STORAGE_KEY_TOKEN } from '../config';
 import types from '../types/auth';
 
 export const actions = {
-  signup: data => ({ type: types.SIGNUP_REQUEST, data }),
-  login: data => ({ type: types.LOGIN_REQUEST, data }),
-  logout: data => ({ type: types.LOGOUT_REQUEST }),
-  receiveAuth: data => ({ type: types.RECEIVE_AUTH_REQUEST, data }),
-  updateUser: data => ({ type: types.UPDATE_USER_REQUEST, data }),
+  signup: payload => ({ type: types.SIGNUP_REQUEST, payload }),
+  login: payload => ({ type: types.LOGIN_REQUEST, payload }),
+  logout: payload => ({ type: types.LOGOUT_REQUEST }),
+  receiveAuth: payload => ({ type: types.RECEIVE_AUTH_REQUEST, payload }),
+  updateUser: payload => ({ type: types.UPDATE_USER_REQUEST, payload }),
 };
 
 const token = localStorage.getItem(STORAGE_KEY_TOKEN) || '';

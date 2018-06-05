@@ -30,7 +30,7 @@ function login(body) {
   return fetch({ url: '/login', body, params: { method: 'POST' } });
 }
 
-function updateUser({ token, data }) {
+function updateUser({ token, payload: data }) {
   const body = { data };
   const params = { method: 'POST' };
   return fetch({ url: `/users/me`, token, body, params });
@@ -56,7 +56,7 @@ function fetchChat({ token, chatId }) {
   return fetch({ url: `/chats/${chatId}`, token });
 }
 
-function createChat({ token, data }) {
+function createChat({ token, payload: data }) {
   const body = { data };
   const params = { method: 'POST' };
   return fetch({ url: `/chats`, token, body, params });
@@ -66,7 +66,7 @@ function deleteChat({ token, chatId }) {
   return fetch({ url: `/chats/${chatId}`, token, params: { method: 'DELETE' } });
 }
 
-function sendMessage({ token, data: content, chatId }) {
+function sendMessage({ token, payload: content, chatId }) {
   const body = { data: { content } };
   const params = { method: 'POST' };
   return fetch({ url: `/chats/${chatId}`, token, body, params });

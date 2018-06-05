@@ -8,9 +8,9 @@ const updateToken = token => {
   localStorage.setItem(STORAGE_KEY_TOKEN, token);
 };
 
-export function* login({ data }) {
+export function* login({ payload }) {
   try {
-    const json = yield call(api.login, data);
+    const json = yield call(api.login, payload);
     if (!json.success) {
       throw new Error(json.message);
     }
@@ -19,14 +19,14 @@ export function* login({ data }) {
   } catch (error) {
     yield put({ type: types.LOGIN_FAILURE, error });
 
-    const data = { level: 'error', message: error.message };
-    yield put({ type: types.NOTIFICATION, data });
+    const payload = { level: 'error', message: error.message };
+    yield put({ type: types.NOTIFICATION, payload });
   }
 }
 
-export function* signup({ data }) {
+export function* signup({ payload }) {
   try {
-    const json = yield call(api.signup, data);
+    const json = yield call(api.signup, payload);
     if (!json.success) {
       throw new Error(json.message);
     }
@@ -35,8 +35,8 @@ export function* signup({ data }) {
   } catch (error) {
     yield put({ type: types.SIGNUP_FAILURE, error });
 
-    const data = { level: 'error', message: error.message };
-    yield put({ type: types.NOTIFICATION, data });
+    const payload = { level: 'error', message: error.message };
+    yield put({ type: types.NOTIFICATION, payload });
   }
 }
 
@@ -51,8 +51,8 @@ export function* logout() {
   } catch (error) {
     yield put({ type: types.LOGOUT_FAILURE, error });
 
-    const data = { level: 'error', message: error.message };
-    yield put({ type: types.NOTIFICATION, data });
+    const payload = { level: 'error', message: error.message };
+    yield put({ type: types.NOTIFICATION, payload });
   }
 }
 
@@ -69,21 +69,21 @@ export function* receiveAuth() {
   }
 }
 
-export function* updateUser({ data }) {
+export function* updateUser({ payload }) {
   try {
     const { auth } = yield select();
     if (!auth.token) {
       return yield put({ type: types.UPDATE_USER_FAILURE });
     }
-    const payload = yield call(api.updateUser, { data, token: auth.token });
-    yield put({ type: types.UPDATE_USER_SUCCESS, payload });
-    const notificationData = { level: 'success', message: 'Profile has been updated successfully' };
-    yield put({ type: types.NOTIFICATION, data: notificationData });
+    const data = yield call(api.updateUser, { payload, token: auth.token });
+    yield put({ type: types.UPDATE_USER_SUCCESS, payload: data });
+    const notification = { level: 'success', message: 'Profile has been updated successfully' };
+    yield put({ type: types.NOTIFICATION, payload: notification });
   } catch (error) {
     yield put({ type: types.UPDATE_USER_FAILURE });
 
-    const data = { level: 'error', message: error.message };
-    yield put({ type: types.NOTIFICATION, data });
+    const notification = { level: 'error', message: error.message };
+    yield put({ type: types.NOTIFICATION, payload: notification });
   }
 }
 

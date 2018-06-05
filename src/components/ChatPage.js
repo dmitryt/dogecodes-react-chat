@@ -60,7 +60,6 @@ class ChatPage extends React.Component {
 
   onChatSelect = chatId => {
     this.props.redirectToChat({ chatId });
-    this.props.setActiveChat({ chatId });
   };
 
   constructor(props) {
@@ -78,18 +77,40 @@ class ChatPage extends React.Component {
     } = this.props;
     const { chatId } = match.params;
     initWsConnection();
+    fetchAllChats();
+    fetchMyChats();
     if (chatId) {
       setActiveChat({ chatId });
     }
-    fetchAllChats();
-    fetchMyChats();
   }
 
   componentDidUpdate(prevProps) {
+    const {
+      setActiveChat,
+      match,
+      activeChat,
+      mountChat,
+      unmountChat,
+    } = this.props;
     if (prevProps.notification !== this.props.notification) {
       const { level, message } = this.props.notification || {};
       this._notificationSystem.current.addNotification({ message, level });
     }
+    if (prevProps.match.params.chatId !== match.params.chatId && match.params.chatId) {
+      setActiveChat({ chatId: match.params.chatId });
+    }
+    if (prevProps.activeChat !== activeChat) {
+      if (prevProps.activeChat) {
+        unmountChat(prevProps.activeChat._id);
+      }
+      if (activeChat) {
+        mountChat(activeChat._id);
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.wsConnectionClose();
   }
 
   render() {

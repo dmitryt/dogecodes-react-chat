@@ -24,13 +24,22 @@ function subscribe(socket) {
       emit(actions.receiveNewChat(chat));
     });
     socket.on('deleted-chat', ({ chat }) => {
-      emit(actions.receiveDeletedChat(chat));
+      emit(actions.receiveDeletedChat({ chatId: chat._id }));
     });
-
-    socket.on('error', () => {
-
+    socket.on('error', error => {
+      emit(actions.wsConnectionFailure());
+      emit(actions.notify({ level: 'error', message: error.message }));
     });
-    return () => { };
+    socket.on('connect_error', () => {
+      emit(actions.wsConnectionFailure());
+      emit(actions.notify({ level: 'error', message: 'Connection has been lost' }));
+    });
+    socket.on('reconnect', (attemptNumber) => {
+      emit(actions.notify({ level: 'success', message: 'Connection has been established' }));
+    });
+    return () => {
+      socket.close();
+    };
   });
 }
 
@@ -47,9 +56,9 @@ function* read(socket) {
   }
 }
 
-function promisifyEmit({ socket, key, data }) {
+function promisifyEmit({ socket, key, payload }) {
   return new Promise(resolve => {
-    socket.emit(key, data, resolve);
+    socket.emit(key, payload, resolve);
   });
 }
 
@@ -58,16 +67,15 @@ function getHandlers(socket) {
     sendMessage: function* ({ payload: content }) {
       const { chats } = yield select();
       const chatId = chats.activeChat && chats.activeChat._id;
-      const data = { chatId, content };
-      yield call(promisifyEmit, { key: 'send-message', socket, data });
-      yield put(actions.sendMessage(data));
+      const payload = { chatId, content };
+      yield call(promisifyEmit, { key: 'send-message', socket, payload });
+      yield put(actions.sendMessage(payload));
     },
-    mountChat: function* ({ payload: data }) {
-      console.log('MMMMMM', data);
-      yield call(promisifyEmit, { key: 'mount-chat', socket, data });
+    mountChat: function* ({ payload }) {
+      yield call(promisifyEmit, { key: 'mount-chat', socket, payload });
     },
-    unmountChat: function* ({ payload: data }) {
-      yield call(promisifyEmit, { key: 'unmount-chat', socket, data });
+    unmountChat: function* ({ payload }) {
+      yield call(promisifyEmit, { key: 'unmount-chat', socket, payload });
     },
   };
 }
@@ -91,10 +99,12 @@ function* flow() {
     const { auth } = yield select();
     const socket = yield call(connect, auth.token);
     const task = yield fork(handleIO, socket);
-
-    yield take(types.LOGOUT_SUCCESS);
+    const { chats } = yield select();
+    if (chats.activeChat) {
+      yield put(actions.mountChat(chats.activeChat._id));
+    }
+    yield take(types.WS_CONNECTION_CLOSE);
     yield cancel(task);
-    // socket.emit('logout');
   }
 }
 
