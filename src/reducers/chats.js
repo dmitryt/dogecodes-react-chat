@@ -31,6 +31,12 @@ function activeChat(state = initialState.activeChat, action) {
     case types.DELETE_CHAT_SUCCESS:
     case types.LOGOUT_SUCCESS:
       return null;
+    case types.WS_RECEIVE_MESSAGE:
+      console.log('LOLOLOL', state, action);
+      return {
+        ...state,
+        messages: [...state.messages, action.payload],
+      };
     default:
       return state;
   }

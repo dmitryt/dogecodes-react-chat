@@ -80,6 +80,7 @@ export function* fetchChat({ data }) {
       throw new Error(json.message);
     }
     yield put({ type: types.FETCH_ACTIVE_CHAT_SUCCESS, payload: json.chat });
+    yield put({ type: types.WS_MOUNT_CHAT, payload: json.chat._id });
   } catch (error) {
     yield put({ type: types.FETCH_ACTIVE_CHAT_FAILURE, error });
 
@@ -137,7 +138,7 @@ export function* sendMessage({ data }) {
       throw new Error(json.message);
     }
     yield put({ type: types.SEND_MESSAGE_SUCCESS });
-    yield fetchChat({ data: { chatId } });
+    // yield fetchChat({ data: { chatId } });
   } catch (error) {
     yield put({ type: types.SEND_MESSAGE_FAILURE, error });
 

@@ -17,13 +17,13 @@ function connect(token) {
 
 function subscribe(socket) {
   return eventChannel(emit => {
-    socket.on('new-message', message => {
+    socket.on('new-message', ({ message }) => {
       emit(actions.receiveMessage(message));
     });
-    socket.on('new-chat', chat => {
+    socket.on('new-chat', ({ chat }) => {
       emit(actions.receiveNewChat(chat));
     });
-    socket.on('deleted-chat', chat => {
+    socket.on('deleted-chat', ({ chat }) => {
       emit(actions.receiveDeletedChat(chat));
     });
 
@@ -47,10 +47,37 @@ function* read(socket) {
   }
 }
 
+function promisifyEmit({ socket, key, data }) {
+  return new Promise(resolve => {
+    socket.emit(key, data, resolve);
+  });
+}
+
+function getHandlers(socket) {
+  return {
+    sendMessage: function* ({ payload: content }) {
+      const { chats } = yield select();
+      const chatId = chats.activeChat && chats.activeChat._id;
+      const data = { chatId, content };
+      yield call(promisifyEmit, { key: 'send-message', socket, data });
+      yield put(actions.sendMessage(data));
+    },
+    mountChat: function* ({ payload: data }) {
+      console.log('MMMMMM', data);
+      yield call(promisifyEmit, { key: 'mount-chat', socket, data });
+    },
+    unmountChat: function* ({ payload: data }) {
+      yield call(promisifyEmit, { key: 'unmount-chat', socket, data });
+    },
+  };
+}
+
 function* write(socket) {
-  const sendMessage = content => socket.emit('send-message', { content });
+  const { sendMessage, mountChat, unmountChat } = getHandlers(socket);
   yield all([
-    takeEvery(types.WS_SEND_MESSAGE, sendMessage),
+    takeEvery(types.WS_SEND_MESSAGE_REQUEST, sendMessage),
+    takeEvery(types.WS_MOUNT_CHAT, mountChat),
+    takeEvery(types.WS_UNMOUNT_CHAT, unmountChat),
   ]);
 }
 

@@ -30,7 +30,7 @@ const styles = theme => ({
   },
 });
 
-function prepareChatMessages(activeChat) {
+function prepareChatMessages(activeChat, user) {
   if (!activeChat) {
     return <InviteLabel />
   }
@@ -41,6 +41,7 @@ function prepareChatMessages(activeChat) {
         key={item._id}
         color="grey"
         user={item.sender}
+        isCreator={item.sender && user ? item.sender._id === user._id : false}
         {...item}
       />
     );
@@ -69,11 +70,11 @@ class ChatContent extends React.Component {
     }
   }
   render() {
-    const { classes, activeChat, children } = this.props;
+    const { classes, activeChat, user, children } = this.props;
     return <main className={classes.content}>
       <div className={classes.toolbar} />
       <div className={classes.messagesList} ref={this.messagesWrapperRef}>
-        {prepareChatMessages(activeChat)}
+        {prepareChatMessages(activeChat, user)}
       </div>
       {activeChat ? (
         <Paper elevation={4} className={classes.bottomBox}>

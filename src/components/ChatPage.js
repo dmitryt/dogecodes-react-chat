@@ -77,12 +77,12 @@ class ChatPage extends React.Component {
       initWsConnection,
     } = this.props;
     const { chatId } = match.params;
+    initWsConnection();
     if (chatId) {
       setActiveChat({ chatId });
     }
     fetchAllChats();
     fetchMyChats();
-    initWsConnection();
   }
 
   componentDidUpdate(prevProps) {
@@ -131,7 +131,7 @@ class ChatPage extends React.Component {
         >
           <AddChatBtn onClick={this.openChatDialog} />
         </SideBar>
-        <ChatContent activeChat={activeChat}>
+        <ChatContent activeChat={activeChat} user={user}>
           {
             isChatMember ? (
               <MessageInput onSubmit={sendMessage} />
