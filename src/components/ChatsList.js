@@ -24,7 +24,7 @@ class ChatsList extends React.Component {
   }
 
   render() {
-    const { classes, chats, activeChat } = this.props;
+    const { classes, chats, activeChat, disabled } = this.props;
     return (
       <List className={classes.root}>
         {chats.map((d, i) => (
@@ -33,6 +33,7 @@ class ChatsList extends React.Component {
             data-id={d._id}
             className={classnames({ [classes.selected]: activeChat && activeChat._id === d._id })}
             button
+            disabled={disabled}
             onClick={this.onClick}
           >
             <Avatar style={{ backgroundColor: d.color }}>{helpers.titleInitials(d.title)}</Avatar>

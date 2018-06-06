@@ -1,4 +1,4 @@
-import { put, call, takeEvery, select } from 'redux-saga/effects';
+import { put, call, takeLatest, select } from 'redux-saga/effects';
 
 import types from '../types';
 import { api } from '../utils';
@@ -146,12 +146,12 @@ export function* sendMessage({ payload }) {
 }
 
 export default [
-  takeEvery(types.FETCH_MY_CHATS_REQUEST, fetchMyChats),
-  takeEvery(types.FETCH_ALL_CHATS_REQUEST, fetchAllChats),
-  takeEvery(types.CREATE_CHAT_REQUEST, createChat),
-  takeEvery(types.DELETE_CHAT_REQUEST, deleteChat),
-  takeEvery(types.JOIN_CHAT_REQUEST, joinChat),
-  takeEvery(types.LEAVE_CHAT_REQUEST, leaveChat),
-  takeEvery(types.SEND_MESSAGE_REQUEST, sendMessage),
-  takeEvery(types.FETCH_ACTIVE_CHAT_REQUEST, fetchChat),
+  takeLatest(types.FETCH_MY_CHATS_REQUEST, fetchMyChats),
+  takeLatest(types.FETCH_ALL_CHATS_REQUEST, fetchAllChats),
+  takeLatest(types.CREATE_CHAT_REQUEST, createChat),
+  takeLatest(types.DELETE_CHAT_REQUEST, deleteChat),
+  takeLatest(types.JOIN_CHAT_REQUEST, joinChat),
+  takeLatest(types.LEAVE_CHAT_REQUEST, leaveChat),
+  takeLatest(types.SEND_MESSAGE_REQUEST, sendMessage),
+  takeLatest(types.FETCH_ACTIVE_CHAT_REQUEST, fetchChat),
 ];

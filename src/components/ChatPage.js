@@ -92,6 +92,7 @@ class ChatPage extends React.Component {
       mountChat,
       unmountChat,
     } = this.props;
+    const getChatId = chat => chat && chat._id;
     if (prevProps.notification !== this.props.notification) {
       const { level, message } = this.props.notification || {};
       this._notificationSystem.current.addNotification({ message, level });
@@ -99,12 +100,14 @@ class ChatPage extends React.Component {
     if (prevProps.match.params.chatId !== match.params.chatId && match.params.chatId) {
       setActiveChat({ chatId: match.params.chatId });
     }
-    if (prevProps.activeChat !== activeChat) {
-      if (prevProps.activeChat) {
-        unmountChat(prevProps.activeChat._id);
+    const prevChatId = getChatId(prevProps.activeChat);
+    const currentChatId = getChatId(activeChat);
+    if (prevChatId !== currentChatId) {
+      if (prevChatId) {
+        unmountChat(prevChatId);
       }
-      if (activeChat) {
-        mountChat(activeChat._id);
+      if (currentChatId) {
+        mountChat(currentChatId);
       }
     }
   }
@@ -128,8 +131,10 @@ class ChatPage extends React.Component {
       isChatMember,
       isCreator,
       redirectToChatsList,
+      isConnected,
     } = this.props;
     const { isChatDialogOpened, isProfileDialogOpened } = this.state;
+    const disabled = !isConnected;
     return (
       <div className={classes.root}>
         <ChatHeader
@@ -138,6 +143,7 @@ class ChatPage extends React.Component {
           logout={logout}
           isCreator={isCreator}
           isChatMember={isChatMember}
+          disabled={disabled}
           deleteChat={deleteChat}
           leaveChat={leaveChat}
           redirectToChatsList={redirectToChatsList}
@@ -146,21 +152,23 @@ class ChatPage extends React.Component {
         <SideBar
           width={sidebarWidth}
           onChatSelect={this.onChatSelect}
+          disabled={disabled}
           allChats={allChats}
           myChats={myChats}
           activeChat={activeChat}
         >
-          <AddChatBtn onClick={this.openChatDialog} />
+          <AddChatBtn onClick={this.openChatDialog} disabled={disabled} />
         </SideBar>
-        <ChatContent activeChat={activeChat} user={user}>
+        <ChatContent activeChat={activeChat} user={user} disabled={disabled}>
           {
             isChatMember ? (
-              <MessageInput onSubmit={sendMessage} />
+              <MessageInput onSubmit={sendMessage} disabled={disabled} />
             ) : (
                 <Button
                   variant="raised"
                   color="primary"
                   onClick={joinChat}
+                  disabled={disabled}
                   fullWidth
                 >
                   Join Chat

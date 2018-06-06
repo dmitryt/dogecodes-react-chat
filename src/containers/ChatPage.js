@@ -34,6 +34,7 @@ const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
   user: state.auth.user,
   activeChat: state.chats.activeChat,
+  isConnected: state.services.isConnected,
   allChats: getAllChats(state),
   myChats: getMyChats(state),
   isMember: isMember(state),

@@ -1,4 +1,4 @@
-import { put, call, select, takeEvery } from 'redux-saga/effects';
+import { put, call, select, takeLatest } from 'redux-saga/effects';
 
 import types from '../types';
 import { api } from '../utils';
@@ -88,9 +88,9 @@ export function* updateUser({ payload }) {
 }
 
 export default [
-  takeEvery(types.LOGIN_REQUEST, login),
-  takeEvery(types.SIGNUP_REQUEST, signup),
-  takeEvery(types.LOGOUT_REQUEST, logout),
-  takeEvery(types.RECEIVE_AUTH_REQUEST, receiveAuth),
-  takeEvery(types.UPDATE_USER_REQUEST, updateUser),
+  takeLatest(types.LOGIN_REQUEST, login),
+  takeLatest(types.SIGNUP_REQUEST, signup),
+  takeLatest(types.LOGOUT_REQUEST, logout),
+  takeLatest(types.RECEIVE_AUTH_REQUEST, receiveAuth),
+  takeLatest(types.UPDATE_USER_REQUEST, updateUser),
 ];

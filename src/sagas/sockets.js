@@ -1,5 +1,5 @@
 import { eventChannel } from 'redux-saga';
-import { all, call, take, takeEvery, fork, cancel, put, select } from 'redux-saga/effects';
+import { all, call, take, takeLatest, fork, put, select } from 'redux-saga/effects';
 import SocketIOClient from 'socket.io-client';
 
 import types from '../types';
@@ -35,11 +35,10 @@ function subscribe(socket) {
       emit(actions.notify({ level: 'error', message: 'Connection has been lost' }));
     });
     socket.on('reconnect', (attemptNumber) => {
+      emit(actions.wsConnectionReconnect());
       emit(actions.notify({ level: 'success', message: 'Connection has been established' }));
     });
-    return () => {
-      socket.close();
-    };
+    return () => {};
   });
 }
 
@@ -83,9 +82,9 @@ function getHandlers(socket) {
 function* write(socket) {
   const { sendMessage, mountChat, unmountChat } = getHandlers(socket);
   yield all([
-    takeEvery(types.WS_SEND_MESSAGE_REQUEST, sendMessage),
-    takeEvery(types.WS_MOUNT_CHAT, mountChat),
-    takeEvery(types.WS_UNMOUNT_CHAT, unmountChat),
+    takeLatest(types.WS_SEND_MESSAGE_REQUEST, sendMessage),
+    takeLatest(types.WS_MOUNT_CHAT, mountChat),
+    takeLatest(types.WS_UNMOUNT_CHAT, unmountChat),
   ]);
 }
 
@@ -98,16 +97,18 @@ function* flow() {
   while (true) {
     const { auth } = yield select();
     const socket = yield call(connect, auth.token);
-    const task = yield fork(handleIO, socket);
+    yield put(actions.wsConnectionSuccess());
+    yield fork(handleIO, socket);
+
     const { chats } = yield select();
     if (chats.activeChat) {
       yield put(actions.mountChat(chats.activeChat._id));
     }
     yield take(types.WS_CONNECTION_CLOSE);
-    yield cancel(task);
+    socket.disconnect();
   }
 }
 
 export default [
-  takeEvery(types.WS_CONNECTION_REQUEST, flow),
+  takeLatest(types.WS_CONNECTION_REQUEST, flow),
 ];

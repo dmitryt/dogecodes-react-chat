@@ -14,8 +14,15 @@ const styles = theme => ({
   },
 });
 
-const AddChatBtn = ({ classes, onClick }) =>
-  <Button variant="fab" color="primary" aria-label="add" className={classes.root} onClick={onClick}>
+const AddChatBtn = ({ classes, onClick, disabled }) =>
+  <Button
+    variant="fab"
+    color="primary"
+    aria-label="add"
+    className={classes.root}
+    disabled={disabled}
+    onClick={onClick}
+  >
     <AddIcon />
   </Button>
 
