@@ -49,7 +49,6 @@ function allIds(state = initialState.allIds, action) {
         ...state,
         ...action.payload.map(getChatId)
       ];
-    case types.CREATE_CHAT_SUCCESS:
     case types.WS_RECEIVE_NEW_CHAT:
       return [
         ...state,
