@@ -4,11 +4,11 @@ export function distanceInWords(date, options = {}) {
   const opts = {
     includeSeconds: true,
     addSuffix: true,
-    ...options
+    ...options,
   };
   return distanceInWordsToNow(date, opts);
 }
 
 export default {
   distanceInWords,
-}
+};

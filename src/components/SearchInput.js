@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 
 import TextField from 'material-ui/TextField';
@@ -11,7 +12,7 @@ const styles = theme => ({
 });
 
 class SearchInput extends React.Component {
-  onChange = e => {
+  onChange = (e) => {
     this.props.onChange(e.target.value);
   }
 
@@ -29,5 +30,11 @@ class SearchInput extends React.Component {
     );
   }
 }
+
+SearchInput.propTypes = {
+  classes: PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
+
 
 export default withStyles(styles)(SearchInput);

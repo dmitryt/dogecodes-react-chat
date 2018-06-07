@@ -9,7 +9,7 @@ import NavBar from './NavBar';
 import SearchInput from './SearchInput';
 import ChatsList from './ChatsList';
 
-const styles = theme => ({
+const styles = () => ({
   root: {
     position: 'relative',
   },
@@ -21,26 +21,25 @@ class SideBar extends React.Component {
     filter: '',
   };
 
+  onTypeChange = (e, chatsType) => {
+    this.setState({ chatsType });
+  }
+
+  onFilterChange = (filter) => {
+    this.setState({ filter });
+  }
+
   getChats() {
     const { myChats, allChats } = this.props;
     const { chatsType, filter } = this.state;
-    const sortFn = (a, b) => a.title.toLowerCase() <= b.title.toLowerCase() ? -1 : 1;
+    const sortFn = (a, b) => (a.title.toLowerCase() <= b.title.toLowerCase() ? -1 : 1);
     const chats = (chatsType === 'my' ? myChats : allChats).sort(sortFn);
     if (!filter) {
       return chats;
     }
     return chats
       .filter(({ title }) => title.toLowerCase()
-        .includes(filter.toLowerCase())
-      )
-  }
-
-  onTypeChange = (e, chatsType) => {
-    this.setState({ chatsType });
-  }
-
-  onFilterChange = filter => {
-    this.setState({ filter });
+        .includes(filter.toLowerCase()));
   }
 
   render() {
@@ -75,7 +74,11 @@ SideBar.propTypes = {
   allChats: PropTypes.array.isRequired,
   myChats: PropTypes.array.isRequired,
   classes: PropTypes.object.isRequired,
+  disabled: PropTypes.bool.isRequired,
+  children: PropTypes.object.isRequired,
+  activeChat: PropTypes.object.isRequired,
   width: PropTypes.number,
+  onChatSelect: PropTypes.func.isRequired,
 };
 
 SideBar.defaultProps = {

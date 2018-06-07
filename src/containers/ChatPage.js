@@ -7,7 +7,7 @@ import {
   getMyChats,
   isMember,
   isCreator,
-  isChatMember
+  isChatMember,
 } from '../selectors/chats';
 import ChatPage from '../components/ChatPage';
 
@@ -62,5 +62,5 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(ChatPage);

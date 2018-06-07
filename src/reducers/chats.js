@@ -11,7 +11,7 @@ export const actions = {
   leaveChat: payload => ({ type: types.LEAVE_CHAT_REQUEST, payload }),
   setActiveChat: payload => ({ type: types.FETCH_ACTIVE_CHAT_REQUEST, payload }),
   redirectToChat: ({ chatId }) => ({ type: types.REDIRECT, payload: { to: `/chats/${chatId}` } }),
-  redirectToChatsList: () => ({ type: types.REDIRECT, payload: { to: `/chats` } }),
+  redirectToChatsList: () => ({ type: types.REDIRECT, payload: { to: '/chats' } }),
 };
 
 const getChatId = chat => chat._id;
@@ -47,12 +47,12 @@ function allIds(state = initialState.allIds, action) {
     case types.FETCH_ALL_CHATS_SUCCESS:
       return [
         ...state,
-        ...action.payload.map(getChatId)
+        ...action.payload.map(getChatId),
       ];
     case types.WS_RECEIVE_NEW_CHAT:
       return [
         ...state,
-        getChatId(action.payload)
+        getChatId(action.payload),
       ];
     case types.DELETE_CHAT_SUCCESS:
     case types.WS_RECEIVE_DELETED_CHAT:
@@ -69,13 +69,13 @@ function myIds(state = initialState.myIds, action) {
     case types.FETCH_MY_CHATS_SUCCESS:
       return [
         ...state,
-        ...action.payload.map(getChatId)
+        ...action.payload.map(getChatId),
       ];
     case types.CREATE_CHAT_SUCCESS:
     case types.JOIN_CHAT_SUCCESS:
       return [
         ...state,
-        getChatId(action.payload)
+        getChatId(action.payload),
       ];
     case types.DELETE_CHAT_SUCCESS:
     case types.LEAVE_CHAT_SUCCESS:
@@ -97,7 +97,7 @@ function _store(state = initialState._store, action) {
         ...action.payload.reduce((acc, chat) => ({
           ...acc,
           [getChatId(chat)]: chat,
-        }), {})
+        }), {}),
       };
     case types.CREATE_CHAT_SUCCESS:
     case types.WS_RECEIVE_NEW_CHAT:
@@ -112,9 +112,9 @@ function _store(state = initialState._store, action) {
       };
     case types.DELETE_CHAT_SUCCESS:
     case types.WS_RECEIVE_DELETED_CHAT:
-      return Object.keys(state).reduce((acc, id) => {
-        return id === action.payload.chatId ? acc : { ...acc, [id]: state[id] };
-      }, {});
+      return Object.keys(state).reduce((acc, id) => (
+        id === action.payload.chatId ? acc : { ...acc, [id]: state[id] }
+      ), {});
     case types.LOGOUT_SUCCESS:
       return initialState._store;
     default:

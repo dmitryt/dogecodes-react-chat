@@ -15,7 +15,7 @@ import AddChatBtn from '../components/AddChatBtn';
 
 const sidebarWidth = 320;
 
-const styles = theme => ({
+const styles = () => ({
   root: {
     height: '100%',
     zIndex: 1,
@@ -27,45 +27,15 @@ const styles = theme => ({
 });
 
 class ChatPage extends React.Component {
-  state = {
-    isChatDialogOpened: false,
-    isProfileDialogOpened: false,
-  };
-
-  onCreateChat = data => {
-    this.closeChatDialog();
-    this.props.createChat(data);
-  }
-
-  onEditProfile = data => {
-    this.closeProfileDialog();
-    this.props.updateUser(data);
-  }
-
-  openChatDialog = () => {
-    this.setState({ isChatDialogOpened: true });
-  };
-
-  closeChatDialog = () => {
-    this.setState({ isChatDialogOpened: false });
-  };
-
-  openProfileDialog = () => {
-    this.setState({ isProfileDialogOpened: true });
-  };
-
-  closeProfileDialog = () => {
-    this.setState({ isProfileDialogOpened: false });
-  };
-
-  onChatSelect = chatId => {
-    this.props.redirectToChat({ chatId });
-  };
-
   constructor(props) {
     super(props);
     this._notificationSystem = React.createRef();
   }
+
+  state = {
+    isChatDialogOpened: false,
+    isProfileDialogOpened: false,
+  };
 
   componentDidMount() {
     const {
@@ -116,6 +86,36 @@ class ChatPage extends React.Component {
     this.props.wsConnectionClose();
   }
 
+  onCreateChat = (data) => {
+    this.closeChatDialog();
+    this.props.createChat(data);
+  }
+
+  onEditProfile = (data) => {
+    this.closeProfileDialog();
+    this.props.updateUser(data);
+  }
+
+  onChatSelect = (chatId) => {
+    this.props.redirectToChat({ chatId });
+  };
+
+  closeProfileDialog = () => {
+    this.setState({ isProfileDialogOpened: false });
+  };
+
+  openProfileDialog = () => {
+    this.setState({ isProfileDialogOpened: true });
+  };
+
+  closeChatDialog = () => {
+    this.setState({ isChatDialogOpened: false });
+  };
+
+  openChatDialog = () => {
+    this.setState({ isChatDialogOpened: true });
+  };
+
   render() {
     const {
       classes,
@@ -164,16 +164,16 @@ class ChatPage extends React.Component {
             isChatMember ? (
               <MessageInput onSubmit={sendMessage} disabled={disabled} />
             ) : (
-                <Button
-                  variant="raised"
-                  color="primary"
-                  onClick={joinChat}
-                  disabled={disabled}
-                  fullWidth
-                >
-                  Join Chat
-            </Button>
-              )
+              <Button
+                variant="raised"
+                color="primary"
+                onClick={joinChat}
+                disabled={disabled}
+                fullWidth
+              >
+                Join Chat
+              </Button>
+            )
           }
         </ChatContent>
         <NotificationSystem ref={this._notificationSystem} />
@@ -195,15 +195,31 @@ class ChatPage extends React.Component {
 
 ChatPage.propTypes = {
   classes: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
-  fetchAllChats: PropTypes.func.isRequired,
-  fetchMyChats: PropTypes.func.isRequired,
-  createChat: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool.isRequired,
   allChats: PropTypes.array.isRequired,
   myChats: PropTypes.array.isRequired,
+  isCreator: PropTypes.bool.isRequired,
+  isChatMember: PropTypes.bool.isRequired,
+  isConnected: PropTypes.bool.isRequired,
   notification: PropTypes.object,
   activeChat: PropTypes.object,
+  createChat: PropTypes.func.isRequired,
+  fetchAllChats: PropTypes.func.isRequired,
+  fetchMyChats: PropTypes.func.isRequired,
+  redirectToChat: PropTypes.func.isRequired,
+  redirectToChatsList: PropTypes.func.isRequired,
+  joinChat: PropTypes.func.isRequired,
+  leaveChat: PropTypes.func.isRequired,
+  deleteChat: PropTypes.func.isRequired,
+  mountChat: PropTypes.func.isRequired,
+  unmountChat: PropTypes.func.isRequired,
+  setActiveChat: PropTypes.func.isRequired,
+  initWsConnection: PropTypes.func.isRequired,
+  wsConnectionClose: PropTypes.func.isRequired,
+  updateUser: PropTypes.func.isRequired,
+  sendMessage: PropTypes.func.isRequired,
 };
 
 ChatPage.defaultProps = {

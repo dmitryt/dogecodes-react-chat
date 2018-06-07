@@ -11,5 +11,5 @@ export default function* rootSaga() {
     ...chatSagas,
     ...servicesSagas,
     ...socketsSagas,
-  ])
+  ]);
 }

@@ -11,7 +11,7 @@ import Menu, { MenuItem } from 'material-ui/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
-const styles = theme => ({
+const styles = () => ({
   flex: {
     flex: 1,
   },
@@ -19,19 +19,14 @@ const styles = theme => ({
     color: 'white',
     '&:hover': {
       backgroundColor: 'inherit',
-    }
-  }
+    },
+  },
 });
 
 class ChatHeader extends React.Component {
   state = {
     anchorElUser: null,
     anchorElChat: null,
-  };
-
-  handleMenuOpen = ({ currentTarget }) => {
-    const key = currentTarget.getAttribute('data-id');
-    this.setState({ [key]: currentTarget });
   };
 
   onLogout = () => {
@@ -55,13 +50,20 @@ class ChatHeader extends React.Component {
     this.handleMenuClose();
   };
 
+  handleMenuOpen = ({ currentTarget }) => {
+    const key = currentTarget.getAttribute('data-id');
+    this.setState({ [key]: currentTarget });
+  };
+
   handleMenuClose = () => {
     this.setState({ anchorElUser: null });
     this.setState({ anchorElChat: null });
   };
 
   render() {
-    const { classes, width, activeChat, isCreator, isChatMember, disabled } = this.props;
+    const {
+      classes, width, activeChat, isCreator, isChatMember, disabled,
+    } = this.props;
     const { anchorElUser, anchorElChat } = this.state;
     return (
       <MUIAppBar
@@ -94,11 +96,13 @@ class ChatHeader extends React.Component {
               anchorEl={anchorElChat}
               open={Boolean(anchorElChat)}
               onClose={this.handleMenuClose}
-            > {isCreator ? (
-              <MenuItem onClick={this.onDeleteChat}>Delete</MenuItem>
-            ) : (
-                <MenuItem onClick={this.onLeaveChat}>Leave</MenuItem>
-              )}
+            > {
+                isCreator ? (
+                  <MenuItem onClick={this.onDeleteChat}>Delete</MenuItem>
+                ) : (
+                  <MenuItem onClick={this.onLeaveChat}>Leave</MenuItem>
+                )
+              }
             </Menu>
           </Typography>
           <div>
@@ -131,11 +135,17 @@ class ChatHeader extends React.Component {
 
 ChatHeader.propTypes = {
   classes: PropTypes.object.isRequired,
+  isCreator: PropTypes.bool.isRequired,
+  isChatMember: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool.isRequired,
+  activeChat: PropTypes.object,
+  width: PropTypes.string,
+
   logout: PropTypes.func.isRequired,
   deleteChat: PropTypes.func.isRequired,
   openProfileDialog: PropTypes.func.isRequired,
-  activeChat: PropTypes.object,
-  width: PropTypes.string,
+  redirectToChatsList: PropTypes.func.isRequired,
+  leaveChat: PropTypes.func.isRequired,
 };
 
 ChatHeader.defaultProps = {

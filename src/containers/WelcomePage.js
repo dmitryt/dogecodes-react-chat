@@ -16,5 +16,5 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(WelcomePage);

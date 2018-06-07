@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import TextField from 'material-ui/TextField';
 
@@ -38,5 +39,10 @@ class MessageInput extends React.Component {
     );
   }
 }
+
+MessageInput.propTypes = {
+  disabled: PropTypes.bool.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+};
 
 export default MessageInput;

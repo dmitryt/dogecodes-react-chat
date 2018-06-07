@@ -9,7 +9,7 @@ export default function notificationReducer(state = {}, action) {
     case types.NOTIFICATION:
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
       };
     default:
       return state;

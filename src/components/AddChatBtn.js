@@ -14,7 +14,7 @@ const styles = theme => ({
   },
 });
 
-const AddChatBtn = ({ classes, onClick, disabled }) =>
+const AddChatBtn = ({ classes, onClick, disabled }) => (
   <Button
     variant="fab"
     color="primary"
@@ -25,9 +25,11 @@ const AddChatBtn = ({ classes, onClick, disabled }) =>
   >
     <AddIcon />
   </Button>
+);
 
 AddChatBtn.propTypes = {
   classes: PropTypes.object.isRequired,
+  disabled: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
 };
 

@@ -35,14 +35,14 @@ const styles = theme => ({
 });
 
 class WelcomePage extends React.Component {
-  state = {
-    value: 0,
-  };
-
   constructor(props) {
     super(props);
     this._notificationSystem = React.createRef();
   }
+
+  state = {
+    value: 0,
+  };
 
   componentDidUpdate(prevProps) {
     if (prevProps.notification !== this.props.notification) {
@@ -56,7 +56,9 @@ class WelcomePage extends React.Component {
   };
 
   render() {
-    const { classes, login, signup, isAuthenticated } = this.props;
+    const {
+      classes, login, signup, isAuthenticated,
+    } = this.props;
     const { value } = this.state;
     if (isAuthenticated) {
       return (
@@ -96,9 +98,10 @@ class WelcomePage extends React.Component {
 
 WelcomePage.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
   notification: PropTypes.object,
+  login: PropTypes.func.isRequired,
+  signup: PropTypes.func.isRequired,
 };
 
 WelcomePage.defaultProps = {

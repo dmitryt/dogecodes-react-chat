@@ -4,7 +4,7 @@ import types from '../types';
 import { api } from '../utils';
 import { STORAGE_KEY_TOKEN } from '../config';
 
-const updateToken = token => {
+const updateToken = (token) => {
   localStorage.setItem(STORAGE_KEY_TOKEN, token);
 };
 
@@ -19,8 +19,8 @@ export function* login({ payload }) {
   } catch (error) {
     yield put({ type: types.LOGIN_FAILURE, error });
 
-    const payload = { level: 'error', message: error.message };
-    yield put({ type: types.NOTIFICATION, payload });
+    const notification = { level: 'error', message: error.message };
+    yield put({ type: types.NOTIFICATION, payload: notification });
   }
 }
 
@@ -35,8 +35,8 @@ export function* signup({ payload }) {
   } catch (error) {
     yield put({ type: types.SIGNUP_FAILURE, error });
 
-    const payload = { level: 'error', message: error.message };
-    yield put({ type: types.NOTIFICATION, payload });
+    const notification = { level: 'error', message: error.message };
+    yield put({ type: types.NOTIFICATION, payload: notification });
   }
 }
 

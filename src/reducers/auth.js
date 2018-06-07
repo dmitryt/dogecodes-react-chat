@@ -4,7 +4,7 @@ import types from '../types/auth';
 export const actions = {
   signup: payload => ({ type: types.SIGNUP_REQUEST, payload }),
   login: payload => ({ type: types.LOGIN_REQUEST, payload }),
-  logout: payload => ({ type: types.LOGOUT_REQUEST }),
+  logout: () => ({ type: types.LOGOUT_REQUEST }),
   receiveAuth: payload => ({ type: types.RECEIVE_AUTH_REQUEST, payload }),
   updateUser: payload => ({ type: types.UPDATE_USER_REQUEST, payload }),
 };
