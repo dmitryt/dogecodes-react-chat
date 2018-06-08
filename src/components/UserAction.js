@@ -29,7 +29,10 @@ const UserAction = ({
       classes={{ primary: classes.primary, secondary: classes.secondary, root: classes.root }}
       secondary={date.distanceInWords(createdAt)}
     >
-      <span style={{ color }} className={classes.username}>{user.username}</span> {content}
+      <span style={{ color }} className={classes.username}>
+        {user.username}
+      </span>{' '}
+      {content}
     </ListItemText>
   </ListItem>
 );

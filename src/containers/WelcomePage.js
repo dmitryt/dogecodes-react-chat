@@ -9,10 +9,14 @@ const mapStateToProps = state => ({
   notification: state.notification,
   isAuthenticated: state.auth.isAuthenticated,
 });
-const mapDispatchToProps = dispatch => bindActionCreators({
-  login,
-  signup,
-}, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      login,
+      signup,
+    },
+    dispatch,
+  );
 
 export default connect(
   mapStateToProps,

@@ -16,13 +16,13 @@ class PrivateRoute extends React.Component {
     return (
       <Route
         {...rest}
-        render={props => (
-        isAuthenticated ? (
-          <Component {...props} />
-        ) : (
-          <Redirect to={{ pathname: '/', state: { from: props.location } }} />
-          )
-      )}
+        render={props =>
+          (isAuthenticated ? (
+            <Component {...props} />
+          ) : (
+            <Redirect to={{ pathname: '/', state: { from: props.location } }} />
+          ))
+        }
       />
     );
   }
@@ -33,9 +33,13 @@ const mapStateToProps = state => ({
 });
 
 const { receiveAuth } = actions;
-const mapDispatchToProps = dispatch => bindActionCreators({
-  receiveAuth,
-}, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      receiveAuth,
+    },
+    dispatch,
+  );
 
 PrivateRoute.propTypes = {
   component: PropTypes.func.isRequired,

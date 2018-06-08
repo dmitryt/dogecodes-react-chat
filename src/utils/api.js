@@ -36,7 +36,10 @@ function updateUser({ token, payload: data }) {
   const body = { data };
   const params = { method: 'POST' };
   return fetch({
-    url: '/users/me', token, body, params,
+    url: '/users/me',
+    token,
+    body,
+    params,
   });
 }
 
@@ -64,7 +67,10 @@ function createChat({ token, payload: data }) {
   const body = { data };
   const params = { method: 'POST' };
   return fetch({
-    url: '/chats', token, body, params,
+    url: '/chats',
+    token,
+    body,
+    params,
   });
 }
 
@@ -76,7 +82,10 @@ function sendMessage({ token, payload: content, chatId }) {
   const body = { data: { content } };
   const params = { method: 'POST' };
   return fetch({
-    url: `/chats/${chatId}`, token, body, params,
+    url: `/chats/${chatId}`,
+    token,
+    body,
+    params,
   });
 }
 

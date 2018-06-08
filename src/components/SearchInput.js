@@ -14,7 +14,7 @@ const styles = theme => ({
 class SearchInput extends React.Component {
   onChange = (e) => {
     this.props.onChange(e.target.value);
-  }
+  };
 
   render() {
     const { classes } = this.props;
@@ -35,6 +35,5 @@ SearchInput.propTypes = {
   classes: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
 };
-
 
 export default withStyles(styles)(SearchInput);

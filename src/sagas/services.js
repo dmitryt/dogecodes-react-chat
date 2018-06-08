@@ -7,6 +7,4 @@ export function* redirectTo({ payload }) {
   yield put(push(payload.to));
 }
 
-export default [
-  takeLatest(types.REDIRECT, redirectTo),
-];
+export default [takeLatest(types.REDIRECT, redirectTo)];

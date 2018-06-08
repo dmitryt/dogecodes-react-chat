@@ -37,7 +37,7 @@ class ChatHeader extends React.Component {
   onEditProfile = () => {
     this.props.openProfileDialog();
     this.handleMenuClose();
-  }
+  };
 
   onDeleteChat = () => {
     this.props.deleteChat();
@@ -66,10 +66,7 @@ class ChatHeader extends React.Component {
     } = this.props;
     const { anchorElUser, anchorElChat } = this.state;
     return (
-      <MUIAppBar
-        position="absolute"
-        style={{ width }}
-      >
+      <MUIAppBar position="absolute" style={{ width }}>
         <Toolbar>
           <Typography variant="title" color="inherit" className={classes.flex}>
             {activeChat ? (
@@ -87,8 +84,7 @@ class ChatHeader extends React.Component {
                   >
                     <MoreVertIcon />
                   </IconButton>
-                ) : null
-                }
+                ) : null}
               </React.Fragment>
             ) : null}
             <Menu
@@ -96,13 +92,13 @@ class ChatHeader extends React.Component {
               anchorEl={anchorElChat}
               open={Boolean(anchorElChat)}
               onClose={this.handleMenuClose}
-            > {
-                isCreator ? (
-                  <MenuItem onClick={this.onDeleteChat}>Delete</MenuItem>
-                ) : (
-                  <MenuItem onClick={this.onLeaveChat}>Leave</MenuItem>
-                )
-              }
+            >
+              {' '}
+              {isCreator ? (
+                <MenuItem onClick={this.onDeleteChat}>Delete</MenuItem>
+              ) : (
+                <MenuItem onClick={this.onLeaveChat}>Leave</MenuItem>
+              )}
             </Menu>
           </Typography>
           <div>
@@ -131,7 +127,6 @@ class ChatHeader extends React.Component {
     );
   }
 }
-
 
 ChatHeader.propTypes = {
   classes: PropTypes.object.isRequired,

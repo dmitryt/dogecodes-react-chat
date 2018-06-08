@@ -30,11 +30,7 @@ const EditProfileForm = ({
   classes, onSubmit, user, open, onClose,
 }) => (
   <div>
-    <Dialog
-      open={open}
-      onClose={onClose}
-      aria-labelledby="form-dialog-title"
-    >
+    <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
       <Form
         initialValues={user}
         onSubmit={onSubmit}
@@ -71,14 +67,14 @@ const EditProfileForm = ({
                 fullWidth
               />
               <Button color="primary" type="submit" disabled={submitting}>
-                  Save
+                Save
               </Button>
               <Button color="secondary" onClick={onClose}>
-                  Close
+                Close
               </Button>
             </DialogContent>
           </form>
-          )}
+        )}
       />
     </Dialog>
   </div>

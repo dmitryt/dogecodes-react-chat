@@ -23,11 +23,11 @@ class SideBar extends React.Component {
 
   onTypeChange = (e, chatsType) => {
     this.setState({ chatsType });
-  }
+  };
 
   onFilterChange = (filter) => {
     this.setState({ filter });
-  }
+  };
 
   getChats() {
     const { myChats, allChats } = this.props;
@@ -37,19 +37,12 @@ class SideBar extends React.Component {
     if (!filter) {
       return chats;
     }
-    return chats
-      .filter(({ title }) => title.toLowerCase()
-        .includes(filter.toLowerCase()));
+    return chats.filter(({ title }) => title.toLowerCase().includes(filter.toLowerCase()));
   }
 
   render() {
     const {
-      classes,
-      width,
-      onChatSelect,
-      activeChat,
-      disabled,
-      children,
+      classes, width, onChatSelect, activeChat, disabled, children,
     } = this.props;
     const { chatsType } = this.state;
     const chatsData = this.getChats();

@@ -39,11 +39,7 @@ class ChatPage extends React.Component {
 
   componentDidMount() {
     const {
-      fetchAllChats,
-      fetchMyChats,
-      match,
-      setActiveChat,
-      initWsConnection,
+      fetchAllChats, fetchMyChats, match, setActiveChat, initWsConnection,
     } = this.props;
     const { chatId } = match.params;
     initWsConnection();
@@ -56,11 +52,7 @@ class ChatPage extends React.Component {
 
   componentDidUpdate(prevProps) {
     const {
-      setActiveChat,
-      match,
-      activeChat,
-      mountChat,
-      unmountChat,
+      setActiveChat, match, activeChat, mountChat, unmountChat,
     } = this.props;
     const getChatId = chat => chat && chat._id;
     if (prevProps.notification !== this.props.notification) {
@@ -89,12 +81,12 @@ class ChatPage extends React.Component {
   onCreateChat = (data) => {
     this.closeChatDialog();
     this.props.createChat(data);
-  }
+  };
 
   onEditProfile = (data) => {
     this.closeProfileDialog();
     this.props.updateUser(data);
-  }
+  };
 
   onChatSelect = (chatId) => {
     this.props.redirectToChat({ chatId });
@@ -160,21 +152,19 @@ class ChatPage extends React.Component {
           <AddChatBtn onClick={this.openChatDialog} disabled={disabled} />
         </SideBar>
         <ChatContent activeChat={activeChat} user={user} disabled={disabled}>
-          {
-            isChatMember ? (
-              <MessageInput onSubmit={sendMessage} disabled={disabled} />
-            ) : (
-              <Button
-                variant="raised"
-                color="primary"
-                onClick={joinChat}
-                disabled={disabled}
-                fullWidth
-              >
-                Join Chat
-              </Button>
-            )
-          }
+          {isChatMember ? (
+            <MessageInput onSubmit={sendMessage} disabled={disabled} />
+          ) : (
+            <Button
+              variant="raised"
+              color="primary"
+              onClick={joinChat}
+              disabled={disabled}
+              fullWidth
+            >
+              Join Chat
+            </Button>
+          )}
         </ChatContent>
         <NotificationSystem ref={this._notificationSystem} />
         <CreateChatForm

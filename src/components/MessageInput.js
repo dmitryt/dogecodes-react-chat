@@ -13,12 +13,12 @@ class MessageInput extends React.Component {
       this.props.onSubmit(value);
       this.setState({ value: '' });
     }
-  }
+  };
 
   onChange = ({ target }) => {
     const { value } = target;
     this.setState({ value });
-  }
+  };
 
   render() {
     const { disabled } = this.props;

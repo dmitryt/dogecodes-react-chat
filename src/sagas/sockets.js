@@ -109,6 +109,4 @@ function* flow() {
   }
 }
 
-export default [
-  takeLatest(types.WS_CONNECTION_REQUEST, flow),
-];
+export default [takeLatest(types.WS_CONNECTION_REQUEST, flow)];

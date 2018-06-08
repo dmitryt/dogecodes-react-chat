@@ -9,11 +9,7 @@ import ExporeIcon from '@material-ui/icons/Explore';
 
 const NavBar = ({ chatsType, onChange }) => (
   <Typography component="div">
-    <BottomNavigation
-      value={chatsType}
-      onChange={onChange}
-      showLabels
-    >
+    <BottomNavigation value={chatsType} onChange={onChange} showLabels>
       <BottomNavigationAction label="My Chats" value="my" icon={<RestoreIcon />} />
       <BottomNavigationAction label="Explore" value="all" icon={<ExporeIcon />} />
     </BottomNavigation>

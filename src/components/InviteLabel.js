@@ -37,7 +37,7 @@ const InviteLabel = ({ classes }) => (
     <Typography component="p">
       Use <b>Recents</b> to see your recent conversations.
     </Typography>
-  </Paper >
+  </Paper>
 );
 
 InviteLabel.propTypes = {

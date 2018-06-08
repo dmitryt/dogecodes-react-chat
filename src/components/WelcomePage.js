@@ -61,9 +61,7 @@ class WelcomePage extends React.Component {
     } = this.props;
     const { value } = this.state;
     if (isAuthenticated) {
-      return (
-        <Redirect to="/chats" />
-      );
+      return <Redirect to="/chats" />;
     }
     return (
       <React.Fragment>
@@ -87,8 +85,16 @@ class WelcomePage extends React.Component {
               <Tab label="Sign Up" />
             </Tabs>
           </AppBar>
-          {value === 0 && <TabContainer><LoginForm onSubmit={login} /></TabContainer>}
-          {value === 1 && <TabContainer><SignupForm onSubmit={signup} /></TabContainer>}
+          {value === 0 && (
+            <TabContainer>
+              <LoginForm onSubmit={login} />
+            </TabContainer>
+          )}
+          {value === 1 && (
+            <TabContainer>
+              <SignupForm onSubmit={signup} />
+            </TabContainer>
+          )}
         </Paper>
         <NotificationSystem ref={this._notificationSystem} />
       </React.Fragment>
