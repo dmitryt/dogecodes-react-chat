@@ -9,6 +9,8 @@ import NavBar from './NavBar';
 import SearchInput from './SearchInput';
 import ChatsList from './ChatsList';
 
+import { chatShape } from '../shapes';
+
 const styles = () => ({
   root: {
     position: 'relative',
@@ -64,17 +66,18 @@ class SideBar extends React.Component {
 }
 
 SideBar.propTypes = {
-  allChats: PropTypes.array.isRequired,
-  myChats: PropTypes.array.isRequired,
+  allChats: PropTypes.arrayOf(chatShape).isRequired,
+  myChats: PropTypes.arrayOf(chatShape).isRequired,
   classes: PropTypes.object.isRequired,
   disabled: PropTypes.bool.isRequired,
   children: PropTypes.object.isRequired,
-  activeChat: PropTypes.object.isRequired,
+  activeChat: chatShape,
   width: PropTypes.number,
   onChatSelect: PropTypes.func.isRequired,
 };
 
 SideBar.defaultProps = {
+  activeChat: null,
   width: '300px',
 };
 

@@ -8,6 +8,7 @@ import { ListItem, ListItemText } from 'material-ui/List';
 import Paper from 'material-ui/Paper';
 
 import { helpers, date } from '../utils';
+import { userShape } from '../shapes';
 
 const styles = theme => ({
   listItemText: {
@@ -65,11 +66,15 @@ const UserMessage = ({
 
 UserMessage.propTypes = {
   classes: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
+  user: userShape,
   color: PropTypes.string.isRequired,
   createdAt: PropTypes.string.isRequired,
   content: PropTypes.string.isRequired,
   isCreator: PropTypes.bool.isRequired,
+};
+
+UserMessage.defaultProps = {
+  user: null,
 };
 
 export default withStyles(styles)(UserMessage);

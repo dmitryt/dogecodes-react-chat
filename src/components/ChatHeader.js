@@ -10,6 +10,7 @@ import Menu, { MenuItem } from 'material-ui/Menu';
 
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { chatShape } from '../shapes';
 
 const styles = () => ({
   flex: {
@@ -133,7 +134,7 @@ ChatHeader.propTypes = {
   isCreator: PropTypes.bool.isRequired,
   isChatMember: PropTypes.bool.isRequired,
   disabled: PropTypes.bool.isRequired,
-  activeChat: PropTypes.object,
+  activeChat: chatShape,
   width: PropTypes.string,
 
   logout: PropTypes.func.isRequired,

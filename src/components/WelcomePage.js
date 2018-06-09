@@ -12,6 +12,7 @@ import Typography from 'material-ui/Typography';
 
 import LoginForm from './forms/LoginForm';
 import SignupForm from './forms/SignupForm';
+import { notificationShape } from '../shapes';
 
 function TabContainer(props) {
   return (
@@ -45,8 +46,8 @@ class WelcomePage extends React.Component {
   };
 
   componentDidUpdate(prevProps) {
-    if (prevProps.notification !== this.props.notification) {
-      const { level, message } = this.props.notification || {};
+    if (prevProps.notification !== this.props.notification && this.props.notification) {
+      const { level, message } = this.props.notification;
       this._notificationSystem.current.addNotification({ message, level });
     }
   }
@@ -105,13 +106,13 @@ class WelcomePage extends React.Component {
 WelcomePage.propTypes = {
   classes: PropTypes.object.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
-  notification: PropTypes.object,
+  notification: notificationShape,
   login: PropTypes.func.isRequired,
   signup: PropTypes.func.isRequired,
 };
 
 WelcomePage.defaultProps = {
-  notification: {},
+  notification: null,
 };
 
 export default withStyles(styles, { withTheme: true })(WelcomePage);

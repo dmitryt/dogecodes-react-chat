@@ -1,8 +1,9 @@
 import { createSelector } from 'reselect';
 
 const getChatsByIds = (ids, store) => ids.map(id => store[id]);
-const isMemberFn = (chat, user) => user && chat && chat.members.map(m => m._id).includes(user._id);
-const isCreatorFn = (chat, user) => user && chat && chat.creator._id === user._id;
+const isUserMember = (chat, user) => chat.members.map(m => m._id).includes(user._id);
+const isMemberFn = (chat, user) => Boolean(user && chat && isUserMember(chat, user));
+const isCreatorFn = (chat, user) => Boolean(user && chat && chat.creator._id === user._id);
 
 export const getAllChats = createSelector(
   state => state.chats.allIds,

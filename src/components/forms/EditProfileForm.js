@@ -6,6 +6,7 @@ import Dialog, { DialogContent, DialogTitle } from 'material-ui/Dialog';
 import { Form, Field } from 'react-final-form';
 
 import TextField from './TextField';
+import { userShape } from '../../shapes';
 
 const styles = theme => ({
   title: {
@@ -82,10 +83,14 @@ const EditProfileForm = ({
 
 EditProfileForm.propTypes = {
   classes: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
+  user: userShape,
   open: PropTypes.bool.isRequired,
   onSubmit: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
+};
+
+EditProfileForm.defaultProps = {
+  user: null,
 };
 
 export default withStyles(styles)(EditProfileForm);

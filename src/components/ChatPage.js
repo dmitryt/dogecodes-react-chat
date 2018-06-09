@@ -12,6 +12,7 @@ import CreateChatForm from './forms/CreateChatForm';
 import EditProfileForm from './forms/EditProfileForm';
 import MessageInput from '../components/MessageInput';
 import AddChatBtn from '../components/AddChatBtn';
+import { userShape, chatShape, notificationShape } from '../shapes';
 
 const sidebarWidth = 320;
 
@@ -55,8 +56,8 @@ class ChatPage extends React.Component {
       setActiveChat, match, activeChat, mountChat, unmountChat,
     } = this.props;
     const getChatId = chat => chat && chat._id;
-    if (prevProps.notification !== this.props.notification) {
-      const { level, message } = this.props.notification || {};
+    if (this.props.notification && prevProps.notification !== this.props.notification) {
+      const { level, message } = this.props.notification;
       this._notificationSystem.current.addNotification({ message, level });
     }
     if (prevProps.match.params.chatId !== match.params.chatId && match.params.chatId) {
@@ -185,16 +186,19 @@ class ChatPage extends React.Component {
 
 ChatPage.propTypes = {
   classes: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired,
-  logout: PropTypes.func.isRequired,
-  allChats: PropTypes.array.isRequired,
-  myChats: PropTypes.array.isRequired,
+  user: userShape,
+  match: PropTypes.shape({
+    params: PropTypes.object.isRequired,
+  }).isRequired,
+  allChats: PropTypes.arrayOf(chatShape).isRequired,
+  myChats: PropTypes.arrayOf(chatShape).isRequired,
+  notification: notificationShape,
+  activeChat: chatShape,
   isCreator: PropTypes.bool.isRequired,
   isChatMember: PropTypes.bool.isRequired,
   isConnected: PropTypes.bool.isRequired,
-  notification: PropTypes.object,
-  activeChat: PropTypes.object,
+
+  logout: PropTypes.func.isRequired,
   createChat: PropTypes.func.isRequired,
   fetchAllChats: PropTypes.func.isRequired,
   fetchMyChats: PropTypes.func.isRequired,
@@ -213,7 +217,8 @@ ChatPage.propTypes = {
 };
 
 ChatPage.defaultProps = {
-  notification: {},
+  notification: null,
+  user: null,
   activeChat: null,
 };
 

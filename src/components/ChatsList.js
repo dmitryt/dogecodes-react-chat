@@ -7,6 +7,7 @@ import List, { ListItem, ListItemText } from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 
 import { helpers, date } from '../utils';
+import { chatShape } from '../shapes';
 
 const styles = theme => ({
   root: {
@@ -52,8 +53,12 @@ ChatsList.propTypes = {
   classes: PropTypes.object.isRequired,
   chats: PropTypes.array.isRequired,
   disabled: PropTypes.bool.isRequired,
-  activeChat: PropTypes.object.isRequired,
+  activeChat: chatShape,
   onSelect: PropTypes.func.isRequired,
+};
+
+ChatsList.defaultProps = {
+  activeChat: null,
 };
 
 export default withStyles(styles)(ChatsList);
