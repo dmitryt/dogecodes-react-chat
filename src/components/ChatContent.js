@@ -7,7 +7,7 @@ import UserMessage from './UserMessage';
 import UserAction from './UserAction';
 import InviteLabel from './InviteLabel';
 
-import { userShape, chatShape } from '../shapes';
+import { userShape, activeChatShape } from '../shapes';
 
 const styles = theme => ({
   toolbar: theme.mixins.toolbar,
@@ -94,7 +94,7 @@ class ChatContent extends React.Component {
 
 ChatContent.propTypes = {
   classes: PropTypes.object.isRequired,
-  activeChat: chatShape,
+  activeChat: activeChatShape,
   user: userShape,
   children: PropTypes.object.isRequired,
 };

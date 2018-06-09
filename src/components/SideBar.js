@@ -9,7 +9,7 @@ import NavBar from './NavBar';
 import SearchInput from './SearchInput';
 import ChatsList from './ChatsList';
 
-import { chatShape } from '../shapes';
+import { chatShape, activeChatShape } from '../shapes';
 
 const styles = () => ({
   root: {
@@ -71,7 +71,7 @@ SideBar.propTypes = {
   classes: PropTypes.object.isRequired,
   disabled: PropTypes.bool.isRequired,
   children: PropTypes.object.isRequired,
-  activeChat: chatShape,
+  activeChat: activeChatShape,
   width: PropTypes.number,
   onChatSelect: PropTypes.func.isRequired,
 };

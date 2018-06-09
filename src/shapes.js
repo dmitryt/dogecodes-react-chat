@@ -11,12 +11,18 @@ const messageShape = PropTypes.shape({
   content: PropTypes.string.isRequired,
 });
 
-const chat = {};
+const chatModel = {
+  title: PropTypes.string.isRequired,
+  createdAt: PropTypes.string.isRequired,
+  updatedAt: PropTypes.string.isRequired,
+  creator: PropTypes.shape(userShape),
+  members: PropTypes.arrayOf(userShape).isRequired,
+};
 
-export const chatShape = PropTypes.shape(chat);
+export const chatShape = PropTypes.shape(chatModel);
 
 export const activeChatShape = PropTypes.shape({
-  ...chat,
+  ...chatModel,
   messages: PropTypes.arrayOf(messageShape),
 });
 

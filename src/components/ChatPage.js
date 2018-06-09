@@ -12,7 +12,7 @@ import CreateChatForm from './forms/CreateChatForm';
 import EditProfileForm from './forms/EditProfileForm';
 import MessageInput from '../components/MessageInput';
 import AddChatBtn from '../components/AddChatBtn';
-import { userShape, chatShape, notificationShape } from '../shapes';
+import { userShape, activeChatShape, chatShape, notificationShape } from '../shapes';
 
 const sidebarWidth = 320;
 
@@ -193,7 +193,7 @@ ChatPage.propTypes = {
   allChats: PropTypes.arrayOf(chatShape).isRequired,
   myChats: PropTypes.arrayOf(chatShape).isRequired,
   notification: notificationShape,
-  activeChat: chatShape,
+  activeChat: activeChatShape,
   isCreator: PropTypes.bool.isRequired,
   isChatMember: PropTypes.bool.isRequired,
   isConnected: PropTypes.bool.isRequired,
