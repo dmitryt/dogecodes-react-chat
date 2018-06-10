@@ -50,7 +50,7 @@ function prepareChatMessages(activeChat, user) {
   });
 }
 
-class ChatContent extends React.Component {
+export class ChatContent extends React.Component {
   constructor(props) {
     super(props);
     this.messagesWrapperRef = React.createRef();

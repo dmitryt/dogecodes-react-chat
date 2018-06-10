@@ -24,7 +24,7 @@ const styles = () => ({
   },
 });
 
-class ChatHeader extends React.Component {
+export class ChatHeader extends React.Component {
   state = {
     anchorElUser: null,
     anchorElChat: null,
@@ -72,7 +72,7 @@ class ChatHeader extends React.Component {
           <Typography variant="title" color="inherit" className={classes.flex}>
             {activeChat ? (
               <React.Fragment>
-                {activeChat.title}
+                <span className="chat-title">{activeChat.title}</span>
                 {isChatMember ? (
                   <IconButton
                     className={classes.menuIcon}
@@ -137,15 +137,20 @@ ChatHeader.propTypes = {
   activeChat: activeChatShape,
   width: PropTypes.string,
 
-  logout: PropTypes.func.isRequired,
-  deleteChat: PropTypes.func.isRequired,
-  openProfileDialog: PropTypes.func.isRequired,
-  redirectToChatsList: PropTypes.func.isRequired,
-  leaveChat: PropTypes.func.isRequired,
+  logout: PropTypes.func,
+  deleteChat: PropTypes.func,
+  openProfileDialog: PropTypes.func,
+  redirectToChatsList: PropTypes.func,
+  leaveChat: PropTypes.func,
 };
 
 ChatHeader.defaultProps = {
   width: '300px',
   activeChat: null,
+  logout: () => {},
+  deleteChat: () => {},
+  openProfileDialog: () => {},
+  redirectToChatsList: () => {},
+  leaveChat: () => {},
 };
 export default withStyles(styles)(ChatHeader);

@@ -19,7 +19,7 @@ const styles = theme => ({
   },
 });
 
-class ChatsList extends React.Component {
+export class ChatsList extends React.Component {
   onClick = (e) => {
     const chatId = e.currentTarget.getAttribute('data-id');
     this.props.onSelect(chatId);
@@ -54,11 +54,12 @@ ChatsList.propTypes = {
   chats: PropTypes.array.isRequired,
   disabled: PropTypes.bool.isRequired,
   activeChat: activeChatShape,
-  onSelect: PropTypes.func.isRequired,
+  onSelect: PropTypes.func,
 };
 
 ChatsList.defaultProps = {
   activeChat: null,
+  onSelect: () => {},
 };
 
 export default withStyles(styles)(ChatsList);

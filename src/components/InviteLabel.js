@@ -26,7 +26,7 @@ const styles = theme => ({
   },
 });
 
-const InviteLabel = ({ classes }) => (
+export const InviteLabel = ({ classes }) => (
   <Paper className={classes.root}>
     <Typography variant="headline" component="h1" className={classes.title}>
       Start messaging...

@@ -40,7 +40,7 @@ const styles = theme => ({
   },
 });
 
-const UserMessage = ({
+export const UserMessage = ({
   classes, color, user, isCreator, createdAt, content,
 }) => (
   <ListItem className={classNames({ [classes.isOwnItem]: isCreator })}>

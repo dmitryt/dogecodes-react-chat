@@ -27,7 +27,7 @@ const styles = () => ({
   },
 });
 
-class ChatPage extends React.Component {
+export class ChatPage extends React.Component {
   constructor(props) {
     super(props);
     this._notificationSystem = React.createRef();
@@ -198,28 +198,44 @@ ChatPage.propTypes = {
   isChatMember: PropTypes.bool.isRequired,
   isConnected: PropTypes.bool.isRequired,
 
-  logout: PropTypes.func.isRequired,
-  createChat: PropTypes.func.isRequired,
-  fetchAllChats: PropTypes.func.isRequired,
-  fetchMyChats: PropTypes.func.isRequired,
-  redirectToChat: PropTypes.func.isRequired,
-  redirectToChatsList: PropTypes.func.isRequired,
-  joinChat: PropTypes.func.isRequired,
-  leaveChat: PropTypes.func.isRequired,
-  deleteChat: PropTypes.func.isRequired,
-  mountChat: PropTypes.func.isRequired,
-  unmountChat: PropTypes.func.isRequired,
-  setActiveChat: PropTypes.func.isRequired,
-  initWsConnection: PropTypes.func.isRequired,
-  wsConnectionClose: PropTypes.func.isRequired,
-  updateUser: PropTypes.func.isRequired,
-  sendMessage: PropTypes.func.isRequired,
+  logout: PropTypes.func,
+  createChat: PropTypes.func,
+  fetchAllChats: PropTypes.func,
+  fetchMyChats: PropTypes.func,
+  redirectToChat: PropTypes.func,
+  redirectToChatsList: PropTypes.func,
+  joinChat: PropTypes.func,
+  leaveChat: PropTypes.func,
+  deleteChat: PropTypes.func,
+  mountChat: PropTypes.func,
+  unmountChat: PropTypes.func,
+  setActiveChat: PropTypes.func,
+  initWsConnection: PropTypes.func,
+  wsConnectionClose: PropTypes.func,
+  updateUser: PropTypes.func,
+  sendMessage: PropTypes.func,
 };
 
 ChatPage.defaultProps = {
   notification: null,
   user: null,
   activeChat: null,
+  logout: () => {},
+  createChat: () => {},
+  fetchAllChats: () => {},
+  fetchMyChats: () => {},
+  redirectToChat: () => {},
+  redirectToChatsList: () => {},
+  joinChat: () => {},
+  leaveChat: () => {},
+  deleteChat: () => {},
+  mountChat: () => {},
+  unmountChat: () => {},
+  setActiveChat: () => {},
+  initWsConnection: () => {},
+  wsConnectionClose: () => {},
+  updateUser: () => {},
+  sendMessage: () => {},
 };
 
 export default withStyles(styles)(ChatPage);

@@ -6,7 +6,7 @@ import { history } from '../store';
 
 import { WelcomePage, ChatPage, PrivateRoute } from '../containers';
 
-const App = () => (
+export const App = () => (
   <ConnectedRouter history={history}>
     <Switch>
       <Route exact path="/(welcome)?" component={WelcomePage} />
