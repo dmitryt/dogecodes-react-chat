@@ -14,12 +14,13 @@ export function getDisplayedName({ firstName, lastName, username }) {
 }
 
 export function filterAndSortChats(chats, filter) {
-  const sortFn = (a, b) => (a.title.toLowerCase() <= b.title.toLowerCase() ? -1 : 1);
+  const sortFn = (a, b) =>
+    ((a.title || '').toLowerCase() <= (b.title || '').toLowerCase() ? -1 : 1);
   const _chats = chats.sort(sortFn);
   if (!filter) {
     return _chats;
   }
-  return _chats.filter(({ title }) => title.toLowerCase().includes(filter.toLowerCase()));
+  return _chats.filter(({ title = '' }) => title.toLowerCase().includes(filter.toLowerCase()));
 }
 
 export default {
