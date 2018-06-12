@@ -15,7 +15,6 @@ const chatModel = {
   title: PropTypes.string.isRequired,
   createdAt: PropTypes.string.isRequired,
   updatedAt: PropTypes.string.isRequired,
-  creator: PropTypes.shape(userShape),
   members: PropTypes.arrayOf(userShape).isRequired,
 };
 
