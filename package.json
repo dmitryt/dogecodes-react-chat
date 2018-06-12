@@ -1,6 +1,6 @@
 {
   "name": "dogecodes-react-chat",
-  "description": "React/Redux based chat https://dogecodes-react-chat-dmitryt.herokuapp.com/",
+  "description": "React/Redux based chat",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
