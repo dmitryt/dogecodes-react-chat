@@ -4,7 +4,7 @@ export function titleInitials(title) {
   }
   return title
     .split(' ')
-    .map(w => w[0].toUpperCase())
+    .map(w => (w[0] || '').toUpperCase())
     .slice(0, 2)
     .join('');
 }
