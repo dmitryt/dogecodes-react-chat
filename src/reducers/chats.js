@@ -23,7 +23,7 @@ const initialState = {
   _store: {},
 };
 
-function activeChat(state = initialState.activeChat, action) {
+export function activeChat(state = initialState.activeChat, action) {
   switch (action.type) {
     case types.FETCH_ACTIVE_CHAT_SUCCESS:
       return action.payload;
@@ -42,7 +42,7 @@ function activeChat(state = initialState.activeChat, action) {
   }
 }
 
-function allIds(state = initialState.allIds, action) {
+export function allIds(state = initialState.allIds, action) {
   switch (action.type) {
     case types.FETCH_ALL_CHATS_SUCCESS:
       return [...state, ...action.payload.map(getChatId)];
@@ -58,7 +58,7 @@ function allIds(state = initialState.allIds, action) {
   }
 }
 
-function myIds(state = initialState.myIds, action) {
+export function myIds(state = initialState.myIds, action) {
   switch (action.type) {
     case types.FETCH_MY_CHATS_SUCCESS:
       return [...state, ...action.payload.map(getChatId)];
@@ -76,7 +76,7 @@ function myIds(state = initialState.myIds, action) {
   }
 }
 
-function _store(state = initialState._store, action) {
+export function _store(state = initialState._store, action) {
   switch (action.type) {
     case types.FETCH_ALL_CHATS_SUCCESS:
     case types.FETCH_MY_CHATS_SUCCESS:
@@ -94,12 +94,7 @@ function _store(state = initialState._store, action) {
     case types.WS_RECEIVE_NEW_CHAT:
       return {
         ...state,
-        [action.payload._id]: action.payload,
-      };
-    case types.FETCH_CHAT_SUCCESS:
-      return {
-        ...state,
-        [getChatId(action.payload.chat)]: action.payload.chat,
+        [getChatId(action.payload)]: action.payload,
       };
     case types.DELETE_CHAT_SUCCESS:
     case types.WS_RECEIVE_DELETED_CHAT:

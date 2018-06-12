@@ -6,7 +6,8 @@ import { withStyles } from 'material-ui/styles';
 import List, { ListItem, ListItemText } from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 
-import { helpers, date } from '../utils';
+import { titleInitials } from '../utils/helpers';
+import { distanceInWords } from '../utils/date';
 import { activeChatShape } from '../shapes';
 
 const styles = theme => ({
@@ -40,8 +41,8 @@ export class ChatsList extends React.Component {
             disabled={disabled}
             onClick={this.onClick}
           >
-            <Avatar style={{ backgroundColor: d.color }}>{helpers.titleInitials(d.title)}</Avatar>
-            <ListItemText primary={d.title} secondary={date.distanceInWords(d.createdAt)} />
+            <Avatar style={{ backgroundColor: d.color }}>{titleInitials(d.title)}</Avatar>
+            <ListItemText primary={d.title} secondary={distanceInWords(d.createdAt)} />
           </ListItem>
         ))}
       </List>

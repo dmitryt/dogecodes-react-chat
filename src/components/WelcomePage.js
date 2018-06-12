@@ -35,7 +35,7 @@ const styles = theme => ({
   }),
 });
 
-class WelcomePage extends React.Component {
+export class WelcomePage extends React.Component {
   constructor(props) {
     super(props);
     this._notificationSystem = React.createRef();
@@ -107,12 +107,14 @@ WelcomePage.propTypes = {
   classes: PropTypes.object.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
   notification: notificationShape,
-  login: PropTypes.func.isRequired,
-  signup: PropTypes.func.isRequired,
+  login: PropTypes.func,
+  signup: PropTypes.func,
 };
 
 WelcomePage.defaultProps = {
   notification: null,
+  login: () => {},
+  signup: () => {},
 };
 
 export default withStyles(styles, { withTheme: true })(WelcomePage);

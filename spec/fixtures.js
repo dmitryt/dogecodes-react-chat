@@ -7,4 +7,9 @@ export const getActiveChat = (args = {}) => ({
   ...args,
 });
 
+export const getUser = (args = {}) => ({
+  username: 'jojn',
+  ...args,
+});
+
 export default {};

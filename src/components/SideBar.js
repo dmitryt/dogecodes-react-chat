@@ -10,6 +10,7 @@ import SearchInput from './SearchInput';
 import ChatsList from './ChatsList';
 
 import { chatShape, activeChatShape } from '../shapes';
+import { filterAndSortChats } from '../utils/helpers';
 
 const styles = () => ({
   root: {
@@ -17,7 +18,7 @@ const styles = () => ({
   },
 });
 
-class SideBar extends React.Component {
+export class SideBar extends React.Component {
   state = {
     chatsType: 'all',
     filter: '',
@@ -34,12 +35,7 @@ class SideBar extends React.Component {
   getChats() {
     const { myChats, allChats } = this.props;
     const { chatsType, filter } = this.state;
-    const sortFn = (a, b) => (a.title.toLowerCase() <= b.title.toLowerCase() ? -1 : 1);
-    const chats = (chatsType === 'my' ? myChats : allChats).sort(sortFn);
-    if (!filter) {
-      return chats;
-    }
-    return chats.filter(({ title }) => title.toLowerCase().includes(filter.toLowerCase()));
+    return filterAndSortChats(chatsType === 'my' ? myChats : allChats, filter);
   }
 
   render() {
@@ -73,12 +69,13 @@ SideBar.propTypes = {
   children: PropTypes.object.isRequired,
   activeChat: activeChatShape,
   width: PropTypes.number,
-  onChatSelect: PropTypes.func.isRequired,
+  onChatSelect: PropTypes.func,
 };
 
 SideBar.defaultProps = {
   activeChat: null,
-  width: '300px',
+  width: 300,
+  onChatSelect: () => {},
 };
 
 export default withStyles(styles)(SideBar);

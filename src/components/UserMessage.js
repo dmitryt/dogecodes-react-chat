@@ -7,7 +7,8 @@ import Avatar from 'material-ui/Avatar';
 import { ListItem, ListItemText } from 'material-ui/List';
 import Paper from 'material-ui/Paper';
 
-import { helpers, date } from '../utils';
+import { titleInitials, getDisplayedName } from '../utils/helpers';
+import { distanceInWords } from '../utils/date';
 import { userShape } from '../shapes';
 
 const styles = theme => ({
@@ -44,7 +45,7 @@ export const UserMessage = ({
   classes, color, user, isCreator, createdAt, content,
 }) => (
   <ListItem className={classNames({ [classes.isOwnItem]: isCreator })}>
-    <Avatar style={{ backgroundColor: color }}>{helpers.titleInitials(user.username)}</Avatar>
+    <Avatar style={{ backgroundColor: color }}>{titleInitials(user.username)}</Avatar>
     <ListItemText className={classes.listItemText}>
       <Paper
         elevation={4}
@@ -52,10 +53,10 @@ export const UserMessage = ({
       >
         <ListItemText
           classes={{ primary: classes.primary, secondary: classes.secondary }}
-          secondary={date.distanceInWords(createdAt)}
+          secondary={distanceInWords(createdAt)}
         >
           <span className={classes.username} style={{ color }}>
-            {helpers.getDisplayedName(user)}
+            {getDisplayedName(user)}
           </span>
           <p className={classes.message}>{content}</p>
         </ListItemText>

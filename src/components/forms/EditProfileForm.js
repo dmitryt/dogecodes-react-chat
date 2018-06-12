@@ -27,7 +27,7 @@ const styles = theme => ({
   },
 });
 
-const EditProfileForm = ({
+export const EditProfileForm = ({
   classes, onSubmit, user, open, onClose,
 }) => (
   <div>
@@ -85,12 +85,14 @@ EditProfileForm.propTypes = {
   classes: PropTypes.object.isRequired,
   user: userShape,
   open: PropTypes.bool.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func,
+  onClose: PropTypes.func,
 };
 
 EditProfileForm.defaultProps = {
   user: null,
+  onSubmit: () => {},
+  onClose: () => {},
 };
 
 export default withStyles(styles)(EditProfileForm);

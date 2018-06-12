@@ -4,7 +4,7 @@ import { withStyles } from 'material-ui/styles';
 
 import { ListItem, ListItemText } from 'material-ui/List';
 
-import { date } from '../utils';
+import { distanceInWords } from '../utils/date';
 import { userShape } from '../shapes';
 
 const styles = {
@@ -22,13 +22,13 @@ const styles = {
   },
 };
 
-const UserAction = ({
+export const UserAction = ({
   classes, color, user, createdAt, content,
 }) => (
   <ListItem>
     <ListItemText
       classes={{ primary: classes.primary, secondary: classes.secondary, root: classes.root }}
-      secondary={date.distanceInWords(createdAt)}
+      secondary={distanceInWords(createdAt)}
     >
       <span style={{ color }} className={classes.username}>
         {user.username}

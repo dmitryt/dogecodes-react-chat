@@ -29,7 +29,7 @@ const validate = ({ username, password, passwordConfirmation }) => {
 
 const submitHandler = onSubmit => ({ username, password }) => onSubmit({ username, password });
 
-const SignupForm = ({ classes, onSubmit }) => (
+export const SignupForm = ({ classes, onSubmit }) => (
   <Form
     onSubmit={submitHandler(onSubmit)}
     validate={validate}
@@ -85,7 +85,11 @@ const SignupForm = ({ classes, onSubmit }) => (
 
 SignupForm.propTypes = {
   classes: PropTypes.object.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func,
+};
+
+SignupForm.defaultProps = {
+  onSubmit: () => {},
 };
 
 export default withStyles(styles)(SignupForm);
