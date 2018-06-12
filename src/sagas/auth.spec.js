@@ -34,11 +34,11 @@ describe('auth sagas', () => {
     expect(localStorage.setItem).toHaveBeenLastCalledWith(STORAGE_KEY_TOKEN, '');
   });
   it('should receiveAuth for user correctly', () => {
-    const expectedResponse = { user: { _id: 1 } };
+    const expectedResponse = { user: { _id: 1 }, success: true };
     expectSaga(receiveAuth)
       .withState({ auth: { token: '123' } })
       .provide([[matchers.call.fn(api.receiveAuth), expectedResponse]])
-      .put({ type: types.RECEIVE_AUTH_SUCCESS, payload: { user: { _id: 1 } } })
+      .put({ type: types.RECEIVE_AUTH_SUCCESS, payload: expectedResponse })
       .run();
   });
   it('should updateUser correctly', () => {

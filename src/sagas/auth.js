@@ -63,6 +63,9 @@ export function* receiveAuth() {
       return yield put({ type: types.RECEIVE_AUTH_FAILURE });
     }
     const payload = yield call(api.receiveAuth, [auth.token]);
+    if (!payload.success) {
+      return yield put({ type: types.RECEIVE_AUTH_FAILURE });
+    }
     yield put({ type: types.RECEIVE_AUTH_SUCCESS, payload });
   } catch (error) {
     yield put({ type: types.RECEIVE_AUTH_FAILURE });
