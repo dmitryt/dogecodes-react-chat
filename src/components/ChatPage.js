@@ -60,7 +60,6 @@ class ChatPage extends React.Component {
 
   onChatSelect = chatId => {
     this.props.redirectToChat({ chatId });
-    this.props.setActiveChat({ chatId });
   };
 
   constructor(props) {
@@ -74,20 +73,47 @@ class ChatPage extends React.Component {
       fetchMyChats,
       match,
       setActiveChat,
+      initWsConnection,
     } = this.props;
     const { chatId } = match.params;
+    initWsConnection();
+    fetchAllChats();
+    fetchMyChats();
     if (chatId) {
       setActiveChat({ chatId });
     }
-    fetchAllChats();
-    fetchMyChats();
   }
 
   componentDidUpdate(prevProps) {
+    const {
+      setActiveChat,
+      match,
+      activeChat,
+      mountChat,
+      unmountChat,
+    } = this.props;
+    const getChatId = chat => chat && chat._id;
     if (prevProps.notification !== this.props.notification) {
       const { level, message } = this.props.notification || {};
       this._notificationSystem.current.addNotification({ message, level });
     }
+    if (prevProps.match.params.chatId !== match.params.chatId && match.params.chatId) {
+      setActiveChat({ chatId: match.params.chatId });
+    }
+    const prevChatId = getChatId(prevProps.activeChat);
+    const currentChatId = getChatId(activeChat);
+    if (prevChatId !== currentChatId) {
+      if (prevChatId) {
+        unmountChat(prevChatId);
+      }
+      if (currentChatId) {
+        mountChat(currentChatId);
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.wsConnectionClose();
   }
 
   render() {
@@ -105,8 +131,10 @@ class ChatPage extends React.Component {
       isChatMember,
       isCreator,
       redirectToChatsList,
+      isConnected,
     } = this.props;
     const { isChatDialogOpened, isProfileDialogOpened } = this.state;
+    const disabled = !isConnected;
     return (
       <div className={classes.root}>
         <ChatHeader
@@ -115,6 +143,7 @@ class ChatPage extends React.Component {
           logout={logout}
           isCreator={isCreator}
           isChatMember={isChatMember}
+          disabled={disabled}
           deleteChat={deleteChat}
           leaveChat={leaveChat}
           redirectToChatsList={redirectToChatsList}
@@ -123,21 +152,23 @@ class ChatPage extends React.Component {
         <SideBar
           width={sidebarWidth}
           onChatSelect={this.onChatSelect}
+          disabled={disabled}
           allChats={allChats}
           myChats={myChats}
           activeChat={activeChat}
         >
-          <AddChatBtn onClick={this.openChatDialog} />
+          <AddChatBtn onClick={this.openChatDialog} disabled={disabled} />
         </SideBar>
-        <ChatContent activeChat={activeChat}>
+        <ChatContent activeChat={activeChat} user={user} disabled={disabled}>
           {
             isChatMember ? (
-              <MessageInput onSubmit={sendMessage} />
+              <MessageInput onSubmit={sendMessage} disabled={disabled} />
             ) : (
                 <Button
                   variant="raised"
                   color="primary"
                   onClick={joinChat}
+                  disabled={disabled}
                   fullWidth
                 >
                   Join Chat

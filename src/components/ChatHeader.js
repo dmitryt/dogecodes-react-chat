@@ -61,7 +61,7 @@ class ChatHeader extends React.Component {
   };
 
   render() {
-    const { classes, width, activeChat, isCreator, isChatMember } = this.props;
+    const { classes, width, activeChat, isCreator, isChatMember, disabled } = this.props;
     const { anchorElUser, anchorElChat } = this.state;
     return (
       <MUIAppBar
@@ -80,6 +80,7 @@ class ChatHeader extends React.Component {
                     aria-label="More"
                     aria-owns={anchorElChat ? 'chat-menu' : null}
                     aria-haspopup="true"
+                    disabled={disabled}
                     onClick={this.handleMenuOpen}
                   >
                     <MoreVertIcon />
@@ -106,6 +107,7 @@ class ChatHeader extends React.Component {
               aria-owns={anchorElUser ? 'user-menu' : null}
               aria-haspopup="true"
               color="inherit"
+              disabled={disabled}
               onClick={this.handleMenuOpen}
             >
               <AccountCircle />

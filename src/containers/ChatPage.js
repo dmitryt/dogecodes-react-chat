@@ -24,12 +24,17 @@ const {
   updateUser,
   redirectToChat,
   redirectToChatsList,
+  initWsConnection,
+  mountChat,
+  unmountChat,
+  wsConnectionClose,
 } = actions;
 const mapStateToProps = state => ({
   notification: state.notification,
   isAuthenticated: state.auth.isAuthenticated,
   user: state.auth.user,
   activeChat: state.chats.activeChat,
+  isConnected: state.services.isConnected,
   allChats: getAllChats(state),
   myChats: getMyChats(state),
   isMember: isMember(state),
@@ -49,6 +54,10 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   updateUser,
   redirectToChat,
   redirectToChatsList,
+  initWsConnection,
+  mountChat,
+  unmountChat,
+  wsConnectionClose,
 }, dispatch);
 
 export default connect(

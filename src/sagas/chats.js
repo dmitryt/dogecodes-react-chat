@@ -1,9 +1,9 @@
-import { put, call, takeEvery, select } from 'redux-saga/effects';
+import { put, call, takeLatest, select } from 'redux-saga/effects';
 
 import types from '../types';
 import { api } from '../utils';
 
-export function* fetchMyChats({ data }) {
+export function* fetchMyChats({ payload }) {
   try {
     const { auth } = yield select();
     const json = yield call(api.fetchMyChats, auth.token);
@@ -14,12 +14,12 @@ export function* fetchMyChats({ data }) {
   } catch (error) {
     yield put({ type: types.FETCH_MY_CHATS_FAILURE, error });
 
-    const data = { level: 'error', message: error.message };
-    yield put({ type: types.NOTIFICATION, data });
+    const payload = { level: 'error', message: error.message };
+    yield put({ type: types.NOTIFICATION, payload });
   }
 }
 
-export function* fetchAllChats({ data }) {
+export function* fetchAllChats({ payload }) {
   try {
     const { auth } = yield select();
     const json = yield call(api.fetchAllChats, auth.token);
@@ -30,26 +30,26 @@ export function* fetchAllChats({ data }) {
   } catch (error) {
     yield put({ type: types.FETCH_ALL_CHATS_FAILURE, error });
 
-    const data = { level: 'error', message: error.message };
-    yield put({ type: types.NOTIFICATION, data });
+    const payload = { level: 'error', message: error.message };
+    yield put({ type: types.NOTIFICATION, payload });
   }
 }
 
-export function* createChat({ data }) {
+export function* createChat({ payload }) {
   try {
     const { auth } = yield select();
-    const json = yield call(api.createChat, { data, token: auth.token });
+    const json = yield call(api.createChat, { payload, token: auth.token });
     if (!json.success) {
       throw new Error(json.message);
     }
     yield put({ type: types.CREATE_CHAT_SUCCESS, payload: json.chat });
-    const notificationData = { level: 'success', message: 'Chat has been created successfully' };
-    yield put({ type: types.NOTIFICATION, data: notificationData });
+    const notificationpayload = { level: 'success', message: 'Chat has been created successfully' };
+    yield put({ type: types.NOTIFICATION, payload: notificationpayload });
   } catch (error) {
     yield put({ type: types.CREATE_CHAT_FAILURE, error });
 
-    const data = { level: 'error', message: error.message };
-    yield put({ type: types.NOTIFICATION, data });
+    const payload = { level: 'error', message: error.message };
+    yield put({ type: types.NOTIFICATION, payload });
   }
 }
 
@@ -61,21 +61,21 @@ export function* deleteChat() {
     if (!json.success) {
       throw new Error(json.message);
     }
-    yield put({ type: types.DELETE_CHAT_SUCCESS, data: { chatId } });
-    const notificationData = { level: 'success', message: 'Chat has been deleted successfully' };
-    yield put({ type: types.NOTIFICATION, data: notificationData });
+    yield put({ type: types.DELETE_CHAT_SUCCESS, payload: { chatId } });
+    const data = { level: 'success', message: 'Chat has been deleted successfully' };
+    yield put({ type: types.NOTIFICATION, payload: data });
   } catch (error) {
     yield put({ type: types.DELETE_CHAT_FAILURE, error });
 
-    const data = { level: 'error', message: error.message };
-    yield put({ type: types.NOTIFICATION, data });
+    const payload = { level: 'error', message: error.message };
+    yield put({ type: types.NOTIFICATION, payload });
   }
 }
 
-export function* fetchChat({ data }) {
+export function* fetchChat({ payload }) {
   try {
     const { auth } = yield select();
-    const json = yield call(api.fetchChat, { chatId: data.chatId, token: auth.token });
+    const json = yield call(api.fetchChat, { chatId: payload.chatId, token: auth.token });
     if (!json.success) {
       throw new Error(json.message);
     }
@@ -83,8 +83,8 @@ export function* fetchChat({ data }) {
   } catch (error) {
     yield put({ type: types.FETCH_ACTIVE_CHAT_FAILURE, error });
 
-    const data = { level: 'error', message: error.message };
-    yield put({ type: types.NOTIFICATION, data });
+    const payload = { level: 'error', message: error.message };
+    yield put({ type: types.NOTIFICATION, payload });
   }
 }
 
@@ -97,14 +97,14 @@ export function* joinChat() {
       throw new Error(json.message);
     }
     yield put({ type: types.JOIN_CHAT_SUCCESS, payload: json.chat });
-    yield fetchChat({ data: { chatId } });
-    const notificationData = { level: 'success', message: 'You have joined the chat successfully' };
-    yield put({ type: types.NOTIFICATION, data: notificationData });
+    yield fetchChat({ payload: { chatId } });
+    const data = { level: 'success', message: 'You have joined the chat successfully' };
+    yield put({ type: types.NOTIFICATION, payload: data });
   } catch (error) {
     yield put({ type: types.JOIN_CHAT_FAILURE, error });
 
-    const data = { level: 'error', message: error.message };
-    yield put({ type: types.NOTIFICATION, data });
+    const payload = { level: 'error', message: error.message };
+    yield put({ type: types.NOTIFICATION, payload });
   }
 }
 
@@ -116,45 +116,42 @@ export function* leaveChat() {
     if (!json.success) {
       throw new Error(json.message);
     }
-    yield put({ type: types.LEAVE_CHAT_SUCCESS, data: { chatId } });
-    yield fetchChat({ data: { chatId } });
-    const notificationData = { level: 'success', message: 'You have left the chat successfully' };
-    yield put({ type: types.NOTIFICATION, data: notificationData });
+    yield put({ type: types.LEAVE_CHAT_SUCCESS, payload: { chatId } });
+    yield fetchChat({ payload: { chatId } });
+    const data = { level: 'success', message: 'You have left the chat successfully' };
+    yield put({ type: types.NOTIFICATION, payload: data });
   } catch (error) {
     yield put({ type: types.LEAVE_CHAT_FAILURE, error });
 
-    const data = { level: 'error', message: error.message };
-    yield put({ type: types.NOTIFICATION, data });
+    const payload = { level: 'error', message: error.message };
+    yield put({ type: types.NOTIFICATION, payload });
   }
 }
 
-export function* sendMessage({ data }) {
+export function* sendMessage({ payload }) {
   try {
     const { auth, chats } = yield select();
     const chatId = chats.activeChat._id;
-    const json = yield call(api.sendMessage, { data, chatId, token: auth.token });
+    const json = yield call(api.sendMessage, { payload, chatId, token: auth.token });
     if (!json.success) {
       throw new Error(json.message);
     }
     yield put({ type: types.SEND_MESSAGE_SUCCESS });
-    yield fetchChat({ data: { chatId } });
   } catch (error) {
     yield put({ type: types.SEND_MESSAGE_FAILURE, error });
 
-    const data = { level: 'error', message: error.message };
-    yield put({ type: types.NOTIFICATION, data });
+    const payload = { level: 'error', message: error.message };
+    yield put({ type: types.NOTIFICATION, payload });
   }
 }
 
-const chatSagas = [
-  takeEvery(types.FETCH_MY_CHATS_REQUEST, fetchMyChats),
-  takeEvery(types.FETCH_ALL_CHATS_REQUEST, fetchAllChats),
-  takeEvery(types.CREATE_CHAT_REQUEST, createChat),
-  takeEvery(types.DELETE_CHAT_REQUEST, deleteChat),
-  takeEvery(types.JOIN_CHAT_REQUEST, joinChat),
-  takeEvery(types.LEAVE_CHAT_REQUEST, leaveChat),
-  takeEvery(types.SEND_MESSAGE_REQUEST, sendMessage),
-  takeEvery(types.FETCH_ACTIVE_CHAT_REQUEST, fetchChat),
+export default [
+  takeLatest(types.FETCH_MY_CHATS_REQUEST, fetchMyChats),
+  takeLatest(types.FETCH_ALL_CHATS_REQUEST, fetchAllChats),
+  takeLatest(types.CREATE_CHAT_REQUEST, createChat),
+  takeLatest(types.DELETE_CHAT_REQUEST, deleteChat),
+  takeLatest(types.JOIN_CHAT_REQUEST, joinChat),
+  takeLatest(types.LEAVE_CHAT_REQUEST, leaveChat),
+  takeLatest(types.SEND_MESSAGE_REQUEST, sendMessage),
+  takeLatest(types.FETCH_ACTIVE_CHAT_REQUEST, fetchChat),
 ];
-
-export default chatSagas;

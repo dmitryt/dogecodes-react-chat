@@ -20,6 +20,7 @@ class MessageInput extends React.Component {
   }
 
   render() {
+    const { disabled } = this.props;
     const { value } = this.state;
     return (
       <TextField
@@ -29,6 +30,7 @@ class MessageInput extends React.Component {
         placeholder="Type your message..."
         onChange={this.onChange}
         onKeyUp={this.onKeyUp}
+        disabled={disabled}
         value={value}
         fullWidth
         margin="none"

@@ -38,10 +38,10 @@ const styles = theme => ({
   },
 });
 
-const UserMessage = ({ classes, color, user, isOwn, createdAt, content }) => <ListItem className={classNames({ [classes.isOwnItem]: isOwn })}>
+const UserMessage = ({ classes, color, user, isCreator, createdAt, content }) => <ListItem className={classNames({ [classes.isOwnItem]: isCreator })}>
   <Avatar style={{ backgroundColor: color }}>{helpers.titleInitials(user.username)}</Avatar>
   <ListItemText className={classes.listItemText}>
-    <Paper elevation={4} className={classNames(classes.content, { [classes.isOwnContent]: isOwn })}>
+    <Paper elevation={4} className={classNames(classes.content, { [classes.isOwnContent]: isCreator })}>
       <ListItemText classes={{ primary: classes.primary, secondary: classes.secondary }} secondary={date.distanceInWords(createdAt)}>
         <span className={classes.username} style={{ color }}>{helpers.getDisplayedName(user)}</span>
         <p className={classes.message}>{content}</p>
