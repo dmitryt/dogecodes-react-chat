@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
 
@@ -25,7 +26,7 @@ const styles = theme => ({
   },
 });
 
-const InviteLabel = ({ classes, color, username, time, action }) => (
+export const InviteLabel = ({ classes }) => (
   <Paper className={classes.root}>
     <Typography variant="headline" component="h1" className={classes.title}>
       Start messaging...
@@ -36,7 +37,11 @@ const InviteLabel = ({ classes, color, username, time, action }) => (
     <Typography component="p">
       Use <b>Recents</b> to see your recent conversations.
     </Typography>
-  </Paper >
+  </Paper>
 );
+
+InviteLabel.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
 
 export default withStyles(styles)(InviteLabel);

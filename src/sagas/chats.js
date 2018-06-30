@@ -3,7 +3,7 @@ import { put, call, takeLatest, select } from 'redux-saga/effects';
 import types from '../types';
 import { api } from '../utils';
 
-export function* fetchMyChats({ payload }) {
+export function* fetchMyChats() {
   try {
     const { auth } = yield select();
     const json = yield call(api.fetchMyChats, auth.token);
@@ -14,12 +14,12 @@ export function* fetchMyChats({ payload }) {
   } catch (error) {
     yield put({ type: types.FETCH_MY_CHATS_FAILURE, error });
 
-    const payload = { level: 'error', message: error.message };
-    yield put({ type: types.NOTIFICATION, payload });
+    const notification = { level: 'error', message: error.message };
+    yield put({ type: types.NOTIFICATION, payload: notification });
   }
 }
 
-export function* fetchAllChats({ payload }) {
+export function* fetchAllChats() {
   try {
     const { auth } = yield select();
     const json = yield call(api.fetchAllChats, auth.token);
@@ -30,8 +30,8 @@ export function* fetchAllChats({ payload }) {
   } catch (error) {
     yield put({ type: types.FETCH_ALL_CHATS_FAILURE, error });
 
-    const payload = { level: 'error', message: error.message };
-    yield put({ type: types.NOTIFICATION, payload });
+    const notification = { level: 'error', message: error.message };
+    yield put({ type: types.NOTIFICATION, payload: notification });
   }
 }
 
@@ -48,8 +48,8 @@ export function* createChat({ payload }) {
   } catch (error) {
     yield put({ type: types.CREATE_CHAT_FAILURE, error });
 
-    const payload = { level: 'error', message: error.message };
-    yield put({ type: types.NOTIFICATION, payload });
+    const notification = { level: 'error', message: error.message };
+    yield put({ type: types.NOTIFICATION, payload: notification });
   }
 }
 
@@ -83,8 +83,8 @@ export function* fetchChat({ payload }) {
   } catch (error) {
     yield put({ type: types.FETCH_ACTIVE_CHAT_FAILURE, error });
 
-    const payload = { level: 'error', message: error.message };
-    yield put({ type: types.NOTIFICATION, payload });
+    const notification = { level: 'error', message: error.message };
+    yield put({ type: types.NOTIFICATION, payload: notification });
   }
 }
 
@@ -140,8 +140,8 @@ export function* sendMessage({ payload }) {
   } catch (error) {
     yield put({ type: types.SEND_MESSAGE_FAILURE, error });
 
-    const payload = { level: 'error', message: error.message };
-    yield put({ type: types.NOTIFICATION, payload });
+    const notification = { level: 'error', message: error.message };
+    yield put({ type: types.NOTIFICATION, payload: notification });
   }
 }
 

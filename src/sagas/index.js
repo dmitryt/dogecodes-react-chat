@@ -6,10 +6,5 @@ import servicesSagas from './services';
 import socketsSagas from './sockets';
 
 export default function* rootSaga() {
-  yield all([
-    ...authSagas,
-    ...chatSagas,
-    ...servicesSagas,
-    ...socketsSagas,
-  ])
+  yield all([...authSagas, ...chatSagas, ...servicesSagas, ...socketsSagas]);
 }

@@ -4,12 +4,12 @@ export const actions = {
   notify: payload => ({ type: types.NOTIFICATION, payload }),
 };
 
-export default function notificationReducer(state = {}, action) {
+export default function notificationReducer(state = null, action) {
   switch (action.type) {
     case types.NOTIFICATION:
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
       };
     default:
       return state;

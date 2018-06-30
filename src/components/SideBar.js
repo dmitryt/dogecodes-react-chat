@@ -9,48 +9,38 @@ import NavBar from './NavBar';
 import SearchInput from './SearchInput';
 import ChatsList from './ChatsList';
 
-const styles = theme => ({
+import { chatShape, activeChatShape } from '../shapes';
+import { filterAndSortChats } from '../utils/helpers';
+
+const styles = () => ({
   root: {
     position: 'relative',
   },
 });
 
-class SideBar extends React.Component {
+export class SideBar extends React.Component {
   state = {
     chatsType: 'all',
     filter: '',
   };
 
+  onTypeChange = (e, chatsType) => {
+    this.setState({ chatsType });
+  };
+
+  onFilterChange = (filter) => {
+    this.setState({ filter });
+  };
+
   getChats() {
     const { myChats, allChats } = this.props;
     const { chatsType, filter } = this.state;
-    const sortFn = (a, b) => a.title.toLowerCase() <= b.title.toLowerCase() ? -1 : 1;
-    const chats = (chatsType === 'my' ? myChats : allChats).sort(sortFn);
-    if (!filter) {
-      return chats;
-    }
-    return chats
-      .filter(({ title }) => title.toLowerCase()
-        .includes(filter.toLowerCase())
-      )
-  }
-
-  onTypeChange = (e, chatsType) => {
-    this.setState({ chatsType });
-  }
-
-  onFilterChange = filter => {
-    this.setState({ filter });
+    return filterAndSortChats(chatsType === 'my' ? myChats : allChats, filter);
   }
 
   render() {
     const {
-      classes,
-      width,
-      onChatSelect,
-      activeChat,
-      disabled,
-      children,
+      classes, width, onChatSelect, activeChat, disabled, children,
     } = this.props;
     const { chatsType } = this.state;
     const chatsData = this.getChats();
@@ -72,14 +62,20 @@ class SideBar extends React.Component {
 }
 
 SideBar.propTypes = {
-  allChats: PropTypes.array.isRequired,
-  myChats: PropTypes.array.isRequired,
+  allChats: PropTypes.arrayOf(chatShape).isRequired,
+  myChats: PropTypes.arrayOf(chatShape).isRequired,
   classes: PropTypes.object.isRequired,
+  disabled: PropTypes.bool.isRequired,
+  children: PropTypes.object.isRequired,
+  activeChat: activeChatShape,
   width: PropTypes.number,
+  onChatSelect: PropTypes.func,
 };
 
 SideBar.defaultProps = {
-  width: '300px',
+  activeChat: null,
+  width: 300,
+  onChatSelect: () => {},
 };
 
 export default withStyles(styles)(SideBar);

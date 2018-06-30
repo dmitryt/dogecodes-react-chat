@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import TextField from 'material-ui/TextField';
 
-class MessageInput extends React.Component {
+export class MessageInput extends React.Component {
   state = {
     value: '',
   };
@@ -12,12 +13,12 @@ class MessageInput extends React.Component {
       this.props.onSubmit(value);
       this.setState({ value: '' });
     }
-  }
+  };
 
   onChange = ({ target }) => {
     const { value } = target;
     this.setState({ value });
-  }
+  };
 
   render() {
     const { disabled } = this.props;
@@ -38,5 +39,14 @@ class MessageInput extends React.Component {
     );
   }
 }
+
+MessageInput.propTypes = {
+  disabled: PropTypes.bool.isRequired,
+  onSubmit: PropTypes.func,
+};
+
+MessageInput.defaultProps = {
+  onSubmit: () => {},
+};
 
 export default MessageInput;

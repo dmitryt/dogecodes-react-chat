@@ -10,8 +10,9 @@ import Menu, { MenuItem } from 'material-ui/Menu';
 
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { activeChatShape } from '../shapes';
 
-const styles = theme => ({
+const styles = () => ({
   flex: {
     flex: 1,
   },
@@ -19,19 +20,14 @@ const styles = theme => ({
     color: 'white',
     '&:hover': {
       backgroundColor: 'inherit',
-    }
-  }
+    },
+  },
 });
 
-class ChatHeader extends React.Component {
+export class ChatHeader extends React.Component {
   state = {
     anchorElUser: null,
     anchorElChat: null,
-  };
-
-  handleMenuOpen = ({ currentTarget }) => {
-    const key = currentTarget.getAttribute('data-id');
-    this.setState({ [key]: currentTarget });
   };
 
   onLogout = () => {
@@ -42,7 +38,7 @@ class ChatHeader extends React.Component {
   onEditProfile = () => {
     this.props.openProfileDialog();
     this.handleMenuClose();
-  }
+  };
 
   onDeleteChat = () => {
     this.props.deleteChat();
@@ -55,24 +51,28 @@ class ChatHeader extends React.Component {
     this.handleMenuClose();
   };
 
+  handleMenuOpen = ({ currentTarget }) => {
+    const key = currentTarget.getAttribute('data-id');
+    this.setState({ [key]: currentTarget });
+  };
+
   handleMenuClose = () => {
     this.setState({ anchorElUser: null });
     this.setState({ anchorElChat: null });
   };
 
   render() {
-    const { classes, width, activeChat, isCreator, isChatMember, disabled } = this.props;
+    const {
+      classes, width, activeChat, isCreator, isChatMember, disabled,
+    } = this.props;
     const { anchorElUser, anchorElChat } = this.state;
     return (
-      <MUIAppBar
-        position="absolute"
-        style={{ width }}
-      >
+      <MUIAppBar position="absolute" style={{ width }}>
         <Toolbar>
           <Typography variant="title" color="inherit" className={classes.flex}>
             {activeChat ? (
               <React.Fragment>
-                {activeChat.title}
+                <span className="chat-title">{activeChat.title}</span>
                 {isChatMember ? (
                   <IconButton
                     className={classes.menuIcon}
@@ -85,8 +85,7 @@ class ChatHeader extends React.Component {
                   >
                     <MoreVertIcon />
                   </IconButton>
-                ) : null
-                }
+                ) : null}
               </React.Fragment>
             ) : null}
             <Menu
@@ -94,9 +93,11 @@ class ChatHeader extends React.Component {
               anchorEl={anchorElChat}
               open={Boolean(anchorElChat)}
               onClose={this.handleMenuClose}
-            > {isCreator ? (
-              <MenuItem onClick={this.onDeleteChat}>Delete</MenuItem>
-            ) : (
+            >
+              {' '}
+              {isCreator ? (
+                <MenuItem onClick={this.onDeleteChat}>Delete</MenuItem>
+              ) : (
                 <MenuItem onClick={this.onLeaveChat}>Leave</MenuItem>
               )}
             </Menu>
@@ -128,18 +129,28 @@ class ChatHeader extends React.Component {
   }
 }
 
-
 ChatHeader.propTypes = {
   classes: PropTypes.object.isRequired,
-  logout: PropTypes.func.isRequired,
-  deleteChat: PropTypes.func.isRequired,
-  openProfileDialog: PropTypes.func.isRequired,
-  activeChat: PropTypes.object,
+  isCreator: PropTypes.bool.isRequired,
+  isChatMember: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool.isRequired,
+  activeChat: activeChatShape,
   width: PropTypes.string,
+
+  logout: PropTypes.func,
+  deleteChat: PropTypes.func,
+  openProfileDialog: PropTypes.func,
+  redirectToChatsList: PropTypes.func,
+  leaveChat: PropTypes.func,
 };
 
 ChatHeader.defaultProps = {
   width: '300px',
   activeChat: null,
+  logout: () => {},
+  deleteChat: () => {},
+  openProfileDialog: () => {},
+  redirectToChatsList: () => {},
+  leaveChat: () => {},
 };
 export default withStyles(styles)(ChatHeader);
