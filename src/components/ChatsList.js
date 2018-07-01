@@ -1,11 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withStyles } from 'material-ui/styles';
 
 import List, { ListItem, ListItemText } from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 
-import { helpers, date } from '../utils';
+import { titleInitials } from '../utils/helpers';
+import { distanceInWords } from '../utils/date';
+import { activeChatShape } from '../shapes';
 
 const styles = theme => ({
   root: {
@@ -17,17 +20,19 @@ const styles = theme => ({
   },
 });
 
-class ChatsList extends React.Component {
-  onClick = e => {
+export class ChatsList extends React.Component {
+  onClick = (e) => {
     const chatId = e.currentTarget.getAttribute('data-id');
     this.props.onSelect(chatId);
-  }
+  };
 
   render() {
-    const { classes, chats, activeChat, disabled } = this.props;
+    const {
+      classes, chats, activeChat, disabled,
+    } = this.props;
     return (
       <List className={classes.root}>
-        {chats.map((d, i) => (
+        {chats.map(d => (
           <ListItem
             key={d._id}
             data-id={d._id}
@@ -36,14 +41,26 @@ class ChatsList extends React.Component {
             disabled={disabled}
             onClick={this.onClick}
           >
-            <Avatar style={{ backgroundColor: d.color }}>{helpers.titleInitials(d.title)}</Avatar>
-            <ListItemText primary={d.title} secondary={date.distanceInWords(d.createdAt)} />
+            <Avatar style={{ backgroundColor: d.color }}>{titleInitials(d.title)}</Avatar>
+            <ListItemText primary={d.title} secondary={distanceInWords(d.createdAt)} />
           </ListItem>
-        )
-        )}
+        ))}
       </List>
     );
   }
 }
+
+ChatsList.propTypes = {
+  classes: PropTypes.object.isRequired,
+  chats: PropTypes.array.isRequired,
+  disabled: PropTypes.bool.isRequired,
+  activeChat: activeChatShape,
+  onSelect: PropTypes.func,
+};
+
+ChatsList.defaultProps = {
+  activeChat: null,
+  onSelect: () => {},
+};
 
 export default withStyles(styles)(ChatsList);

@@ -9,7 +9,7 @@ import TextField from './TextField';
 
 const styles = theme => ({
   button: {
-    marginTop: theme.spacing.unit
+    marginTop: theme.spacing.unit,
   },
 });
 
@@ -22,73 +22,74 @@ const validate = ({ username, password, passwordConfirmation }) => {
     errors.password = 'Required';
   }
   if (password !== passwordConfirmation) {
-    errors.passwordConfirmation = 'Passwords don\'t match';
+    errors.passwordConfirmation = "Passwords don't match";
   }
   return errors;
 };
 
-const submitHandler = onSubmit => ({ username, password }) =>
-  onSubmit({ username, password })
+const submitHandler = onSubmit => ({ username, password }) => onSubmit({ username, password });
 
-const SignupForm = ({ classes, onSubmit }) => {
-  return (
-    <Form
-      onSubmit={submitHandler(onSubmit)}
-      validate={validate}
-      render={({ handleSubmit, reset, submitting, pristine, values }) => (
-        <form className={classes.container} onSubmit={handleSubmit} noValidate autoComplete="off">
-          <Field
-            label="Username"
-            placeholder="Type your username"
-            name="username"
-            type="text"
-            className={classes.textField}
-            margin="normal"
-            component={TextField}
-            autoComplete="new-username"
-            fullWidth
-          />
-          <Field
-            label="Password"
-            placeholder="Type your password"
-            name="password"
-            type="password"
-            className={classes.textField}
-            margin="normal"
-            component={TextField}
-            autoComplete="new-password"
-            fullWidth
-          />
-          <Field
-            label="Password Confirmation"
-            placeholder="Repeat your password"
-            name="passwordConfirmation"
-            type="password"
-            className={classes.textField}
-            margin="normal"
-            component={TextField}
-            autoComplete="new-password-confirm"
-            fullWidth
-          />
-          <Button
-            className={classes.button}
-            variant="raised"
-            color="primary"
-            type="submit"
-            disabled={submitting}
-            fullWidth
-          >
-            Sign Up
-            </Button>
-        </form>
-      )}>
-    </Form>
-  );
-};
+export const SignupForm = ({ classes, onSubmit }) => (
+  <Form
+    onSubmit={submitHandler(onSubmit)}
+    validate={validate}
+    render={({ handleSubmit, submitting }) => (
+      <form className={classes.container} onSubmit={handleSubmit} noValidate autoComplete="off">
+        <Field
+          label="Username"
+          placeholder="Type your username"
+          name="username"
+          type="text"
+          className={classes.textField}
+          margin="normal"
+          component={TextField}
+          autoComplete="new-username"
+          fullWidth
+        />
+        <Field
+          label="Password"
+          placeholder="Type your password"
+          name="password"
+          type="password"
+          className={classes.textField}
+          margin="normal"
+          component={TextField}
+          autoComplete="new-password"
+          fullWidth
+        />
+        <Field
+          label="Password Confirmation"
+          placeholder="Repeat your password"
+          name="passwordConfirmation"
+          type="password"
+          className={classes.textField}
+          margin="normal"
+          component={TextField}
+          autoComplete="new-password-confirm"
+          fullWidth
+        />
+        <Button
+          className={classes.button}
+          variant="raised"
+          color="primary"
+          type="submit"
+          disabled={submitting}
+          fullWidth
+        >
+          Sign Up
+        </Button>
+      </form>
+    )}
+  />
+);
 
 SignupForm.propTypes = {
   classes: PropTypes.object.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func,
+};
+
+SignupForm.defaultProps = {
+  onSubmit: () => {},
 };
 
 export default withStyles(styles)(SignupForm);

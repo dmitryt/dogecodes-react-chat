@@ -8,7 +8,7 @@ import { WS_API_HOST } from '../config';
 
 function connect(token) {
   const socket = SocketIOClient(WS_API_HOST, { query: { token } });
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     socket.on('connect', () => {
       resolve(socket);
     });
@@ -16,7 +16,7 @@ function connect(token) {
 }
 
 function subscribe(socket) {
-  return eventChannel(emit => {
+  return eventChannel((emit) => {
     socket.on('new-message', ({ message }) => {
       emit(actions.receiveMessage(message));
     });
@@ -26,7 +26,7 @@ function subscribe(socket) {
     socket.on('deleted-chat', ({ chat }) => {
       emit(actions.receiveDeletedChat({ chatId: chat._id }));
     });
-    socket.on('error', error => {
+    socket.on('error', (error) => {
       emit(actions.wsConnectionFailure());
       emit(actions.notify({ level: 'error', message: error.message }));
     });
@@ -34,7 +34,7 @@ function subscribe(socket) {
       emit(actions.wsConnectionFailure());
       emit(actions.notify({ level: 'error', message: 'Connection has been lost' }));
     });
-    socket.on('reconnect', (attemptNumber) => {
+    socket.on('reconnect', () => {
       emit(actions.wsConnectionReconnect());
       emit(actions.notify({ level: 'success', message: 'Connection has been established' }));
     });
@@ -50,30 +50,30 @@ function* read(socket) {
     yield put(actions.wsConnectionFailure(error));
   }
   while (true) {
-    let action = yield take(channel);
+    const action = yield take(channel);
     yield put(action);
   }
 }
 
 function promisifyEmit({ socket, key, payload }) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     socket.emit(key, payload, resolve);
   });
 }
 
 function getHandlers(socket) {
   return {
-    sendMessage: function* ({ payload: content }) {
+    * sendMessage({ payload: content }) {
       const { chats } = yield select();
       const chatId = chats.activeChat && chats.activeChat._id;
       const payload = { chatId, content };
       yield call(promisifyEmit, { key: 'send-message', socket, payload });
       yield put(actions.sendMessage(payload));
     },
-    mountChat: function* ({ payload }) {
+    * mountChat({ payload }) {
       yield call(promisifyEmit, { key: 'mount-chat', socket, payload });
     },
-    unmountChat: function* ({ payload }) {
+    * unmountChat({ payload }) {
       yield call(promisifyEmit, { key: 'unmount-chat', socket, payload });
     },
   };
@@ -109,6 +109,4 @@ function* flow() {
   }
 }
 
-export default [
-  takeLatest(types.WS_CONNECTION_REQUEST, flow),
-];
+export default [takeLatest(types.WS_CONNECTION_REQUEST, flow)];

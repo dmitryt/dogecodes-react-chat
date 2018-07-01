@@ -12,6 +12,7 @@ import Typography from 'material-ui/Typography';
 
 import LoginForm from './forms/LoginForm';
 import SignupForm from './forms/SignupForm';
+import { notificationShape } from '../shapes';
 
 function TabContainer(props) {
   return (
@@ -34,19 +35,19 @@ const styles = theme => ({
   }),
 });
 
-class WelcomePage extends React.Component {
-  state = {
-    value: 0,
-  };
-
+export class WelcomePage extends React.Component {
   constructor(props) {
     super(props);
     this._notificationSystem = React.createRef();
   }
 
+  state = {
+    value: 0,
+  };
+
   componentDidUpdate(prevProps) {
-    if (prevProps.notification !== this.props.notification) {
-      const { level, message } = this.props.notification || {};
+    if (prevProps.notification !== this.props.notification && this.props.notification) {
+      const { level, message } = this.props.notification;
       this._notificationSystem.current.addNotification({ message, level });
     }
   }
@@ -56,12 +57,12 @@ class WelcomePage extends React.Component {
   };
 
   render() {
-    const { classes, login, signup, isAuthenticated } = this.props;
+    const {
+      classes, login, signup, isAuthenticated,
+    } = this.props;
     const { value } = this.state;
     if (isAuthenticated) {
-      return (
-        <Redirect to="/chats" />
-      );
+      return <Redirect to="/chats" />;
     }
     return (
       <React.Fragment>
@@ -85,8 +86,16 @@ class WelcomePage extends React.Component {
               <Tab label="Sign Up" />
             </Tabs>
           </AppBar>
-          {value === 0 && <TabContainer><LoginForm onSubmit={login} /></TabContainer>}
-          {value === 1 && <TabContainer><SignupForm onSubmit={signup} /></TabContainer>}
+          {value === 0 && (
+            <TabContainer>
+              <LoginForm onSubmit={login} />
+            </TabContainer>
+          )}
+          {value === 1 && (
+            <TabContainer>
+              <SignupForm onSubmit={signup} />
+            </TabContainer>
+          )}
         </Paper>
         <NotificationSystem ref={this._notificationSystem} />
       </React.Fragment>
@@ -96,13 +105,16 @@ class WelcomePage extends React.Component {
 
 WelcomePage.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
-  notification: PropTypes.object,
+  notification: notificationShape,
+  login: PropTypes.func,
+  signup: PropTypes.func,
 };
 
 WelcomePage.defaultProps = {
-  notification: {},
+  notification: null,
+  login: () => {},
+  signup: () => {},
 };
 
 export default withStyles(styles, { withTheme: true })(WelcomePage);

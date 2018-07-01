@@ -1,7 +1,7 @@
 import ifetch from 'isomorphic-fetch';
 import { API_HOST } from '../config';
 
-const getHeaders = token => {
+const getHeaders = (token) => {
   const authHeaders = token ? { Authorization: `Bearer ${token}` } : {};
   return {
     'Content-Type': 'application/json',
@@ -9,7 +9,9 @@ const getHeaders = token => {
   };
 };
 
-function fetch({ url, token, body, params = {} }) {
+function fetch({
+  url, token, body, params = {},
+}) {
   const fullURL = `${API_HOST}${url}`;
   const options = {
     method: 'GET',
@@ -33,7 +35,12 @@ function login(body) {
 function updateUser({ token, payload: data }) {
   const body = { data };
   const params = { method: 'POST' };
-  return fetch({ url: `/users/me`, token, body, params });
+  return fetch({
+    url: '/users/me',
+    token,
+    body,
+    params,
+  });
 }
 
 function logout() {
@@ -59,7 +66,12 @@ function fetchChat({ token, chatId }) {
 function createChat({ token, payload: data }) {
   const body = { data };
   const params = { method: 'POST' };
-  return fetch({ url: `/chats`, token, body, params });
+  return fetch({
+    url: '/chats',
+    token,
+    body,
+    params,
+  });
 }
 
 function deleteChat({ token, chatId }) {
@@ -69,7 +81,12 @@ function deleteChat({ token, chatId }) {
 function sendMessage({ token, payload: content, chatId }) {
   const body = { data: { content } };
   const params = { method: 'POST' };
-  return fetch({ url: `/chats/${chatId}`, token, body, params });
+  return fetch({
+    url: `/chats/${chatId}`,
+    token,
+    body,
+    params,
+  });
 }
 
 function joinChat({ token, chatId }) {

@@ -1,5 +1,6 @@
 import types from '../types';
 
+/* eslint-disable import/prefer-default-export */
 export const actions = {
   initWsConnection: () => ({ type: types.WS_CONNECTION_REQUEST }),
   wsConnectionSuccess: () => ({ type: types.WS_CONNECTION_SUCCESS }),

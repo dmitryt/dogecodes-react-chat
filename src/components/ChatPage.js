@@ -12,10 +12,11 @@ import CreateChatForm from './forms/CreateChatForm';
 import EditProfileForm from './forms/EditProfileForm';
 import MessageInput from '../components/MessageInput';
 import AddChatBtn from '../components/AddChatBtn';
+import { userShape, activeChatShape, chatShape, notificationShape } from '../shapes';
 
 const sidebarWidth = 320;
 
-const styles = theme => ({
+const styles = () => ({
   root: {
     height: '100%',
     zIndex: 1,
@@ -26,54 +27,20 @@ const styles = theme => ({
   },
 });
 
-class ChatPage extends React.Component {
-  state = {
-    isChatDialogOpened: false,
-    isProfileDialogOpened: false,
-  };
-
-  onCreateChat = data => {
-    this.closeChatDialog();
-    this.props.createChat(data);
-  }
-
-  onEditProfile = data => {
-    this.closeProfileDialog();
-    this.props.updateUser(data);
-  }
-
-  openChatDialog = () => {
-    this.setState({ isChatDialogOpened: true });
-  };
-
-  closeChatDialog = () => {
-    this.setState({ isChatDialogOpened: false });
-  };
-
-  openProfileDialog = () => {
-    this.setState({ isProfileDialogOpened: true });
-  };
-
-  closeProfileDialog = () => {
-    this.setState({ isProfileDialogOpened: false });
-  };
-
-  onChatSelect = chatId => {
-    this.props.redirectToChat({ chatId });
-  };
-
+export class ChatPage extends React.Component {
   constructor(props) {
     super(props);
     this._notificationSystem = React.createRef();
   }
 
+  state = {
+    isChatDialogOpened: false,
+    isProfileDialogOpened: false,
+  };
+
   componentDidMount() {
     const {
-      fetchAllChats,
-      fetchMyChats,
-      match,
-      setActiveChat,
-      initWsConnection,
+      fetchAllChats, fetchMyChats, match, setActiveChat, initWsConnection,
     } = this.props;
     const { chatId } = match.params;
     initWsConnection();
@@ -86,15 +53,11 @@ class ChatPage extends React.Component {
 
   componentDidUpdate(prevProps) {
     const {
-      setActiveChat,
-      match,
-      activeChat,
-      mountChat,
-      unmountChat,
+      setActiveChat, match, activeChat, mountChat, unmountChat,
     } = this.props;
     const getChatId = chat => chat && chat._id;
-    if (prevProps.notification !== this.props.notification) {
-      const { level, message } = this.props.notification || {};
+    if (this.props.notification && prevProps.notification !== this.props.notification) {
+      const { level, message } = this.props.notification;
       this._notificationSystem.current.addNotification({ message, level });
     }
     if (prevProps.match.params.chatId !== match.params.chatId && match.params.chatId) {
@@ -115,6 +78,36 @@ class ChatPage extends React.Component {
   componentWillUnmount() {
     this.props.wsConnectionClose();
   }
+
+  onCreateChat = (data) => {
+    this.closeChatDialog();
+    this.props.createChat(data);
+  };
+
+  onEditProfile = (data) => {
+    this.closeProfileDialog();
+    this.props.updateUser(data);
+  };
+
+  onChatSelect = (chatId) => {
+    this.props.redirectToChat({ chatId });
+  };
+
+  closeProfileDialog = () => {
+    this.setState({ isProfileDialogOpened: false });
+  };
+
+  openProfileDialog = () => {
+    this.setState({ isProfileDialogOpened: true });
+  };
+
+  closeChatDialog = () => {
+    this.setState({ isChatDialogOpened: false });
+  };
+
+  openChatDialog = () => {
+    this.setState({ isChatDialogOpened: true });
+  };
 
   render() {
     const {
@@ -160,21 +153,19 @@ class ChatPage extends React.Component {
           <AddChatBtn onClick={this.openChatDialog} disabled={disabled} />
         </SideBar>
         <ChatContent activeChat={activeChat} user={user} disabled={disabled}>
-          {
-            isChatMember ? (
-              <MessageInput onSubmit={sendMessage} disabled={disabled} />
-            ) : (
-                <Button
-                  variant="raised"
-                  color="primary"
-                  onClick={joinChat}
-                  disabled={disabled}
-                  fullWidth
-                >
-                  Join Chat
+          {isChatMember ? (
+            <MessageInput onSubmit={sendMessage} disabled={disabled} />
+          ) : (
+            <Button
+              variant="raised"
+              color="primary"
+              onClick={joinChat}
+              disabled={disabled}
+              fullWidth
+            >
+              Join Chat
             </Button>
-              )
-          }
+          )}
         </ChatContent>
         <NotificationSystem ref={this._notificationSystem} />
         <CreateChatForm
@@ -195,20 +186,56 @@ class ChatPage extends React.Component {
 
 ChatPage.propTypes = {
   classes: PropTypes.object.isRequired,
-  logout: PropTypes.func.isRequired,
-  fetchAllChats: PropTypes.func.isRequired,
-  fetchMyChats: PropTypes.func.isRequired,
-  createChat: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool.isRequired,
-  allChats: PropTypes.array.isRequired,
-  myChats: PropTypes.array.isRequired,
-  notification: PropTypes.object,
-  activeChat: PropTypes.object,
+  user: userShape,
+  match: PropTypes.shape({
+    params: PropTypes.object.isRequired,
+  }).isRequired,
+  allChats: PropTypes.arrayOf(chatShape).isRequired,
+  myChats: PropTypes.arrayOf(chatShape).isRequired,
+  notification: notificationShape,
+  activeChat: activeChatShape,
+  isCreator: PropTypes.bool.isRequired,
+  isChatMember: PropTypes.bool.isRequired,
+  isConnected: PropTypes.bool.isRequired,
+
+  logout: PropTypes.func,
+  createChat: PropTypes.func,
+  fetchAllChats: PropTypes.func,
+  fetchMyChats: PropTypes.func,
+  redirectToChat: PropTypes.func,
+  redirectToChatsList: PropTypes.func,
+  joinChat: PropTypes.func,
+  leaveChat: PropTypes.func,
+  deleteChat: PropTypes.func,
+  mountChat: PropTypes.func,
+  unmountChat: PropTypes.func,
+  setActiveChat: PropTypes.func,
+  initWsConnection: PropTypes.func,
+  wsConnectionClose: PropTypes.func,
+  updateUser: PropTypes.func,
+  sendMessage: PropTypes.func,
 };
 
 ChatPage.defaultProps = {
-  notification: {},
+  notification: null,
+  user: null,
   activeChat: null,
+  logout: () => {},
+  createChat: () => {},
+  fetchAllChats: () => {},
+  fetchMyChats: () => {},
+  redirectToChat: () => {},
+  redirectToChatsList: () => {},
+  joinChat: () => {},
+  leaveChat: () => {},
+  deleteChat: () => {},
+  mountChat: () => {},
+  unmountChat: () => {},
+  setActiveChat: () => {},
+  initWsConnection: () => {},
+  wsConnectionClose: () => {},
+  updateUser: () => {},
+  sendMessage: () => {},
 };
 
 export default withStyles(styles)(ChatPage);

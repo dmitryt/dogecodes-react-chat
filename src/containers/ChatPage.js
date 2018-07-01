@@ -2,13 +2,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { actions } from '../reducers';
-import {
-  getAllChats,
-  getMyChats,
-  isMember,
-  isCreator,
-  isChatMember
-} from '../selectors/chats';
+import { getAllChats, getMyChats, isMember, isCreator, isChatMember } from '../selectors/chats';
 import ChatPage from '../components/ChatPage';
 
 const {
@@ -41,26 +35,30 @@ const mapStateToProps = state => ({
   isCreator: isCreator(state),
   isChatMember: isChatMember(state),
 });
-const mapDispatchToProps = dispatch => bindActionCreators({
-  logout,
-  fetchAllChats,
-  fetchMyChats,
-  createChat,
-  deleteChat,
-  joinChat,
-  leaveChat,
-  setActiveChat,
-  sendMessage,
-  updateUser,
-  redirectToChat,
-  redirectToChatsList,
-  initWsConnection,
-  mountChat,
-  unmountChat,
-  wsConnectionClose,
-}, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      logout,
+      fetchAllChats,
+      fetchMyChats,
+      createChat,
+      deleteChat,
+      joinChat,
+      leaveChat,
+      setActiveChat,
+      sendMessage,
+      updateUser,
+      redirectToChat,
+      redirectToChatsList,
+      initWsConnection,
+      mountChat,
+      unmountChat,
+      wsConnectionClose,
+    },
+    dispatch,
+  );
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(ChatPage);

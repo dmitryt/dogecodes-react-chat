@@ -7,6 +7,8 @@ import UserMessage from './UserMessage';
 import UserAction from './UserAction';
 import InviteLabel from './InviteLabel';
 
+import { userShape, activeChatShape } from '../shapes';
+
 const styles = theme => ({
   toolbar: theme.mixins.toolbar,
   bottomBox: {
@@ -32,9 +34,9 @@ const styles = theme => ({
 
 function prepareChatMessages(activeChat, user) {
   if (!activeChat) {
-    return <InviteLabel />
+    return <InviteLabel />;
   }
-  return activeChat.messages.map(item => {
+  return activeChat.messages.map((item) => {
     const Component = item.statusMessage ? UserAction : UserMessage;
     return (
       <Component
@@ -48,13 +50,14 @@ function prepareChatMessages(activeChat, user) {
   });
 }
 
-class ChatContent extends React.Component {
-  state = {
-  };
+export class ChatContent extends React.Component {
   constructor(props) {
     super(props);
     this.messagesWrapperRef = React.createRef();
   }
+
+  state = {};
+
   componentDidMount() {
     this.scrollDownHistory();
   }
@@ -70,23 +73,35 @@ class ChatContent extends React.Component {
     }
   }
   render() {
-    const { classes, activeChat, user, children } = this.props;
-    return <main className={classes.content}>
-      <div className={classes.toolbar} />
-      <div className={classes.messagesList} ref={this.messagesWrapperRef}>
-        {prepareChatMessages(activeChat, user)}
-      </div>
-      {activeChat ? (
-        <Paper elevation={4} className={classes.bottomBox}>
-          {children}
-        </Paper>
-      ) : null}
-    </main>
+    const {
+      classes, activeChat, user, children,
+    } = this.props;
+    return (
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
+        <div className={classes.messagesList} ref={this.messagesWrapperRef}>
+          {prepareChatMessages(activeChat, user)}
+        </div>
+        {activeChat ? (
+          <Paper elevation={4} className={classes.bottomBox}>
+            {children}
+          </Paper>
+        ) : null}
+      </main>
+    );
   }
 }
 
 ChatContent.propTypes = {
   classes: PropTypes.object.isRequired,
+  activeChat: activeChatShape,
+  user: userShape,
+  children: PropTypes.object.isRequired,
+};
+
+ChatContent.defaultProps = {
+  activeChat: null,
+  user: null,
 };
 
 export default withStyles(styles)(ChatContent);
