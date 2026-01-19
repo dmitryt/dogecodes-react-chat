@@ -12,7 +12,7 @@
     "final-form": "^4.6.1",
     "history": "^4.7.2",
     "isomorphic-fetch": "^2.2.1",
-    "material-ui": "^1.0.0-beta.45",
+    "material-ui": "^1.0.0-beta.46",
     "prop-types": "^15.6.1",
     "react": "^16.3.2",
     "react-app-rewire-eslint": "^0.2.3",
